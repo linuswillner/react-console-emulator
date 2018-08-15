@@ -1,0 +1,63 @@
+{
+  "name": "react-console-emulator",
+  "version": "1.0.0",
+  "description": "A simple terminal emulator component for React. ",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack-dev-server",
+    "test": "eslint .",
+    "build": "babel src/components -d lib --copy-files"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/js-rcon/react-console-emulator.git"
+  },
+  "keywords": [
+    "react",
+    "console",
+    "react-component",
+    "terminal"
+  ],
+  "author": "Linus Willner <hello@linuswillner.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/js-rcon/react-console-emulator/issues"
+  },
+  "homepage": "https://github.com/js-rcon/react-console-emulator#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "cross-env": "^5.2.0",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.0.0",
+    "eslint-config-standard": "^12.0.0-alpha.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-node": "^7.0.0",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-standard": "^3.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.0",
+    "react-hot-loader": "^4.3.4",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.22.1",
+    "uglifyjs-webpack-plugin": "^1.3.0",
+    "url-loader": "^1.1.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  }
+}

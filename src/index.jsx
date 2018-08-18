@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 
-import Terminal from './components/Terminal'
+import App from './App'
 
 const root = document.getElementById('root')
 
@@ -15,8 +15,8 @@ function render (Component) {
   )
 }
 
-render(Terminal)
+render(App)
 
 if (module.hot) {
-  module.hot.accept('./components/Terminal', () => { render(Terminal) })
+  module.hot.accept('./App', () => { render(App) })
 }

@@ -1,0 +1,10 @@
+@import url('http://fonts.googleapis.com/css?family=Inconsolata');
+
+.demo {
+  display: flex;
+
+  .terminal {
+    flex: 1;
+    margin: 20px;
+  }
+}

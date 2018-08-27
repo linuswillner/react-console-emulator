@@ -16,6 +16,10 @@ jobs:
           paths:
             - node_modules
       - run:
+          name: Start test server
+          command: npm start
+          background: true
+      - run:
           name: Run tests
           command: npm test
       - run:

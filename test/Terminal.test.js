@@ -31,6 +31,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
+  await page.coverage.stopJSCoverage()
   await browser.close()
 })
 

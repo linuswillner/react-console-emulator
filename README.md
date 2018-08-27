@@ -46,6 +46,7 @@ export default class MyTerminal extends React.Component {
 | commands | Commands for the terminal. See [Command syntax](#command-syntax) for more information. | Object |
 | welcomeMessage | Welcome message(s) to display in terminal. Set to `true` to enable the default welcome message, pass an array to send multiple separate messages, or omit to disable the welcome message entirely. | String/Array/Boolean |
 | promptLabel | Custom prompt label displayed in front of the command input. Omit to enable the default label of `$`. | String |
+| errorText | Custom error text displayed when an unknown command is run. Omit to enable the default message. The placeholder `[command]` in the error string provides the command name that was input | String |
 | background | Terminal background. Accepts any background that [CSS recognises](https://developer.mozilla.org/en-US/docs/Web/CSS/background). | String (Valid CSS) |
 | backgroundSize | The [background-size](https://developer.mozilla.org/en-US/docs/Web/CSS/background-size) CSS property for the terminal background. | String (Valid CSS) |
 | autoFocus | Automatically focus the terminal on page load. | Boolean |

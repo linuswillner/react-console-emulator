@@ -6,7 +6,6 @@ export default class Terminal extends React.Component {
     super(props)
     this.state = {
       tracker: randstr(),
-      promptLabel: this.props.promptLabel || '$',
       commands: {},
       stdout: []
     }
@@ -23,7 +22,7 @@ export default class Terminal extends React.Component {
   }
 
   _getTerminalNode () {
-    const elements = document.getElementsByName('react-terminal-input')
+    const elements = document.getElementsByName('react-console-emulator__input')
 
     // Foolproofing in case there are other elements with the same name
     if (elements.length > 1) return Array.from(elements).filter(el => el.dataset.input === this.state.tracker)[0]
@@ -121,14 +120,16 @@ export default class Terminal extends React.Component {
       const command = input.splice(0, 1) // Removed portion is returned...
       const args = input // ...and the rest can be used
 
-      this.pushToStdout(`${this.state.promptLabel} ${rawInput}`)
+      this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`)
 
-      const cmdObj = this.state.commands[command]
+      if (rawInput) {
+        const cmdObj = this.state.commands[command]
 
-      if (!cmdObj) this.pushToStdout(`Command '${command}' not found!`)
-      else {
-        this.pushToStdout(cmdObj.fn(...args))
-        if (cmdObj.explicitExec) cmdObj.fn(...args)
+        if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
+        else {
+          this.pushToStdout(cmdObj.fn(...args))
+          if (cmdObj.explicitExec) cmdObj.fn(...args)
+        }
       }
 
       this.clearInput()
@@ -184,13 +185,13 @@ export default class Terminal extends React.Component {
     }
 
     return (
-      <div style={styles.container} onClick={this.focusTerminal}>
-        <div style={styles.content}>
+      <div name={'react-console-emulator'} style={styles.container} onClick={this.focusTerminal}>
+        <div name={'react-console-emulator__content'} style={styles.content}>
           {this.getStdout()}
-          <div style={styles.inputArea}>
-            <span style={styles.prompt}>{this.state.promptLabel}</span>
+          <div name={'react-console-emulator__inputArea'} style={styles.inputArea}>
+            <span style={styles.prompt}>{this.props.promptLabel || '$'}</span>
             <input
-              name={'react-terminal-input'}
+              name={'react-console-emulator__input'}
               data-input={this.state.tracker}
               style={styles.input}
               type={'text'}
@@ -217,6 +218,7 @@ Terminal.propTypes = {
     PropTypes.string
   ]),
   promptLabel: PropTypes.string,
+  errorText: PropTypes.string,
   commands: PropTypes.object.isRequired
 }
 

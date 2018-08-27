@@ -3,6 +3,11 @@
     "react",
     [ "env", { "modules": false } ]
   ],
+  "env": {
+    "test": {
+      "presets": [["env"], "react"]
+    }
+  },
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties",

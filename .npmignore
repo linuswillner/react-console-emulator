@@ -1,4 +1,6 @@
 src
+coverage
 .babelrc
 .eslintrc
 .eslintignore
+webpack.config.js

@@ -119,5 +119,5 @@ describe('Terminal user interactivity', () => {
 })
 
 afterAll(() => {
-  browser.close()
+  if (browser) browser.close()
 })

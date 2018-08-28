@@ -26,7 +26,6 @@ let page
 beforeAll(async () => {
   browser = await puppeteer.launch({})
   page = await browser.newPage()
-  await page.coverage.startJSCoverage()
   await page.goto('http://localhost:8000')
 })
 
@@ -120,6 +119,5 @@ describe('Terminal user interactivity', () => {
 })
 
 afterAll(() => {
-  page.coverage.stopJSCoverage()
   browser.close()
 })

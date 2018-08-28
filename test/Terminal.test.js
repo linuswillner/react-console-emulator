@@ -30,11 +30,6 @@ beforeAll(async () => {
   await page.goto('http://localhost:8000')
 })
 
-afterAll(async () => {
-  await page.coverage.stopJSCoverage()
-  await browser.close()
-})
-
 describe('Terminal HTML structure', () => {
   it('Has required elements', () => {
     const wrapper = shallow(<Terminal commands={commands}/>)
@@ -122,4 +117,9 @@ describe('Terminal user interactivity', () => {
     expect(output.split('||')[1]).toBe('test')
     await clearStdout()
   })
+})
+
+afterAll(() => {
+  page.coverage.stopJSCoverage()
+  browser.close()
 })

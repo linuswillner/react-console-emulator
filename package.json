@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/js-rcon/react-console-emulator#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.5",

@@ -118,6 +118,6 @@ describe('Terminal user interactivity', () => {
   })
 })
 
-afterAll(() => {
-  if (browser) browser.close()
+afterAll(async () => {
+  await browser.close()
 })

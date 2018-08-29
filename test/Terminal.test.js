@@ -2,8 +2,11 @@
 
 import React from 'react'
 import { shallow, mount } from 'enzyme'
+import skipIf from 'skip-if'
 
 import Terminal from '../src/components/Terminal'
+
+const skipIfDepTestOnly = skipIf(process.env.DEPTEST)
 
 const commands = {
   echo: {
@@ -87,7 +90,7 @@ describe('Terminal user interactivity', () => {
     await page.keyboard.press('Enter', { delay: '10' })
   }
 
-  it('Outputs blank on no input', async () => {
+  skipIfDepTestOnly('Outputs blank on no input', async () => {
     await enterCommand()
     const output = await getStdout()
 
@@ -95,7 +98,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  it('Outputs error on bad command', async () => {
+  skipIfDepTestOnly('Outputs error on bad command', async () => {
     await enterCommand('doot')
     const output = await getStdout()
 
@@ -103,7 +106,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  it('Outputs a command response correctly', async () => {
+  skipIfDepTestOnly('Outputs a command response correctly', async () => {
     await enterCommand('echo test')
     const output = await getStdout()
 

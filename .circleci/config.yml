@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/node:latest
     working_directory: ~/react-console-emulator
@@ -18,10 +18,6 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
-      - run:
-          name: Start test server
-          command: npm start
-          background: true
       - run:
           name: Run tests
           command: npm test

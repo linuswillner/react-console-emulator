@@ -20,13 +20,8 @@ const commands = {
   }
 }
 
-let browser
-let page
-
 beforeAll(async () => {
-  browser = await puppeteer.launch({})
-  page = await browser.newPage()
-  await page.goto('http://localhost:8000')
+  await page.goto('http://localhost:8080')
 })
 
 describe('Terminal HTML structure', () => {
@@ -116,8 +111,4 @@ describe('Terminal user interactivity', () => {
     expect(output.split('||')[1]).toBe('test')
     await clearStdout()
   })
-})
-
-afterAll(async () => {
-  await browser.close()
 })

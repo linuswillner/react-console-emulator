@@ -1,6 +1,11 @@
 src
 coverage
+test
+.circleci
 .babelrc
 .eslintrc
 .eslintignore
+jest-puppeteer.config.js
+jest.coverage.js
+jest.default.js
 webpack.config.js

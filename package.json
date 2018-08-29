@@ -1,6 +1,6 @@
 {
   "name": "react-console-emulator",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A simple terminal emulator component for React. ",
   "main": "lib/Terminal.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "test-local": "eslint . && jest --watch --config jest.coverage.js",
     "test-dev": "jest --watch --config jest.default.js",
     "build": "babel src/components -d lib --copy-files",
-    "publish": "npm run build && npm publish"
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",

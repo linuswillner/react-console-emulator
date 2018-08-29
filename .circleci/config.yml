@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  test:
+  build:
     docker:
       - image: circleci/node:latest
     working_directory: ~/react-console-emulator
@@ -19,47 +19,8 @@ jobs:
           paths:
             - node_modules
       - run:
-          name: Run tests
-          command: npm test
-      - run:
-          name: Generate test build
-          command: npm run build
-  deptest:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/react-console-emulator
-    steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: Workaround for Puppeteer on Docker
-          command: 'sh .circleci/puppeteer.sh'
-      - run:
-          name: Install dependencies
-          command: npm i
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - node_modules
-      - run:
-          name: Run dependency tests
+          name: Run unit tests
           command: npm run deptest
       - run:
           name: Generate test build
           command: npm run build
-
-workflows:
-  version: 2
-  test:
-    jobs:
-      - test:
-          filters:
-            branches:
-              only: master
-  deptest:
-    jobs:
-      - deptest:
-          filters:
-            branches:
-              only: /greenkeeper\/.*/

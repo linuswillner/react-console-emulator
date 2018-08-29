@@ -21,7 +21,7 @@ const commands = {
 }
 
 beforeAll(async () => {
-  await page.goto('http://localhost:8080')
+  await page.goto('http://localhost:8000')
 })
 
 describe('Terminal HTML structure', () => {

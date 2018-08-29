@@ -5,11 +5,11 @@
   "main": "lib/Terminal.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server",
-    "test": "eslint . && jest --config jest.coverage.js && codecov --disable=gcov",
-    "deptest": "eslint . && cross-env DEPTEST=true jest --config jest.coverage.js",
+    "test": "eslint . && cross-env DEPTEST=true jest --config jest.coverage.js && codecov --disable=gcov",
     "test-local": "eslint . && jest --watch --config jest.coverage.js",
     "test-dev": "jest --watch --config jest.default.js",
-    "build": "babel src/components -d lib --copy-files"
+    "build": "babel src/components -d lib --copy-files",
+    "publish": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",

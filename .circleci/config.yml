@@ -20,7 +20,7 @@ jobs:
             - node_modules
       - run:
           name: Run unit tests
-          command: npm run deptest
+          command: npm run test
       - run:
           name: Generate test build
           command: npm run build

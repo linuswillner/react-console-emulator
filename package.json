@@ -6,6 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server",
     "test": "eslint . && jest --config jest.coverage.js && codecov --disable=gcov",
+    "deptest": "eslint . && cross-env DEPTEST=true jest --config jest.coverage.js",
     "test-local": "eslint . && jest --watch --config jest.coverage.js",
     "test-dev": "jest --watch --config jest.default.js",
     "build": "babel src/components -d lib --copy-files"
@@ -59,6 +60,7 @@
     "puppeteer": "^1.7.0",
     "react-hot-loader": "^4.3.4",
     "sass-loader": "^7.1.0",
+    "skip-if": "^1.1.1",
     "style-loader": "^0.22.1",
     "uglifyjs-webpack-plugin": "^1.3.0",
     "url-loader": "^1.1.0",

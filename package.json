@@ -2,7 +2,7 @@
   "name": "react-console-emulator",
   "version": "1.0.0",
   "description": "A simple terminal emulator component for React. ",
-  "main": "lib/index.js",
+  "main": "lib/Terminal.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server",
     "test": "eslint . && jest --config jest.coverage.js && codecov --disable=gcov",

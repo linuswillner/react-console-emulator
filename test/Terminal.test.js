@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import puppeteer from 'puppeteer'
 
 import Terminal from '../src/components/Terminal'
 

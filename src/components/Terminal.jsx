@@ -136,6 +136,17 @@ export default class Terminal extends React.Component {
     }
   }
 
+  componentDidUpdate (prevProps) {
+    const oldCommands = JSON.stringify(prevProps.commands)
+    const currentCommands = JSON.stringify(this.props.commands)
+
+    // There was a change in commands
+    if (oldCommands !== currentCommands) {
+      // Re-validate
+      this.validateCommands()
+    }
+  }
+
   componentDidMount () {
     this.validateCommands()
     if (this.props.welcomeMessage) this.showWelcomeMessage()

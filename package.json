@@ -9,7 +9,7 @@
     "test-local": "eslint . && jest --watch --config jest.coverage.js",
     "test-dev": "jest --watch --config jest.default.js",
     "build": "babel src/components -d lib --copy-files",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

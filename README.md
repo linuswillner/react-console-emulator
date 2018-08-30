@@ -56,6 +56,11 @@ export default class MyTerminal extends React.Component {
 | textColor | The colour of the text in the terminal, minus the prompt label and input. | String (Valid CSS) |
 | promptLabelColor | The colour of the prompt label. | String (Valid CSS) |
 | promptTextColor | The colour of the text in the command input field. | String (Valid CSS) |
+| className | The CSS class name of the root element. | String |
+| contentClassName | The CSS class name of the terminal content container (Stdout + prompt + input). | String |
+| inputAreaClassName | The CSS class name of the input area (Prompt + input). | String |
+| promptLabelClassName | The CSS class name of the prompt label. | String |
+| inputClassName | The CSS class name of the input element. | String |
 
 ## Command syntax
 

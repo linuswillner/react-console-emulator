@@ -185,12 +185,31 @@ export default class Terminal extends React.Component {
     }
 
     return (
-      <div name={'react-console-emulator'} style={styles.container} onClick={this.focusTerminal}>
-        <div name={'react-console-emulator__content'} style={styles.content}>
+      <div
+        className={this.props.className || ''}
+        name={'react-console-emulator'}
+        style={styles.container}
+        onClick={this.focusTerminal}
+      >
+        <div
+          className={this.props.contentClassName || ''}
+          name={'react-console-emulator__content'}
+          style={styles.content}
+        >
           {this.getStdout()}
-          <div name={'react-console-emulator__inputArea'} style={styles.inputArea}>
-            <span style={styles.prompt}>{this.props.promptLabel || '$'}</span>
+          <div
+            className={this.props.inputAreaClassName || ''}
+            name={'react-console-emulator__inputArea'}
+            style={styles.inputArea}
+          >
+            <span
+              className={this.props.promptLabelClassName || ''}
+              style={styles.prompt}
+            >
+              {this.props.promptLabel || '$'}
+            </span>
             <input
+              className={this.props.inputClassName || ''}
               name={'react-console-emulator__input'}
               data-input={this.state.tracker}
               style={styles.input}
@@ -210,6 +229,11 @@ Terminal.propTypes = {
   textColor: PropTypes.string,
   promptLabelColor: PropTypes.string,
   promptTextColor: PropTypes.string,
+  className: PropTypes.string,
+  contentClassName: PropTypes.string,
+  inputAreaClassName: PropTypes.string,
+  promptLabelClassName: PropTypes.string,
+  inputClassName: PropTypes.string,
   autoFocus: PropTypes.bool,
   noDefaults: PropTypes.bool,
   welcomeMessage: PropTypes.oneOfType([

@@ -52,7 +52,8 @@ export default class MyTerminal extends React.Component {
 | background | Terminal background. Accepts any background that [CSS recognises](https://developer.mozilla.org/en-US/docs/Web/CSS/background). | String (Valid CSS) |
 | backgroundSize | The [background-size](https://developer.mozilla.org/en-US/docs/Web/CSS/background-size) CSS property for the terminal background. | String (Valid CSS) |
 | autoFocus | Automatically focus the terminal on page load. | Boolean |
-| noDefaults | Do not register default commands. Warning: If you enable this, you must manually create all command or otherwise the terminal will be moot. | Boolean |
+| dangerMode | Parse command responses as HTML. **Warning:** This may open your application to abuse. It is recommended that you employ anti-XSS methods to validate command responses when using this option. | Boolean |
+| noDefaults | Do not register default commands. **Warning:** If you enable this, you must manually create all command or otherwise the terminal will be moot. | Boolean |
 | textColor | The colour of the text in the terminal, minus the prompt label and input. | String (Valid CSS) |
 | promptLabelColor | The colour of the prompt label. | String (Valid CSS) |
 | promptTextColor | The colour of the text in the command input field. | String (Valid CSS) |

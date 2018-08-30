@@ -23,6 +23,10 @@ export default class App extends React.Component {
       fn: function () {
         return `${Array.from(arguments).join(' ')}`
       }
+    },
+    danger: {
+      description: 'This command returns HTML. It will only work with terminals that have dangerous mode.',
+      fn: () => 'I can<br/>use HTML in this<br/>and it will be parsed'
     }
   }
 
@@ -40,6 +44,7 @@ export default class App extends React.Component {
           <DemoTile>
             <Terminal
               commands={this.commands}
+              dangerMode={true}
             />
           </DemoTile>
           <DemoTile>

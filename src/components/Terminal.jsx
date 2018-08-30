@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import html from 'react-inner-html'
 
 export default class Terminal extends React.Component {
   constructor (props) {
@@ -100,7 +101,10 @@ export default class Terminal extends React.Component {
     }
 
     return this.state.stdout.map((line, i) => {
-      return <p key={i} style={lineStyle}>{line}</p>
+      const safe = <p key={i} style={lineStyle}>{line}</p>
+      const dangerous = <p key={i} style={lineStyle} {...html(line)}></p>
+
+      return this.props.dangerMode ? dangerous : safe
     })
   }
 
@@ -246,6 +250,7 @@ Terminal.propTypes = {
   promptLabelClassName: PropTypes.string,
   inputClassName: PropTypes.string,
   autoFocus: PropTypes.bool,
+  dangerMode: PropTypes.bool,
   noDefaults: PropTypes.bool,
   welcomeMessage: PropTypes.oneOfType([
     PropTypes.bool,

@@ -54,6 +54,7 @@ export default class Terminal extends React.Component {
     content.appendChild(messageElement)
     content.appendChild(input)
     input.value = ''
+    input.focus()
   }
 
   focusTerminal () {

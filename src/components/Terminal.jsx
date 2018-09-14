@@ -8,7 +8,9 @@ export default class Terminal extends React.Component {
     this.state = {
       tracker: randstr(),
       commands: {},
-      stdout: []
+      stdout: [],
+      history: [],
+      historyPosition: null
     }
 
     this._getTerminalNode = this._getTerminalNode.bind(this)
@@ -19,6 +21,7 @@ export default class Terminal extends React.Component {
     this.pushToStdout = this.pushToStdout.bind(this)
     this.getStdout = this.getStdout.bind(this)
     this.clearStdout = this.clearStdout.bind(this)
+    this.processCommand = this.processCommand.bind(this)
     this.handleInput = this.handleInput.bind(this)
   }
 
@@ -28,6 +31,29 @@ export default class Terminal extends React.Component {
     // Foolproofing in case there are other elements with the same name
     if (elements.length > 1) return Array.from(elements).filter(el => el.dataset.input === this.state.tracker)[0]
     else return elements[0]
+  }
+
+  /**
+   * Manually push to the stdout of a terminal. Use with caution.
+   * @param {String} message The message to output to the terminal. If not using safe mode, make sure to XSS-proof this.
+   * @param {HTMLElement} contentElement The content element of the terminal you want to push output to. Uses first found element if omitted.
+   * @param {HTMLElement} inputElement The input element of the terminal you want to push output to. Uses first found element if omitted.
+   * @param {Boolean} dangerMode If true, set output content with innerHTML. Dangerous.
+   */
+  static manualPushToStdout (message, contentElement, inputElement, dangerMode) {
+    const content = contentElement || document.getElementsByName('react-console-emulator__content')[0]
+    const input = inputElement || document.getElementsByName('react-console-emulator__inputArea')[0]
+
+    const messageElement = document.createElement('p')
+
+    if (dangerMode) messageElement.innerHTML = message
+    else messageElement.innerText = message
+
+    messageElement.style = 'margin: 0px; line-height: 21px;'
+
+    content.appendChild(messageElement)
+    content.appendChild(input)
+    input.value = ''
   }
 
   focusTerminal () {
@@ -58,10 +84,10 @@ export default class Terminal extends React.Component {
 
     for (let c in commands) {
       // Check that command contains a function
-      if (typeof commands[c].fn !== 'function') throw new Error(`'fn' property of command '${c}' is invalid; expected 'function', got '${typeof commands[c].name}'`)
+      if (typeof commands[c].fn !== 'function') throw new Error(`'fn' property of command '${c}' is invalid; expected 'function', got '${typeof commands[c].fn}'`)
 
       // Check that the command does not attempt to override immutables
-      if (!this.props.noDefaults && immutables.includes(commands[c].name)) throw new Error(`Attempting to overwrite default command '${immutables[immutables.indexOf(commands[c].name)]}'; cannot override default commands`)
+      if (!this.props.noDefaults && immutables.includes(c)) throw new Error(`Attempting to overwrite default command '${immutables[immutables.indexOf(c)]}'; cannot override default commands`)
 
       // Add description if missing
       if (!commands[c].description) commands[c].description = 'None'
@@ -87,11 +113,16 @@ export default class Terminal extends React.Component {
     }
   }
 
-  pushToStdout (message) {
+  pushToStdout (message, rawInput) {
     const stdout = this.state.stdout
+    const history = this.state.history
+
     stdout.push(message)
 
-    this.setState({ stdout: stdout })
+    if (rawInput) {
+      history.push(rawInput)
+      this.setState({ stdout: stdout, history: history, historyPosition: null })
+    } else this.setState({ stdout: stdout })
   }
 
   getStdout () {
@@ -113,34 +144,87 @@ export default class Terminal extends React.Component {
   }
 
   clearInput () {
+    this.setState({ historyPosition: null })
     this._getTerminalNode().value = ''
   }
 
-  handleInput (event) {
-    if (event.key === 'Enter') {
-      const rawInput = this._getTerminalNode().value
+  processCommand () {
+    const rawInput = this._getTerminalNode().value
 
-      const input = rawInput.split(' ')
-      const command = input.splice(0, 1) // Removed portion is returned...
-      const args = input // ...and the rest can be used
+    const input = rawInput.split(' ')
+    const command = input.splice(0, 1) // Removed portion is returned...
+    const args = input // ...and the rest can be used
 
-      this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`)
+    if (!this.props.noAutomaticStdout) {
+      if (!this.props.noHistory) this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`, rawInput)
+      else this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`)
+    }
 
-      if (rawInput) {
-        const cmdObj = this.state.commands[command]
+    if (rawInput) {
+      const cmdObj = this.state.commands[command]
 
-        if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
-        else {
-          this.pushToStdout(cmdObj.fn(...args))
-          if (cmdObj.explicitExec) cmdObj.fn(...args)
-        }
+      if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
+      else {
+        this.pushToStdout(cmdObj.fn(...args))
+        if (cmdObj.explicitExec) cmdObj.fn(...args)
       }
+    }
 
-      this.clearInput()
+    this.clearInput()
+  }
+
+  scrollHistory (direction) {
+    const history = cleanArray(this.state.history).reverse() // Clean empty items and reverse order to ease position tracking
+    const position = this.state.historyPosition
+    const termNode = this._getTerminalNode()
+
+    if (!this.state.noAutomaticStdout && history.length > 0) { // Only run if history is non-empty and in use
+      switch (direction) {
+        case 'up':
+          if (position === null) { // If not touched, get most recent
+            termNode.value = history[0]
+            this.setState({ historyPosition: 0 })
+          } else if (position + 1 === history.length) {
+            // If the last item will be reached on this press, get first entry and decrement position by 1 to avoid confusing downscroll
+            termNode.value = history[history.length - 1]
+            this.setState({ historyPosition: history.length - 1 })
+          } else {
+            const atBottom = position - 1 === -1 // -1 for zero-based index
+
+            // If at last item, increment by one more to avoid showing the same item twice
+            termNode.value = atBottom ? history[position + 1] : history[position]
+            this.setState({ historyPosition: atBottom ? position + 2 : position + 1 })
+          }
+          break
+        case 'down':
+          if (position === null || !history[position]) { // If at initial or out of range, clear (Unix-like behaviour)
+            termNode.value = ''
+            this.setState({ historyPosition: null })
+          } else if (position - 1 === -1) {
+            // If position will go negative on this press, bottom has been reached - reset
+            termNode.value = history[0]
+            this.setState({ historyPosition: null })
+          } else {
+            const reachedFirst = position + 1 === history.length // +1 for zero-based index
+
+            // If at first item, decrement by one more to avoid showing the same item twice
+            termNode.value = reachedFirst ? history[position - 1] : history[position]
+            this.setState({ historyPosition: reachedFirst ? position - 2 : position - 1 })
+          }
+          break
+      }
     }
   }
 
-  componentDidUpdate (prevProps) {
+  handleInput (event) {
+    switch (event.key) {
+      case 'Enter': this.processCommand(); break
+      case 'ArrowUp': this.scrollHistory('up'); break
+      case 'ArrowDown': this.scrollHistory('down'); break
+    }
+  }
+
+  componentDidUpdate (prevProps, prevState) {
     const oldCommands = JSON.stringify(prevProps.commands)
     const currentCommands = JSON.stringify(this.props.commands)
 
@@ -229,7 +313,7 @@ export default class Terminal extends React.Component {
               data-input={this.state.tracker}
               style={styles.input}
               type={'text'}
-              onKeyPress={this.handleInput}
+              onKeyDown={this.handleInput}
             />
           </div>
         </div>
@@ -252,6 +336,8 @@ Terminal.propTypes = {
   autoFocus: PropTypes.bool,
   dangerMode: PropTypes.bool,
   noDefaults: PropTypes.bool,
+  noAutomaticStdout: PropTypes.bool,
+  noHistory: PropTypes.bool,
   welcomeMessage: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.array,
@@ -271,4 +357,13 @@ function randstr () {
   }
 
   return str
+}
+
+/**
+ * Workaround to clean an array from 'ghost items'.
+ * @param {Array} dirtyArray
+ */
+function cleanArray (dirtyArray) {
+  const newArray = Array.from(dirtyArray)
+  return newArray.filter(i => i !== undefined)
 }

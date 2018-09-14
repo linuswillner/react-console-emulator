@@ -9,6 +9,7 @@ A simple, powerful and highly customisable terminal emulator for React.
 ## Features
 
 - Highly customisable: Add your own background image, change the colour of different terminal elements and more!
+- Extensively emulates a Unix terminal with dutiful accuracy
 - Easy and powerful command system: Execute code from your own application and send the results to the terminal output.
 - High concurrency: Register multiple terminals on the same page easily and safely without risk of mixing up inputs.
 
@@ -54,6 +55,8 @@ export default class MyTerminal extends React.Component {
 | autoFocus | Automatically focus the terminal on page load. | Boolean |
 | dangerMode | Parse command responses as HTML. **Warning:** This may open your application to abuse. It is recommended that you employ anti-XSS methods to validate command responses when using this option. | Boolean |
 | noDefaults | Do not register default commands. **Warning:** If you enable this, you must manually create all command or otherwise the terminal will be moot. | Boolean |
+| noAutomaticStdout | Disable all automatic output. Useful if you need to rely on [manualPushToStdout()](#static-output). | Boolean |
+| noHistory | Disable command history. | Boolean |
 | textColor | The colour of the text in the terminal, minus the prompt label and input. | String (Valid CSS) |
 | promptLabelColor | The colour of the prompt label. | String (Valid CSS) |
 | promptTextColor | The colour of the text in the command input field. | String (Valid CSS) |
@@ -62,6 +65,23 @@ export default class MyTerminal extends React.Component {
 | inputAreaClassName | The CSS class name of the input area (Prompt + input). | String |
 | promptLabelClassName | The CSS class name of the prompt label. | String |
 | inputClassName | The CSS class name of the input element. | String |
+
+## Static output
+
+### manualPushToStdout (message, contentElement, inputElement, dangerMode)
+
+This is a static function you can call on an instance of react-console-emulator. It allows you to manually push output to the terminal. This may be useful if you have async code that needs to push output even after the function has returned.
+
+**Warning:** Using this function is not optimal and should be avoided if possible. If used, it is additionally recommended to set the **noAutomaticStdout** property to disable automatic output and command history (The latter of which will not work in this case).
+
+**Parameter reference**
+
+| Parameter | Description | Type |
+| --------- | ----------- | ---- |
+| message | The message to push to the console. Can be HTML if **dangerMode** is set to true. | String |
+| contentElement | The content element to push output to. Uses the first element with the name **react-console-emulator__content** on the page if omitted. | HTMLElement |
+| inputElement | The input element to clear after a command. Uses the first element with the name **react-console-emulator__input** on the page if omitted. | HTMLElement |
+| dangerMode | If set, set message content with innerHTML as opposed to innerText. It is highly recommended to XSS-proof the message if this setting is being used. | Boolean |
 
 ## Command syntax
 

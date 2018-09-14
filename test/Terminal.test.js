@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { shallow, mount, render } from 'enzyme'
 import skipIf from 'skip-if'
 
 import Terminal from '../src/components/Terminal'
@@ -19,6 +19,30 @@ const commands = {
   ping: {
     description: 'Tells you pong!',
     fn: () => 'Pong!'
+  },
+  danger: {
+    fn: () => '<div style="color: red;>danger mode enabled</div>'
+  }
+}
+
+const changedCommands = {
+  changedEcho: {
+    description: 'This was not here before.',
+    usage: 'echo <string>',
+    fn: function () {
+      return `${Array.from(arguments).join(' ')}`
+    }
+  }
+}
+
+const newDefaultCommands = {
+  help: {
+    description: 'New help command',
+    fn: () => 'This is a new help command'
+  },
+  validation: {
+    description: 'This is to make sure this object registered',
+    fn: () => 'valid'
   }
 }
 
@@ -67,6 +91,28 @@ describe('Terminal welcome messages', () => {
   })
 })
 
+describe('Terminal functionality', () => {
+  it('Validates commands when they update', () => {
+    const wrapper = mount(<Terminal commands={commands}/>)
+
+    expect(wrapper.state().commands).toHaveProperty('echo')
+    wrapper.setProps({ commands: changedCommands })
+    expect(wrapper.state().commands).not.toHaveProperty('echo')
+    expect(wrapper.state().commands).toHaveProperty('changedEcho')
+
+    wrapper.unmount()
+  })
+
+  it('Registers new default commands', () => {
+    const wrapper = mount(<Terminal commands={newDefaultCommands} noDefaults={true}/>)
+
+    expect(wrapper.state().commands).toHaveProperty('validation')
+    expect(wrapper.state().commands).toHaveProperty('help')
+
+    wrapper.unmount()
+  })
+})
+
 describe('Terminal user interactivity', () => {
   // Helper functions for common testing functions
 
@@ -76,10 +122,19 @@ describe('Terminal user interactivity', () => {
     await page.keyboard.press('Enter', { delay: '10' })
   }
 
-  async function getStdout () {
-    const output = await page.evaluate(() => {
+  async function getStdout (whichTerminal) {
+    const output = await page.evaluate(whichTerminal => {
       const elements = Array.from(document.querySelectorAll('[name="react-console-emulator__content"]'))
-      return elements[0].innerText.trim().replace(/\n/gi, '|')
+      return elements[whichTerminal || 0].innerText.trim().replace(/\n/gi, '|')
+    })
+
+    return output
+  }
+
+  async function getInputValue (whichTerminal) {
+    const output = await page.evaluate(whichTerminal => {
+      const elements = Array.from(document.querySelectorAll('[name="react-console-emulator__input"]'))
+      return elements[whichTerminal || 0].value
     })
 
     return output
@@ -112,5 +167,22 @@ describe('Terminal user interactivity', () => {
 
     expect(output.split('||')[1]).toBe('test')
     await clearStdout()
+  })
+
+  skipIfDepTestOnly('Outputs help', async () => {
+    await enterCommand('help')
+    const output = await getStdout()
+
+    expect(output.split('||')[1]).toBe('help - Show a list of available commands.')
+    await clearStdout()
+  })
+
+  skipIfDepTestOnly('Shows history and reacts appropriately', async () => {
+    await enterCommand('echo test')
+    await page.keyboard.press('ArrowUp')
+    expect(await getInputValue()).toBe('echo test')
+    await page.keyboard.press('ArrowDown')
+    await page.keyboard.press('ArrowDown') // Temp workaround
+    expect(await getInputValue()).toBe('')
   })
 })

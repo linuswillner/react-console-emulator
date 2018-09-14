@@ -37,6 +37,29 @@ export default class App extends React.Component {
     }
   }
 
+  manualPushCommands = {
+    safe: {
+      fn: function () {
+        const content = document.getElementsByName('react-console-emulator__content')[4]
+        const input = document.getElementsByName('react-console-emulator__inputArea')[4]
+
+        // By using Function.arguments, you can show correct commands in the terminal
+        Terminal.manualPushToStdout(`$ safe${arguments ? ` ${Array.from(arguments).join(' ')}` : ''}`, content, input)
+        Terminal.manualPushToStdout('This message was manually pushed to the terminal.', content, input)
+      }
+    },
+    dangerous: {
+      fn: function () {
+        const content = document.getElementsByName('react-console-emulator__content')[4]
+        const input = document.getElementsByName('react-console-emulator__inputArea')[4]
+
+        // By using Function.arguments, you can show correct commands in the terminal
+        Terminal.manualPushToStdout(`$ dangerous${arguments ? ` ${Array.from(arguments).join(' ')}` : ''}`, content, input)
+        Terminal.manualPushToStdout('<div style="color: red;">This message was manually pushed the terminal with danger mode enabled.</div>', content, input, true)
+      }
+    }
+  }
+
   render () {
     return (
       <div>
@@ -77,6 +100,26 @@ export default class App extends React.Component {
               promptLabel={'admin@demo:~$'}
               promptLabelColor={'#FFFFFF'}
               promptTextColor={'red'}
+            />
+          </DemoTile>
+        </div>
+        <div className={'demo'}>
+          <DemoTile>
+            <Terminal
+              commands={this.manualPushCommands}
+              welcomeMessage={'This terminal has no automatic output and only uses manual pushing. Try the "safe" and "dangerous" commands.'}
+              noDefaults={true}
+              noAutomaticStdout={true} // Disables history as well
+              errorText={'I couldn\'t find a command called [command]!'}
+            />
+          </DemoTile>
+          <DemoTile>
+            <Terminal
+              commands={this.commands}
+              welcomeMessage={[
+                'The terminal keeps track of your commands (Unless disabled) and allows you to recall them.',
+                'Try running some now and use the up and down arrow keys to navigate your history.'
+              ]}
             />
           </DemoTile>
         </div>

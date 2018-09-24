@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const ExtractCSSWebpackPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSWebpackPlugin = require('optimize-css-assets-webpack-plugin')
-const OptimizeJSWebpackPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeJSWebpackPlugin = require('terser-webpack-plugin')
 
 const dev = process.env.NODE_ENV !== 'production' || process.argv.indexOf('-p') === -1
 

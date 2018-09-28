@@ -38,11 +38,13 @@ export default class Terminal extends React.Component {
    * @param {String} message The message to output to the terminal. If not using safe mode, make sure to XSS-proof this.
    * @param {HTMLElement} contentElement The content element of the terminal you want to push output to. Uses first found element if omitted.
    * @param {HTMLElement} inputElement The input element of the terminal you want to push output to. Uses first found element if omitted.
+   * * @param {HTMLElement} inputAreaElement The input area element of the terminal you want to push output to. Uses first found element if omitted.
    * @param {Boolean} dangerMode If true, set output content with innerHTML. Dangerous.
    */
-  static manualPushToStdout (message, contentElement, inputElement, dangerMode) {
+  static manualPushToStdout (message, dangerMode, contentElement, inputElement, inputAreaElement) {
     const content = contentElement || document.getElementsByName('react-console-emulator__content')[0]
-    const input = inputElement || document.getElementsByName('react-console-emulator__inputArea')[0]
+    const input = inputElement || document.getElementsByName('react-console-emulator__input')[0]
+    const inputArea = inputAreaElement || document.getElementsByName('react-console-emulator__inputArea')[0]
 
     const messageElement = document.createElement('p')
 
@@ -52,7 +54,7 @@ export default class Terminal extends React.Component {
     messageElement.style = 'margin: 0px; line-height: 21px;'
 
     content.appendChild(messageElement)
-    content.appendChild(input)
+    content.appendChild(inputArea)
     input.value = ''
     input.focus()
   }

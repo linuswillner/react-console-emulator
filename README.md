@@ -68,7 +68,7 @@ export default class MyTerminal extends React.Component {
 
 ## Static output
 
-### manualPushToStdout (message, contentElement, inputElement, dangerMode)
+### manualPushToStdout (message, dangerMode, contentElement, inputElement, inputAreaElement)
 
 This is a static function you can call on an instance of react-console-emulator. It allows you to manually push output to the terminal. This may be useful if you have async code that needs to push output even after the function has returned.
 
@@ -79,9 +79,10 @@ This is a static function you can call on an instance of react-console-emulator.
 | Parameter | Description | Type |
 | --------- | ----------- | ---- |
 | message | The message to push to the console. Can be HTML if **dangerMode** is set to true. | String |
+| dangerMode | If set, set message content with innerHTML as opposed to innerText. It is highly recommended to XSS-proof the message if this setting is being used. | Boolean |
 | contentElement | The content element to push output to. Uses the first element with the name **react-console-emulator__content** on the page if omitted. | HTMLElement |
 | inputElement | The input element to clear after a command. Uses the first element with the name **react-console-emulator__input** on the page if omitted. | HTMLElement |
-| dangerMode | If set, set message content with innerHTML as opposed to innerText. It is highly recommended to XSS-proof the message if this setting is being used. | Boolean |
+| inputAreaElement | The input area element to re-position after a command. Uses the first element with the name **react-console-emulator__inputArea** on the page if omitted. | HTMLElement |
 
 ## Command syntax
 

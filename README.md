@@ -4,6 +4,10 @@
 
 A simple, powerful and highly customisable terminal emulator for React.
 
+I developed this project for [JS-RCON](https://github.com/js-rcon/js-rcon-frontend) and decided to publish it for public use, since I felt other options weren't sufficient.
+
+I mean, this kind of thing has to be useful to anyone else than me, right? No? Well, it's a nice idea anyway.
+
 ## Features
 
 - Highly customisable: Add your own background image, change the colour of different terminal elements and more!

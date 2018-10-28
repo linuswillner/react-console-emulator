@@ -1,7 +1,5 @@
 # react-console-emulator
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/js-rcon/react-console-emulator.svg)](https://greenkeeper.io/)
-
 ![Demo GIF](https://i.linuswillner.me/7u4Cd2V.gif)
 
 A simple, powerful and highly customisable terminal emulator for React.

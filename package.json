@@ -57,7 +57,7 @@
     "mini-css-extract-plugin": "^0.4.4",
     "node-sass": "^4.9.4",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
-    "puppeteer": "^1.9.0",
+    "puppeteer": "^1.10.0",
     "react-hot-loader": "^4.3.11",
     "sass-loader": "^7.1.0",
     "skip-if": "^1.1.1",

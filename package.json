@@ -58,7 +58,7 @@
     "node-sass": "^4.9.4",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "puppeteer": "^1.10.0",
-    "react-hot-loader": "^4.3.11",
+    "react-hot-loader": "^4.3.12",
     "sass-loader": "^7.1.0",
     "skip-if": "^1.1.1",
     "style-loader": "^0.23.1",

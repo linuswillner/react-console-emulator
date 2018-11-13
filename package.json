@@ -71,7 +71,8 @@
   "dependencies": {
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
-    "react-dom": "^16.6.1",
-    "react-inner-html": "^1.0.1"
+    "react-dom": "^16.6.3",
+    "react-inner-html": "^1.0.1",
+    "stringify-object": "^3.3.0"
   }
 }

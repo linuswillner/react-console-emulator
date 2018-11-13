@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import html from 'react-inner-html'
+import stringifyObject from 'stringify-object'
 
 export default class Terminal extends React.Component {
   constructor (props) {
@@ -38,7 +39,7 @@ export default class Terminal extends React.Component {
    * @param {String} message The message to output to the terminal. If not using safe mode, make sure to XSS-proof this.
    * @param {HTMLElement} contentElement The content element of the terminal you want to push output to. Uses first found element if omitted.
    * @param {HTMLElement} inputElement The input element of the terminal you want to push output to. Uses first found element if omitted.
-   * * @param {HTMLElement} inputAreaElement The input area element of the terminal you want to push output to. Uses first found element if omitted.
+   * @param {HTMLElement} inputAreaElement The input area element of the terminal you want to push output to. Uses first found element if omitted.
    * @param {Boolean} dangerMode If true, set output content with innerHTML. Dangerous.
    */
   static manualPushToStdout (message, dangerMode, contentElement, inputElement, inputAreaElement) {
@@ -228,8 +229,8 @@ export default class Terminal extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const oldCommands = JSON.stringify(prevProps.commands)
-    const currentCommands = JSON.stringify(this.props.commands)
+    const oldCommands = stringifyObject(prevProps.commands)
+    const currentCommands = stringifyObject(this.props.commands)
 
     // There was a change in commands
     if (oldCommands !== currentCommands) {

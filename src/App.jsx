@@ -81,10 +81,14 @@ export default class App extends React.Component {
           <DemoTile>
             <Terminal
               commands={this.newDefaultCommands}
-              welcomeMessage={'This terminal is automatically focused on page load and has no default commands. It also has a custom error message.'}
+              welcomeMessage={[
+                'This terminal is automatically focused on page load and has no default commands. It also has a custom error message.',
+                'Commands entered in this terminal will get their results output to the console via the command callback.'
+              ]}
               autoFocus={true}
               noDefaults={true}
               errorText={'I couldn\'t find a command called [command]!'} // The [command] placeholder is replaced at runtime with the input name
+              commandCallback={commandResult => console.log('Command executed, result:', commandResult)}
             />
           </DemoTile>
           <DemoTile>

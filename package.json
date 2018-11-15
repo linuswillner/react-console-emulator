@@ -9,6 +9,7 @@
     "test-local": "eslint . && jest --detectOpenHandles --watch --config jest.coverage.js",
     "test-dev": "jest --detectOpenHandles --watch --config jest.default.js",
     "build": "babel src/components -d lib --copy-files",
+    "build-demo": "cross-env NODE_ENV=production webpack -p",
     "prepublishOnly": "npm run build"
   },
   "repository": {

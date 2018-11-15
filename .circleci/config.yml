@@ -3,7 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/node:latest
-    working_directory: ~/react-console-emulator
     steps:
       - checkout
       - restore_cache:
@@ -24,3 +23,30 @@ jobs:
       - run:
           name: Generate test build
           command: npm run build
+
+  deploy:
+    machine:
+      image: circleci/classic:latest
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm i
+      - run:
+          name: Compile to production
+          command: npm run build-demo
+      - run:
+          name: Deploy code to server
+          command: scp -r ./build/* $DEPLOYMENT_USER@$DEPLOYMENT_HOST:$DEPLOYMENT_DIR
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+              branches:
+                only: master

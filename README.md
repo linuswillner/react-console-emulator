@@ -2,6 +2,8 @@
 
 ![Demo GIF](https://i.linuswillner.me/7u4Cd2V.gif)
 
+### [Live demo](https://linuswillner.me/react-console-emulator/)
+
 A simple, powerful and highly customisable terminal emulator for React.
 
 I developed this project for [JS-RCON](https://github.com/js-rcon/js-rcon-frontend) and decided to publish it for public use, since I felt other options weren't sufficient.

@@ -3,14 +3,19 @@
     "react",
     [ "env", { "modules": false } ]
   ],
-  "env": {
-    "test": {
-      "presets": [["env"], "react"]
-    }
-  },
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties",
     [ "transform-runtime", { "polyfill": false, "regenerator": true } ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [ ["env"], "react" ],
+      "plugins": [
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        [ "transform-runtime", { "polyfill": false, "regenerator": true } ]
+      ]
+    }
+  }
 }

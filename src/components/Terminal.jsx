@@ -1,13 +1,16 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import html from 'react-inner-html'
 import stringifyObject from 'stringify-object'
+import { sourceStyles } from '../utils/sourceStyles'
+import { types } from '../utils/types'
+import { randstr, cleanArray, filterNode } from '../utils/helpers'
 
 export default class Terminal extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      tracker: randstr(),
+      rootTracker: randstr(),
+      inputTracker: randstr(),
       commands: {},
       stdout: [],
       history: [],
@@ -15,6 +18,7 @@ export default class Terminal extends React.Component {
     }
 
     this._getTerminalNode = this._getTerminalNode.bind(this)
+    this._getRootNode = this._getRootNode.bind(this)
     this.focusTerminal = this.focusTerminal.bind(this)
     this.validateCommands = this.validateCommands.bind(this)
     this.showWelcomeMessage = this.showWelcomeMessage.bind(this)
@@ -26,21 +30,27 @@ export default class Terminal extends React.Component {
     this.handleInput = this.handleInput.bind(this)
   }
 
+  static propTypes = {
+    ...types
+  }
+
   _getTerminalNode () {
     const elements = document.getElementsByName('react-console-emulator__input')
+    return filterNode(elements, el => el.dataset.input === this.state.inputTracker)
+  }
 
-    // Foolproofing in case there are other elements with the same name
-    if (elements.length > 1) return Array.from(elements).filter(el => el.dataset.input === this.state.tracker)[0]
-    else return elements[0]
+  _getRootNode () {
+    const elements = document.getElementsByName('react-console-emulator')
+    return filterNode(elements, el => el.dataset.terminal === this.state.rootTracker)
   }
 
   /**
    * Manually push to the stdout of a terminal. Use with caution.
    * @param {String} message The message to output to the terminal. If not using safe mode, make sure to XSS-proof this.
+   * @param {Boolean} dangerMode If true, set output content with innerHTML. Dangerous.
    * @param {HTMLElement} contentElement The content element of the terminal you want to push output to. Uses first found element if omitted.
    * @param {HTMLElement} inputElement The input element of the terminal you want to push output to. Uses first found element if omitted.
    * @param {HTMLElement} inputAreaElement The input area element of the terminal you want to push output to. Uses first found element if omitted.
-   * @param {Boolean} dangerMode If true, set output content with innerHTML. Dangerous.
    */
   static manualPushToStdout (message, dangerMode, contentElement, inputElement, inputAreaElement) {
     const content = contentElement || document.getElementsByName('react-console-emulator__content')[0]
@@ -62,6 +72,13 @@ export default class Terminal extends React.Component {
 
   focusTerminal () {
     this._getTerminalNode().focus()
+  }
+
+  scrollToBottom () {
+    const rootNode = this._getRootNode()
+
+    // This may look ridiculous, but it is required to decouple execution for just a millisecond in order to scroll all the way
+    setTimeout(() => { rootNode.scrollTop = rootNode.scrollHeight }, 1)
   }
 
   validateCommands () {
@@ -153,10 +170,12 @@ export default class Terminal extends React.Component {
   }
 
   processCommand () {
+    const commandResult = { command: null, args: [], rawInput: null, result: null }
+
     const rawInput = this._getTerminalNode().value
 
     const input = rawInput.split(' ')
-    const command = input.splice(0, 1) // Removed portion is returned...
+    const command = input.splice(0, 1)[0] // Removed portion is returned...
     const args = input // ...and the rest can be used
 
     if (!this.props.noAutomaticStdout) {
@@ -165,16 +184,25 @@ export default class Terminal extends React.Component {
     }
 
     if (rawInput) {
+      commandResult.rawInput = rawInput
+      commandResult.command = command
+      commandResult.args = args
+
       const cmdObj = this.state.commands[command]
 
       if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
       else {
-        this.pushToStdout(cmdObj.fn(...args))
+        const res = cmdObj.fn(...args)
+
+        this.pushToStdout(res)
+        commandResult.result = res
         if (cmdObj.explicitExec) cmdObj.fn(...args)
       }
     }
 
     this.clearInput()
+    if (!this.props.noAutoScroll) this.scrollToBottom()
+    if (this.props.commandCallback) this.props.commandCallback(commandResult)
   }
 
   scrollHistory (direction) {
@@ -228,7 +256,7 @@ export default class Terminal extends React.Component {
     }
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate (prevProps) {
     const oldCommands = stringifyObject(prevProps.commands)
     const currentCommands = stringifyObject(this.props.commands)
 
@@ -248,73 +276,56 @@ export default class Terminal extends React.Component {
   render () {
     const styles = {
       container: {
-        minWidth: '500x',
-        minHeight: '300px',
-        maxWidth: '100%', // Fill parent before overflowing
-        maxHeight: '100%', // Fill parent before overflowing
-        borderRadius: '5px',
+        ...sourceStyles.container,
         background: this.props.background || '#212121',
-        backgroundSize: this.props.backgroundSize || 'cover',
-        overflow: 'auto',
-        cursor: 'text'
+        backgroundSize: this.props.backgroundSize || 'cover'
       },
       content: {
-        padding: '20px',
-        height: '100%',
-        color: this.props.textColor || '#FFFFFF',
-        fontFamily: `'Inconsolata', monospace`,
-        fontSize: '15px'
+        ...sourceStyles.content,
+        color: this.props.textColor || '#FFFFFF'
       },
       inputArea: {
-        display: 'inline-flex',
-        width: '100%'
+        ...sourceStyles.inputArea
       },
       prompt: {
-        paddingTop: '3px',
+        ...sourceStyles.prompt,
         color: this.props.promptLabelColor || '#EE9C34'
       },
       input: {
-        border: '0',
-        padding: '0 0 0 7px',
-        margin: '0',
-        flexGrow: '100',
-        width: '100%',
-        height: '22px',
-        background: 'transparent',
-        fontFamily: `'Inconsolata', monospace`,
-        fontSize: '15px',
+        ...sourceStyles.input,
         color: this.props.promptTextColor || '#F0BF81'
       }
     }
 
     return (
       <div
-        className={this.props.className || ''}
+        className={this.props.className || null}
+        data-terminal={this.state.rootTracker}
         name={'react-console-emulator'}
         style={styles.container}
         onClick={this.focusTerminal}
       >
         <div
-          className={this.props.contentClassName || ''}
+          className={this.props.contentClassName || null}
           name={'react-console-emulator__content'}
           style={styles.content}
         >
           {this.getStdout()}
           <div
-            className={this.props.inputAreaClassName || ''}
+            className={this.props.inputAreaClassName || null}
             name={'react-console-emulator__inputArea'}
             style={styles.inputArea}
           >
             <span
-              className={this.props.promptLabelClassName || ''}
+              className={this.props.promptLabelClassName || null}
               style={styles.prompt}
             >
               {this.props.promptLabel || '$'}
             </span>
             <input
-              className={this.props.inputClassName || ''}
+              className={this.props.inputClassName || null}
               name={'react-console-emulator__input'}
-              data-input={this.state.tracker}
+              data-input={this.state.inputTracker}
               style={styles.input}
               type={'text'}
               onKeyDown={this.handleInput}
@@ -324,50 +335,4 @@ export default class Terminal extends React.Component {
       </div>
     )
   }
-}
-
-Terminal.propTypes = {
-  background: PropTypes.string,
-  backgroundSize: PropTypes.string,
-  textColor: PropTypes.string,
-  promptLabelColor: PropTypes.string,
-  promptTextColor: PropTypes.string,
-  className: PropTypes.string,
-  contentClassName: PropTypes.string,
-  inputAreaClassName: PropTypes.string,
-  promptLabelClassName: PropTypes.string,
-  inputClassName: PropTypes.string,
-  autoFocus: PropTypes.bool,
-  dangerMode: PropTypes.bool,
-  noDefaults: PropTypes.bool,
-  noAutomaticStdout: PropTypes.bool,
-  noHistory: PropTypes.bool,
-  welcomeMessage: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.array,
-    PropTypes.string
-  ]),
-  promptLabel: PropTypes.string,
-  errorText: PropTypes.string,
-  commands: PropTypes.object.isRequired
-}
-
-function randstr () {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  let str = ''
-
-  for (let i = 0; i < 15; i++) {
-    str += chars.charAt(~~(Math.random() * chars.length))
-  }
-
-  return str
-}
-
-/**
- * Workaround to clean an array from 'ghost items'.
- * @param {Array} dirtyArray
- */
-function cleanArray (dirtyArray) {
-  const newArray = Array.from(dirtyArray)
-  return newArray.filter(i => i !== undefined)
 }

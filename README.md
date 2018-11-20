@@ -2,6 +2,8 @@
 
 ![Demo GIF](https://i.linuswillner.me/7u4Cd2V.gif)
 
+### [Live demo](https://linuswillner.me/react-console-emulator/)
+
 A simple, powerful and highly customisable terminal emulator for React.
 
 I developed this project for [JS-RCON](https://github.com/js-rcon/js-rcon-frontend) and decided to publish it for public use, since I felt other options weren't sufficient.
@@ -49,6 +51,7 @@ export default class MyTerminal extends React.Component {
 | Prop | Description | Type |
 | ---- | ----------- | ---- |
 | commands | Commands for the terminal. See [Command syntax](#command-syntax) for more information. | Object |
+| commandCallback | Function to execute after each command. See [commandCallback](#commandCallback) for more information. | Function |
 | welcomeMessage | Welcome message(s) to display in terminal. Set to `true` to enable the default welcome message, pass an array to send multiple separate messages, or omit to disable the welcome message entirely. | String/Array/Boolean |
 | promptLabel | Custom prompt label displayed in front of the command input. Omit to enable the default label of `$`. | String |
 | errorText | Custom error text displayed when an unknown command is run. Omit to enable the default message. The placeholder `[command]` in the error string provides the command name that was input | String |
@@ -59,6 +62,7 @@ export default class MyTerminal extends React.Component {
 | noDefaults | Do not register default commands. **Warning:** If you enable this, you must manually create all command or otherwise the terminal will be moot. | Boolean |
 | noAutomaticStdout | Disable all automatic output. Useful if you need to rely on [manualPushToStdout()](#static-output). | Boolean |
 | noHistory | Disable command history. | Boolean |
+| noAutoScroll | Disable the behaviour where the terminal scrolls to the bottom after each command. | Boolean |
 | textColor | The colour of the text in the terminal, minus the prompt label and input. | String (Valid CSS) |
 | promptLabelColor | The colour of the prompt label. | String (Valid CSS) |
 | promptTextColor | The colour of the text in the command input field. | String (Valid CSS) |
@@ -68,9 +72,36 @@ export default class MyTerminal extends React.Component {
 | promptLabelClassName | The CSS class name of the prompt label. | String |
 | inputClassName | The CSS class name of the input element. | String |
 
-## Static output
+## Method reference
 
-### manualPushToStdout (message, dangerMode, contentElement, inputElement, inputAreaElement)
+### commandCallback
+
+If passed as a prop, the commandCallback function is executed each time a command completes execution. Returns an object with information about the command that was executed and the result thereof.
+
+**Command result object reference**
+
+| Property | Description | Type |
+| -------- | ----------- | ---- |
+| command | The command that was executed. | String |
+| args | An array of the arguments that were passed to the command. | Array |
+| rawInput | A string with the unprocessed input that was entered in the terminal. | String |
+| result | The return value of the function executed in the command. | Any |
+
+**Example:**
+```jsx
+commandCallback={result => console.log(result)}
+
+/*
+{
+  command: 'help',
+  args: [ 'test', 'test2' ]
+  rawInput: 'help test test2',
+  result: 'This is the help command.'
+}
+*/
+```
+
+### static manualPushToStdout (message, dangerMode, contentElement, inputElement, inputAreaElement)
 
 This is a static function you can call on an instance of react-console-emulator. It allows you to manually push output to the terminal. This may be useful if you have async code that needs to push output even after the function has returned.
 

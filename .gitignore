@@ -8,6 +8,7 @@ node_modules
 
 # Production output
 lib
+build
 
 # Codecov
 coverage

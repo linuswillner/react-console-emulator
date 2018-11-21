@@ -1,3 +1,7 @@
+# 1.7.1
+
+Removed Babel from the build flow in order to allow the inclusion of the helper files ([#39](https://github.com/js-rcon/react-console-emulator/issues/39)).
+
 # 1.7.0
 
 Internal refactoring for better maintainability.

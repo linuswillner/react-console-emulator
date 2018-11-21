@@ -20,9 +20,6 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run test
-      - run:
-          name: Generate test build
-          command: npm run build
 
   deploy:
     machine:
@@ -34,7 +31,7 @@ jobs:
           command: npm i
       - run:
           name: Compile to production
-          command: npm run build-demo
+          command: npm run build
       - run:
           name: Deploy code to server
           command: scp -r ./build/* $DEPLOYMENT_USER@$DEPLOYMENT_HOST:$DEPLOYMENT_DIR

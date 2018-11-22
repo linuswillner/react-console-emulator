@@ -1,17 +1,19 @@
 {
   "name": "react-console-emulator",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "A simple terminal emulator component for React. ",
-  "main": "src/components/Terminal.jsx",
+  "main": "lib/components/Terminal.js",
   "files": [
-    "src/utils/*"
+    "lib/utils/**"
   ],
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server",
     "test": "eslint . && cross-env DEPTEST=true jest --detectOpenHandles --config jest.coverage.js && codecov --disable=gcov",
     "test-local": "eslint . && jest --detectOpenHandles --watch --config jest.coverage.js",
     "test-dev": "jest --detectOpenHandles --watch --config jest.default.js",
-    "build": "cross-env NODE_ENV=production webpack -p"
+    "build": "cross-env NODE_ENV=production webpack -p",
+    "compile": "babel src --ignore \"src/**/*.scss\",\"src/**/*.html\",\"src/App.jsx\",\"src/index.jsx\" --out-dir lib",
+    "prepublishOnly": "npm run compile"
   },
   "repository": {
     "type": "git",

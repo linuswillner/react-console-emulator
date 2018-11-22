@@ -4,9 +4,15 @@ import React from 'react'
 import { shallow, mount, render } from 'enzyme'
 import skipIf from 'skip-if'
 
-import Terminal from '../src/components/Terminal'
+import * as src from '../src/components/Terminal'
+import * as prod from '../lib/components/Terminal'
 
-const skipIfDepTestOnly = skipIf(process.env.DEPTEST)
+let Terminal
+
+if (process.env.CI) Terminal = prod.default
+else Terminal = src.default
+
+const skipIfCI = skipIf(process.env.CI)
 
 const commands = {
   echo: {
@@ -145,7 +151,7 @@ describe('Terminal user interactivity', () => {
     await page.keyboard.press('Enter', { delay: '10' })
   }
 
-  skipIfDepTestOnly('Outputs blank on no input', async () => {
+  skipIfCI('Outputs blank on no input', async () => {
     await enterCommand()
     const output = await getStdout()
 
@@ -153,7 +159,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  skipIfDepTestOnly('Outputs error on bad command', async () => {
+  skipIfCI('Outputs error on bad command', async () => {
     await enterCommand('doot')
     const output = await getStdout()
 
@@ -161,7 +167,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  skipIfDepTestOnly('Outputs a command response correctly', async () => {
+  skipIfCI('Outputs a command response correctly', async () => {
     await enterCommand('echo test')
     const output = await getStdout()
 
@@ -169,7 +175,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  skipIfDepTestOnly('Outputs help', async () => {
+  skipIfCI('Outputs help', async () => {
     await enterCommand('help')
     const output = await getStdout()
 
@@ -177,7 +183,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  skipIfDepTestOnly('Shows history and reacts appropriately', async () => {
+  skipIfCI('Shows history and reacts appropriately', async () => {
     await enterCommand('echo test')
     await page.keyboard.press('ArrowUp')
     expect(await getInputValue()).toBe('echo test')

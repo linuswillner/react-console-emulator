@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server",
-    "test": "eslint . && cross-env DEPTEST=true jest --detectOpenHandles --config jest.coverage.js && codecov --disable=gcov",
+    "test": "eslint . && jest --detectOpenHandles --config jest.coverage.js && codecov --disable=gcov",
     "test-local": "eslint . && jest --detectOpenHandles --watch --config jest.coverage.js",
     "test-dev": "jest --detectOpenHandles --watch --config jest.default.js",
     "build": "cross-env NODE_ENV=production webpack -p",

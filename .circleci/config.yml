@@ -18,11 +18,11 @@ jobs:
           paths:
             - node_modules
       - run:
-          name: Run unit tests
-          command: npm run test
-      - run:
-          name: Generate test compilation
+          name: Generate compiled build
           command: npm run compile
+      - run:
+          name: Test compiled build
+          command: npm test
 
   deploy:
     machine:

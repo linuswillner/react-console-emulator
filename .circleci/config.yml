@@ -18,10 +18,10 @@ jobs:
           paths:
             - node_modules
       - run:
-          name: Generate compiled build
+          name: Generate production build
           command: npm run compile
       - run:
-          name: Test compiled build
+          name: Test builds
           command: npm test
 
   deploy:

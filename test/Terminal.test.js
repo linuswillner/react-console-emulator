@@ -9,8 +9,13 @@ import * as prod from '../lib/components/Terminal'
 
 let Terminal
 
-if (process.env.CI) Terminal = prod.default
-else Terminal = src.default
+if (process.env.PROD_RUN) {
+  console.log('Performing production run, testing version from "lib".')
+  Terminal = prod.default
+} else {
+  console.log('Performing development run, testing version from "src".')
+  Terminal = src.default
+}
 
 const skipIfCI = skipIf(process.env.CI)
 

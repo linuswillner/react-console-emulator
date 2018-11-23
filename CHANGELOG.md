@@ -1,4 +1,8 @@
-# 1.7.1
+# 1.7.3
+
+Enabled module transpilation to widen the support amongst Node versions for distributed code. This allows the module to work even when Babel is not being used at the top level.
+
+# 1.7.2
 
 Re-added Babel into build flow in a different format to improve compatibility ([#39, comment](https://github.com/js-rcon/react-console-emulator/issues/39#issuecomment-440973765)).
 

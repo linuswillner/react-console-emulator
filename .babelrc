@@ -1,8 +1,5 @@
 {
-  "presets": [
-    "react",
-    [ "env", { "modules": false } ]
-  ],
+  "presets": [ "react", [ "env" ] ],
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties",
@@ -10,7 +7,7 @@
   ],
   "env": {
     "test": {
-      "presets": [ ["env"], "react" ],
+      "presets": [ "react", [ "env" ] ],
       "plugins": [
         "transform-object-rest-spread",
         "transform-class-properties",

@@ -33,6 +33,7 @@ export default class Terminal extends React.Component {
     ...types
   }
 
+  // TODO: Replace with ref-based component function
   /**
    * Manually push to the stdout of a terminal. Use with caution.
    * @param {String} message The message to output to the terminal. If not using safe mode, make sure to XSS-proof this.
@@ -194,6 +195,7 @@ export default class Terminal extends React.Component {
     if (this.props.commandCallback) this.props.commandCallback(commandResult)
   }
 
+  // TODO: Fix wonky scrolling
   scrollHistory (direction) {
     const history = cleanArray(this.state.history).reverse() // Clean empty items and reverse order to ease position tracking
     const position = this.state.historyPosition

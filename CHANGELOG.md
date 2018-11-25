@@ -1,3 +1,9 @@
+# 2.0.0
+
+Improved terminal instance tracking. Previously, the system relied on random strings and filtering DOM nodes to track which instance was the current one. Not only was this rather unsafe, it also introduced a risk of collisions.
+
+This version removes the above behaviour and replaces it with the React refs API. As such, this module now requires React 16.3 or above. This is enforced by adding `react` and `react-dom` version 16.3.0 and up as peerDependencies.
+
 # 1.7.3
 
 Enabled module transpilation to widen the support amongst Node versions for distributed code. This allows the module to work even when Babel is not being used at the top level.

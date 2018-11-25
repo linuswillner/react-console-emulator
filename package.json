@@ -82,5 +82,9 @@
     "react-dom": "^16.6.3",
     "react-inner-html": "^1.0.1",
     "stringify-object": "^3.3.0"
+  },
+  "peerDependencies": {
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   }
 }

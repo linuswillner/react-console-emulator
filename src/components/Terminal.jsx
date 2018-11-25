@@ -3,22 +3,21 @@ import html from 'react-inner-html'
 import stringifyObject from 'stringify-object'
 import { sourceStyles } from '../utils/sourceStyles'
 import { types } from '../utils/types'
-import { randstr, cleanArray, filterNode } from '../utils/helpers'
+import { cleanArray } from '../utils/helpers'
 
 export default class Terminal extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      rootTracker: randstr(),
-      inputTracker: randstr(),
       commands: {},
       stdout: [],
       history: [],
       historyPosition: null
     }
 
-    this._getTerminalNode = this._getTerminalNode.bind(this)
-    this._getRootNode = this._getRootNode.bind(this)
+    this.terminalRoot = React.createRef()
+    this.terminalInput = React.createRef()
+
     this.focusTerminal = this.focusTerminal.bind(this)
     this.validateCommands = this.validateCommands.bind(this)
     this.showWelcomeMessage = this.showWelcomeMessage.bind(this)
@@ -32,16 +31,6 @@ export default class Terminal extends React.Component {
 
   static propTypes = {
     ...types
-  }
-
-  _getTerminalNode () {
-    const elements = document.getElementsByName('react-console-emulator__input')
-    return filterNode(elements, el => el.dataset.input === this.state.inputTracker)
-  }
-
-  _getRootNode () {
-    const elements = document.getElementsByName('react-console-emulator')
-    return filterNode(elements, el => el.dataset.terminal === this.state.rootTracker)
   }
 
   /**
@@ -71,11 +60,11 @@ export default class Terminal extends React.Component {
   }
 
   focusTerminal () {
-    this._getTerminalNode().focus()
+    this.terminalInput.current.focus()
   }
 
   scrollToBottom () {
-    const rootNode = this._getRootNode()
+    const rootNode = this.terminalRoot.current
 
     // This may look ridiculous, but it is required to decouple execution for just a millisecond in order to scroll all the way
     setTimeout(() => { rootNode.scrollTop = rootNode.scrollHeight }, 1)
@@ -166,13 +155,13 @@ export default class Terminal extends React.Component {
 
   clearInput () {
     this.setState({ historyPosition: null })
-    this._getTerminalNode().value = ''
+    this.terminalInput.current.value = ''
   }
 
   processCommand () {
     const commandResult = { command: null, args: [], rawInput: null, result: null }
 
-    const rawInput = this._getTerminalNode().value
+    const rawInput = this.terminalInput.current.value
 
     const input = rawInput.split(' ')
     const command = input.splice(0, 1)[0] // Removed portion is returned...
@@ -208,7 +197,7 @@ export default class Terminal extends React.Component {
   scrollHistory (direction) {
     const history = cleanArray(this.state.history).reverse() // Clean empty items and reverse order to ease position tracking
     const position = this.state.historyPosition
-    const termNode = this._getTerminalNode()
+    const termNode = this.terminalInput.current
 
     if (!this.state.noAutomaticStdout && history.length > 0) { // Only run if history is non-empty and in use
       switch (direction) {
@@ -243,7 +232,6 @@ export default class Terminal extends React.Component {
             termNode.value = reachedFirst ? history[position - 1] : history[position]
             this.setState({ historyPosition: reachedFirst ? position - 2 : position - 1 })
           }
-          break
       }
     }
   }
@@ -299,8 +287,8 @@ export default class Terminal extends React.Component {
 
     return (
       <div
+        ref={this.terminalRoot}
         className={this.props.className || null}
-        data-terminal={this.state.rootTracker}
         name={'react-console-emulator'}
         style={styles.container}
         onClick={this.focusTerminal}
@@ -323,9 +311,9 @@ export default class Terminal extends React.Component {
               {this.props.promptLabel || '$'}
             </span>
             <input
+              ref={this.terminalInput}
               className={this.props.inputClassName || null}
               name={'react-console-emulator__input'}
-              data-input={this.state.inputTracker}
               style={styles.input}
               type={'text'}
               onKeyDown={this.handleInput}

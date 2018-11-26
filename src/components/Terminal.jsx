@@ -33,7 +33,6 @@ export default class Terminal extends React.Component {
     ...types
   }
 
-  // TODO: Replace with ref-based component function
   /**
    * Manually push to the stdout of a terminal. Use with caution.
    * @param {String} message The message to output to the terminal. If not using safe mode, make sure to XSS-proof this.
@@ -43,6 +42,8 @@ export default class Terminal extends React.Component {
    * @param {HTMLElement} inputAreaElement The input area element of the terminal you want to push output to. Uses first found element if omitted.
    */
   static manualPushToStdout (message, dangerMode, contentElement, inputElement, inputAreaElement) {
+    console.warn('DeprecationWarning: Terminal.manualPushToStdout() is deprecated and will be removed in a future release. For more information, see https://github.com/js-rcon/react-console-emulator/blob/master/LEGACY.md')
+
     const content = contentElement || document.getElementsByName('react-console-emulator__content')[0]
     const input = inputElement || document.getElementsByName('react-console-emulator__input')[0]
     const inputArea = inputAreaElement || document.getElementsByName('react-console-emulator__inputArea')[0]

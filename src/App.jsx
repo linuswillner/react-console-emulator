@@ -16,6 +16,11 @@ class DemoTile extends React.Component {
 }
 
 export default class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.terminal = React.createRef()
+  }
+
   commands = {
     echo: {
       description: 'Echo a passed string.',
@@ -38,24 +43,12 @@ export default class App extends React.Component {
   }
 
   manualPushCommands = {
-    safe: {
-      fn: function () {
-        const content = document.getElementsByName('react-console-emulator__content')[4]
-        const input = document.getElementsByName('react-console-emulator__inputArea')[4]
-
-        // By using Function.arguments, you can show correct commands in the terminal
-        Terminal.manualPushToStdout(`$ safe${arguments ? ` ${Array.from(arguments).join(' ')}` : ''}`, content, input)
-        Terminal.manualPushToStdout('This message was manually pushed to the terminal.', content, input)
-      }
-    },
-    dangerous: {
-      fn: function () {
-        const content = document.getElementsByName('react-console-emulator__content')[4]
-        const input = document.getElementsByName('react-console-emulator__inputArea')[4]
-
-        // By using Function.arguments, you can show correct commands in the terminal
-        Terminal.manualPushToStdout(`$ dangerous${arguments ? ` ${Array.from(arguments).join(' ')}` : ''}`, content, input)
-        Terminal.manualPushToStdout('<div style="color: red;">This message was manually pushed the terminal with danger mode enabled.</div>', content, input, true)
+    wait: {
+      description: 'Waits 1000 ms and then pushes content to the output like any command.',
+      fn: () => {
+        const terminal = this.terminal.current
+        setTimeout(() => terminal.pushToStdout('Tada! 1000 ms passed!'), 1000)
+        return 'Running, please wait...'
       }
     }
   }
@@ -110,11 +103,9 @@ export default class App extends React.Component {
         <div className={'demo'}>
           <DemoTile>
             <Terminal
+              ref={this.terminal}
               commands={this.manualPushCommands}
-              welcomeMessage={'This terminal has no automatic output and only uses manual pushing. Try the "safe" and "dangerous" commands.'}
-              noDefaults={true}
-              noAutomaticStdout={true} // Disables history as well
-              errorText={'I couldn\'t find a command called [command]!'}
+              welcomeMessage={'This terminal uses manual pushing, yet works as any normal terminal. Check the help command for more information.'}
             />
           </DemoTile>
           <DemoTile>

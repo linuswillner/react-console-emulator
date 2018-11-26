@@ -66,6 +66,8 @@
     "node-sass": "^4.10.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "puppeteer": "^1.10.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",
     "sass-loader": "^7.1.0",
     "skip-if": "^1.1.1",
@@ -78,8 +80,6 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
     "react-inner-html": "^1.0.1",
     "stringify-object": "^3.3.0"
   },

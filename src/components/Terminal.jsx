@@ -12,7 +12,8 @@ export default class Terminal extends React.Component {
       commands: {},
       stdout: [],
       history: [],
-      historyPosition: null
+      historyPosition: null,
+      previousHistoryPosition: null
     }
 
     this.terminalRoot = React.createRef()
@@ -196,44 +197,44 @@ export default class Terminal extends React.Component {
     if (this.props.commandCallback) this.props.commandCallback(commandResult)
   }
 
-  // TODO: Fix wonky scrolling
   scrollHistory (direction) {
     const history = cleanArray(this.state.history).reverse() // Clean empty items and reverse order to ease position tracking
     const position = this.state.historyPosition
+    const previousPosition = this.state.previousHistoryPosition
     const termNode = this.terminalInput.current
 
     if (!this.state.noAutomaticStdout && history.length > 0) { // Only run if history is non-empty and in use
       switch (direction) {
         case 'up':
-          if (position === null) { // If not touched, get most recent
+          if (position === null) {
+            // If at no position, get most recent entry
             termNode.value = history[0]
-            this.setState({ historyPosition: 0 })
+            this.setState({ historyPosition: 0, previousHistoryPosition: null })
           } else if (position + 1 === history.length) {
-            // If the last item will be reached on this press, get first entry and decrement position by 1 to avoid confusing downscroll
+            // If the first entry will be reached on this press, get it and decrement position by 1 to avoid confusing downscroll
             termNode.value = history[history.length - 1]
-            this.setState({ historyPosition: history.length - 1 })
+            this.setState({ historyPosition: history.length - 1, previousHistoryPosition: history.length - 2 })
           } else {
-            const atBottom = position - 1 === -1 // -1 for zero-based index
-
-            // If at last item, increment by one more to avoid showing the same item twice
-            termNode.value = atBottom ? history[position + 1] : history[position]
-            this.setState({ historyPosition: atBottom ? position + 2 : position + 1 })
+            // Normal increment by one
+            termNode.value = history[position + 1]
+            this.setState({ historyPosition: position + 1, previousHistoryPosition: position })
           }
           break
         case 'down':
-          if (position === null || !history[position]) { // If at initial or out of range, clear (Unix-like behaviour)
+          if (position === null || !history[position]) {
+            // If at initial or out of range, clear (Unix-like behaviour)
             termNode.value = ''
-            this.setState({ historyPosition: null })
+            this.setState({ historyPosition: null, previousHistoryPosition: null })
           } else if (position - 1 === -1) {
-            // If position will go negative on this press, bottom has been reached - reset
-            termNode.value = history[0]
-            this.setState({ historyPosition: null })
-          } else {
-            const reachedFirst = position + 1 === history.length // +1 for zero-based index
+            // Clear because user pressed up once and is now pressing down again => clear or is reaching bottom
+            if (previousPosition === null || (position === 0 && previousPosition === 1)) termNode.value = ''
+            else termNode.value = history[0]
 
-            // If at first item, decrement by one more to avoid showing the same item twice
-            termNode.value = reachedFirst ? history[position - 1] : history[position]
-            this.setState({ historyPosition: reachedFirst ? position - 2 : position - 1 })
+            this.setState({ historyPosition: null, previousHistoryPosition: null })
+          } else {
+            // Normal decrement by one
+            termNode.value = history[position - 1]
+            this.setState({ historyPosition: position - 1, previousHistoryPosition: position })
           }
       }
     }

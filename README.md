@@ -1,17 +1,19 @@
+<img src="https://i.linuswillner.me/ot0GAp8.png" height="250px">
+
 # react-console-emulator
 
-![Demo GIF](https://i.linuswillner.me/7u4Cd2V.gif)
+A simple, powerful and highly customisable Unix terminal emulator for React.
 
 ### [Live demo](https://linuswillner.me/react-console-emulator/)
 
-A simple, powerful and highly customisable terminal emulator for React.
-
 ## Features
 
-- Highly customisable: Add your own background image, change the colour of different terminal elements and more!
-- Extensively emulates a Unix terminal with dutiful accuracy
+- Highly customisable: Add custom responses, restyle and tweak the terminal to your liking and much more.
+- A Unix terminal in the browser: Accurately emulate a native Unix terminal in the browser with no setup required.
+- Familiar shortcuts: The terminal can keep track of commands and allows the user to recall them at their behest.
 - Easy and powerful command system: Execute code from your own application and send the results to the terminal output.
-- High concurrency: Register multiple terminals on the same page easily and safely without risk of mixing up inputs.
+- Async output support: Push output to the terminal at any time, even after a command response has been emitted.
+- Unlimited concurrency: Register as many terminals as you like with no risk of input confusion.
 
 ## Usage
 
@@ -117,14 +119,14 @@ const commands = {
       // What you return in this function will be output to the terminal
       return `test ${lowerCaseArg1}`
     },
-    explicitExec: true, // If your command outputs nothing to the terminal and you only need the function to be run, enable this
+    explicitExec: true, // If you need to execute your function again after the output has been emitted, enable
   }
 }
 ```
 
 ## Async output
 
-If you terminal deals with HTTP requests or cross-component functionality, you may need to wait for a result before pushing to the output.
+If you terminal deals with HTTP requests or cross-component functionality, you may need to wait for a result before pushing to the output without relying on the function return time.
 
 **Note:** Doing output this way is a workaround, and ideally your output should be returned by the command function. This method will expose functions to you that you do not normally have access to due to React component encapsulation. Proceed with caution.
 
@@ -186,3 +188,8 @@ Per standard, the terminal operates in the following way when a command is enter
 - The [clearInput](src/components/Terminal.jsx#L158) function is called.
 - If automatic scrolling isn't disabled via the `noAutoScroll` prop, the terminal will scroll to the bottom of the output.
 - If a command callback function is defined via the `commandCallback` prop, it is called at this stage.
+
+## License
+
+MIT © Linus Willner and Curtis Fowler.  
+"React" and any associated logos are trademarks of Facebook, Inc.

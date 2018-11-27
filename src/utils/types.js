@@ -13,6 +13,7 @@ export const types = {
   inputClassName: PropTypes.string,
   autoFocus: PropTypes.bool,
   dangerMode: PropTypes.bool,
+  disableOnProcess: PropTypes.bool,
   noDefaults: PropTypes.bool,
   noAutomaticStdout: PropTypes.bool,
   noHistory: PropTypes.bool,

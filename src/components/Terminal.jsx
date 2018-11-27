@@ -13,7 +13,8 @@ export default class Terminal extends React.Component {
       stdout: [],
       history: [],
       historyPosition: null,
-      previousHistoryPosition: null
+      previousHistoryPosition: null,
+      processing: false
     }
 
     this.terminalRoot = React.createRef()
@@ -162,39 +163,43 @@ export default class Terminal extends React.Component {
   }
 
   processCommand () {
-    const commandResult = { command: null, args: [], rawInput: null, result: null }
+    this.setState({ processing: true }, () => {
+      const commandResult = { command: null, args: [], rawInput: null, result: null }
 
-    const rawInput = this.terminalInput.current.value
+      const rawInput = this.terminalInput.current.value
 
-    const input = rawInput.split(' ')
-    const command = input.splice(0, 1)[0] // Removed portion is returned...
-    const args = input // ...and the rest can be used
+      const input = rawInput.split(' ')
+      const command = input.splice(0, 1)[0] // Removed portion is returned...
+      const args = input // ...and the rest can be used
 
-    if (!this.props.noAutomaticStdout) {
-      if (!this.props.noHistory) this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`, rawInput)
-      else this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`)
-    }
-
-    if (rawInput) {
-      commandResult.rawInput = rawInput
-      commandResult.command = command
-      commandResult.args = args
-
-      const cmdObj = this.state.commands[command]
-
-      if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
-      else {
-        const res = cmdObj.fn(...args)
-
-        this.pushToStdout(res)
-        commandResult.result = res
-        if (cmdObj.explicitExec) cmdObj.fn(...args)
+      if (!this.props.noAutomaticStdout) {
+        if (!this.props.noHistory) this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`, rawInput)
+        else this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`)
       }
-    }
 
-    this.clearInput()
-    if (!this.props.noAutoScroll) this.scrollToBottom()
-    if (this.props.commandCallback) this.props.commandCallback(commandResult)
+      if (rawInput) {
+        commandResult.rawInput = rawInput
+        commandResult.command = command
+        commandResult.args = args
+
+        const cmdObj = this.state.commands[command]
+
+        if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
+        else {
+          const res = cmdObj.fn(...args)
+
+          this.pushToStdout(res)
+          commandResult.result = res
+          if (cmdObj.explicitExec) cmdObj.fn(...args)
+        }
+      }
+
+      this.setState({ processing: false }, () => {
+        this.clearInput()
+        if (!this.props.noAutoScroll) this.scrollToBottom()
+        if (this.props.commandCallback) this.props.commandCallback(commandResult)
+      })
+    })
   }
 
   scrollHistory (direction) {
@@ -321,6 +326,7 @@ export default class Terminal extends React.Component {
               style={styles.input}
               type={'text'}
               onKeyDown={this.handleInput}
+              disabled={this.props.disableOnProcess && this.state.processing}
             />
           </div>
         </div>

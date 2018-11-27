@@ -3,22 +3,23 @@ import html from 'react-inner-html'
 import stringifyObject from 'stringify-object'
 import { sourceStyles } from '../utils/sourceStyles'
 import { types } from '../utils/types'
-import { randstr, cleanArray, filterNode } from '../utils/helpers'
+import { cleanArray } from '../utils/helpers'
 
 export default class Terminal extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      rootTracker: randstr(),
-      inputTracker: randstr(),
       commands: {},
       stdout: [],
       history: [],
-      historyPosition: null
+      historyPosition: null,
+      previousHistoryPosition: null,
+      processing: false
     }
 
-    this._getTerminalNode = this._getTerminalNode.bind(this)
-    this._getRootNode = this._getRootNode.bind(this)
+    this.terminalRoot = React.createRef()
+    this.terminalInput = React.createRef()
+
     this.focusTerminal = this.focusTerminal.bind(this)
     this.validateCommands = this.validateCommands.bind(this)
     this.showWelcomeMessage = this.showWelcomeMessage.bind(this)
@@ -34,16 +35,6 @@ export default class Terminal extends React.Component {
     ...types
   }
 
-  _getTerminalNode () {
-    const elements = document.getElementsByName('react-console-emulator__input')
-    return filterNode(elements, el => el.dataset.input === this.state.inputTracker)
-  }
-
-  _getRootNode () {
-    const elements = document.getElementsByName('react-console-emulator')
-    return filterNode(elements, el => el.dataset.terminal === this.state.rootTracker)
-  }
-
   /**
    * Manually push to the stdout of a terminal. Use with caution.
    * @param {String} message The message to output to the terminal. If not using safe mode, make sure to XSS-proof this.
@@ -53,6 +44,8 @@ export default class Terminal extends React.Component {
    * @param {HTMLElement} inputAreaElement The input area element of the terminal you want to push output to. Uses first found element if omitted.
    */
   static manualPushToStdout (message, dangerMode, contentElement, inputElement, inputAreaElement) {
+    console.warn('DeprecationWarning: Terminal.manualPushToStdout() is deprecated and will be removed in a future release. For more information, see https://github.com/js-rcon/react-console-emulator/blob/master/LEGACY.md')
+
     const content = contentElement || document.getElementsByName('react-console-emulator__content')[0]
     const input = inputElement || document.getElementsByName('react-console-emulator__input')[0]
     const inputArea = inputAreaElement || document.getElementsByName('react-console-emulator__inputArea')[0]
@@ -71,11 +64,11 @@ export default class Terminal extends React.Component {
   }
 
   focusTerminal () {
-    this._getTerminalNode().focus()
+    this.terminalInput.current.focus()
   }
 
   scrollToBottom () {
-    const rootNode = this._getRootNode()
+    const rootNode = this.terminalRoot.current
 
     // This may look ridiculous, but it is required to decouple execution for just a millisecond in order to scroll all the way
     setTimeout(() => { rootNode.scrollTop = rootNode.scrollHeight }, 1)
@@ -166,84 +159,88 @@ export default class Terminal extends React.Component {
 
   clearInput () {
     this.setState({ historyPosition: null })
-    this._getTerminalNode().value = ''
+    this.terminalInput.current.value = ''
   }
 
   processCommand () {
-    const commandResult = { command: null, args: [], rawInput: null, result: null }
+    this.setState({ processing: true }, () => {
+      const commandResult = { command: null, args: [], rawInput: null, result: null }
 
-    const rawInput = this._getTerminalNode().value
+      const rawInput = this.terminalInput.current.value
 
-    const input = rawInput.split(' ')
-    const command = input.splice(0, 1)[0] // Removed portion is returned...
-    const args = input // ...and the rest can be used
+      const input = rawInput.split(' ')
+      const command = input.splice(0, 1)[0] // Removed portion is returned...
+      const args = input // ...and the rest can be used
 
-    if (!this.props.noAutomaticStdout) {
-      if (!this.props.noHistory) this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`, rawInput)
-      else this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`)
-    }
-
-    if (rawInput) {
-      commandResult.rawInput = rawInput
-      commandResult.command = command
-      commandResult.args = args
-
-      const cmdObj = this.state.commands[command]
-
-      if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
-      else {
-        const res = cmdObj.fn(...args)
-
-        this.pushToStdout(res)
-        commandResult.result = res
-        if (cmdObj.explicitExec) cmdObj.fn(...args)
+      if (!this.props.noAutomaticStdout) {
+        if (!this.props.noHistory) this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`, rawInput)
+        else this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`)
       }
-    }
 
-    this.clearInput()
-    if (!this.props.noAutoScroll) this.scrollToBottom()
-    if (this.props.commandCallback) this.props.commandCallback(commandResult)
+      if (rawInput) {
+        commandResult.rawInput = rawInput
+        commandResult.command = command
+        commandResult.args = args
+
+        const cmdObj = this.state.commands[command]
+
+        if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
+        else {
+          const res = cmdObj.fn(...args)
+
+          this.pushToStdout(res)
+          commandResult.result = res
+          if (cmdObj.explicitExec) cmdObj.fn(...args)
+        }
+      }
+
+      this.setState({ processing: false }, () => {
+        this.clearInput()
+        if (!this.props.noAutoScroll) this.scrollToBottom()
+        if (this.props.commandCallback) this.props.commandCallback(commandResult)
+      })
+    })
   }
 
   scrollHistory (direction) {
     const history = cleanArray(this.state.history).reverse() // Clean empty items and reverse order to ease position tracking
     const position = this.state.historyPosition
-    const termNode = this._getTerminalNode()
+    const previousPosition = this.state.previousHistoryPosition
+    const termNode = this.terminalInput.current
 
     if (!this.state.noAutomaticStdout && history.length > 0) { // Only run if history is non-empty and in use
       switch (direction) {
         case 'up':
-          if (position === null) { // If not touched, get most recent
+          if (position === null) {
+            // If at no position, get most recent entry
             termNode.value = history[0]
-            this.setState({ historyPosition: 0 })
+            this.setState({ historyPosition: 0, previousHistoryPosition: null })
           } else if (position + 1 === history.length) {
-            // If the last item will be reached on this press, get first entry and decrement position by 1 to avoid confusing downscroll
+            // If the first entry will be reached on this press, get it and decrement position by 1 to avoid confusing downscroll
             termNode.value = history[history.length - 1]
-            this.setState({ historyPosition: history.length - 1 })
+            this.setState({ historyPosition: history.length - 1, previousHistoryPosition: history.length - 2 })
           } else {
-            const atBottom = position - 1 === -1 // -1 for zero-based index
-
-            // If at last item, increment by one more to avoid showing the same item twice
-            termNode.value = atBottom ? history[position + 1] : history[position]
-            this.setState({ historyPosition: atBottom ? position + 2 : position + 1 })
+            // Normal increment by one
+            termNode.value = history[position + 1]
+            this.setState({ historyPosition: position + 1, previousHistoryPosition: position })
           }
           break
         case 'down':
-          if (position === null || !history[position]) { // If at initial or out of range, clear (Unix-like behaviour)
+          if (position === null || !history[position]) {
+            // If at initial or out of range, clear (Unix-like behaviour)
             termNode.value = ''
-            this.setState({ historyPosition: null })
+            this.setState({ historyPosition: null, previousHistoryPosition: null })
           } else if (position - 1 === -1) {
-            // If position will go negative on this press, bottom has been reached - reset
-            termNode.value = history[0]
-            this.setState({ historyPosition: null })
-          } else {
-            const reachedFirst = position + 1 === history.length // +1 for zero-based index
+            // Clear because user pressed up once and is now pressing down again => clear or is reaching bottom
+            if (previousPosition === null || (position === 0 && previousPosition === 1)) termNode.value = ''
+            else termNode.value = history[0]
 
-            // If at first item, decrement by one more to avoid showing the same item twice
-            termNode.value = reachedFirst ? history[position - 1] : history[position]
-            this.setState({ historyPosition: reachedFirst ? position - 2 : position - 1 })
+            this.setState({ historyPosition: null, previousHistoryPosition: null })
+          } else {
+            // Normal decrement by one
+            termNode.value = history[position - 1]
+            this.setState({ historyPosition: position - 1, previousHistoryPosition: position })
           }
-          break
       }
     }
   }
@@ -282,7 +279,8 @@ export default class Terminal extends React.Component {
       },
       content: {
         ...sourceStyles.content,
-        color: this.props.textColor || '#FFFFFF'
+        color: this.props.textColor || '#FFFFFF',
+        fontFamily: this.props.contentFontFamily || 'monospace'
       },
       inputArea: {
         ...sourceStyles.inputArea
@@ -293,14 +291,15 @@ export default class Terminal extends React.Component {
       },
       input: {
         ...sourceStyles.input,
-        color: this.props.promptTextColor || '#F0BF81'
+        color: this.props.promptTextColor || '#F0BF81',
+        fontFamily: this.props.inputFontFamily || 'monospace'
       }
     }
 
     return (
       <div
+        ref={this.terminalRoot}
         className={this.props.className || null}
-        data-terminal={this.state.rootTracker}
         name={'react-console-emulator'}
         style={styles.container}
         onClick={this.focusTerminal}
@@ -323,12 +322,13 @@ export default class Terminal extends React.Component {
               {this.props.promptLabel || '$'}
             </span>
             <input
+              ref={this.terminalInput}
               className={this.props.inputClassName || null}
               name={'react-console-emulator__input'}
-              data-input={this.state.inputTracker}
               style={styles.input}
               type={'text'}
               onKeyDown={this.handleInput}
+              disabled={this.props.disableOnProcess && this.state.processing}
             />
           </div>
         </div>

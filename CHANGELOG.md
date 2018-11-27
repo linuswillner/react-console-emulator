@@ -1,8 +1,22 @@
 # 2.0.0
 
+### Breaking changes
+
 Improved terminal instance tracking. Previously, the system relied on random strings and filtering DOM nodes to track which instance was the current one. Not only was this rather unsafe, it also introduced a risk of collisions.
 
-This version removes the above behaviour and replaces it with the React refs API. As such, this module now requires React 16.3 or above. This is enforced by adding `react` and `react-dom` version 16.3.0 and up as peerDependencies.
+This version removes the above behaviour and replaces it with the React refs API. As such, **this module now requires React 16.3 or above.** This is enforced by adding `react` and `react-dom` version 16.3.0 and up as peerDependencies.
+
+In correlation with the introduction of refs, a new system will replace the similarly old and unsustainable `manualPushToStdout()` API. Documentation for the new system has been added to the README, while the old method docs have been moved to [LEGACY.md](LEGACY.md).
+
+The above document also contains more information on the deprecation of `manualPushToStdout()`. The short version is that **manualPushToStdout is from this version onwards considered a deprecated legacy API that will eventually be removed.** A gradual deprecation scheme starts from this version with a warning emitted to the console when the function is used. See the legacy document for more information.
+
+### Other changes
+
+Fixed a multitude of bugs related to terminal history scrolling. In the past, items would get displayed twice when suddenly changing scrolling direction mid-travel. The terminal would also display out-of-range items (Manifesting as `undefined` entries in history). These bugs have now been fixed and the system has been made more robust overall.
+
+Added the ability to disable input to the terminal during command processing. If enabled via the `disableOnProcess` prop, the terminal will be disabled while a command processing session is active.
+
+Added the ability to supply custom font families to the terminal content and input via the `contentFontFamily` and `inputFontFamily` props.
 
 # 1.7.3
 

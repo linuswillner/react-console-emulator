@@ -1,6 +1,6 @@
 {
   "name": "react-console-emulator",
-  "version": "1.7.3",
+  "version": "2.0.0",
   "description": "A simple terminal emulator component for React. ",
   "main": "lib/components/Terminal.js",
   "files": [

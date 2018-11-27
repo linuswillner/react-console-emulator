@@ -21,6 +21,10 @@ export default class App extends React.Component {
     this.terminal = React.createRef()
   }
 
+  globalProps = {
+    contentFontFamily: `'Inconsolata', monospace`
+  }
+
   commands = {
     echo: {
       description: 'Echo a passed string.',
@@ -59,12 +63,14 @@ export default class App extends React.Component {
         <div className={'demo'}>
           <DemoTile>
             <Terminal
+              {...this.globalProps}
               commands={this.commands}
               dangerMode={true}
             />
           </DemoTile>
           <DemoTile>
             <Terminal
+              {...this.globalProps}
               commands={this.commands}
               welcomeMessage={true}
             />
@@ -73,6 +79,7 @@ export default class App extends React.Component {
         <div className={'demo'}>
           <DemoTile>
             <Terminal
+              {...this.globalProps}
               commands={this.newDefaultCommands}
               welcomeMessage={[
                 'This terminal is automatically focused on page load and has no default commands. It also has a custom error message.',
@@ -86,6 +93,7 @@ export default class App extends React.Component {
           </DemoTile>
           <DemoTile>
             <Terminal
+              {...this.globalProps}
               commands={this.commands}
               welcomeMessage={[
                 'The terminal is extensively customisable.',
@@ -103,6 +111,7 @@ export default class App extends React.Component {
         <div className={'demo'}>
           <DemoTile>
             <Terminal
+              {...this.globalProps}
               ref={this.terminal}
               commands={this.manualPushCommands}
               welcomeMessage={'This terminal uses manual pushing, yet works as any normal terminal. Check the help command for more information.'}
@@ -110,6 +119,7 @@ export default class App extends React.Component {
           </DemoTile>
           <DemoTile>
             <Terminal
+              {...this.globalProps}
               commands={this.commands}
               welcomeMessage={[
                 'The terminal keeps track of your commands (Unless disabled) and allows you to recall them.',

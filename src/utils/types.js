@@ -11,6 +11,8 @@ export const types = {
   inputAreaClassName: PropTypes.string,
   promptLabelClassName: PropTypes.string,
   inputClassName: PropTypes.string,
+  contentFontFamily: PropTypes.string,
+  inputFontFamily: PropTypes.string,
   autoFocus: PropTypes.bool,
   dangerMode: PropTypes.bool,
   disableOnProcess: PropTypes.bool,

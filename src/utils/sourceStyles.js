@@ -11,7 +11,6 @@ export const sourceStyles = {
   content: {
     padding: '20px',
     height: '100%',
-    fontFamily: `'Inconsolata', monospace`,
     fontSize: '15px'
   },
   inputArea: {
@@ -29,7 +28,6 @@ export const sourceStyles = {
     width: '100%',
     height: '22px',
     background: 'transparent',
-    fontFamily: `'Inconsolata', monospace`,
     fontSize: '15px'
   }
 }

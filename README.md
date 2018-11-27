@@ -70,6 +70,8 @@ export default class MyTerminal extends React.Component {
 | inputAreaClassName | The CSS class name of the input area (Prompt + input). | String |
 | promptLabelClassName | The CSS class name of the prompt label. | String |
 | inputClassName | The CSS class name of the input element. | String |
+| contentFontFamily | The font family to use for the terminal content container (Stdout + prompt + input) | String (Valid CSS) |
+| inputFontFamily | The font family to use for the input element. | String (Valid CSS) |
 
 ## Method reference
 

@@ -279,7 +279,8 @@ export default class Terminal extends React.Component {
       },
       content: {
         ...sourceStyles.content,
-        color: this.props.textColor || '#FFFFFF'
+        color: this.props.textColor || '#FFFFFF',
+        fontFamily: this.props.contentFontFamily || 'monospace'
       },
       inputArea: {
         ...sourceStyles.inputArea
@@ -290,7 +291,8 @@ export default class Terminal extends React.Component {
       },
       input: {
         ...sourceStyles.input,
-        color: this.props.promptTextColor || '#F0BF81'
+        color: this.props.promptTextColor || '#F0BF81',
+        fontFamily: this.props.inputFontFamily || 'monospace'
       }
     }
 

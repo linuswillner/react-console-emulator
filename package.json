@@ -65,7 +65,7 @@
     "mini-css-extract-plugin": "^0.4.5",
     "node-sass": "^4.10.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
-    "puppeteer": "^1.10.0",
+    "puppeteer": "^1.11.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",

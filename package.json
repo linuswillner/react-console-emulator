@@ -68,7 +68,7 @@
     "puppeteer": "^1.11.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-hot-loader": "^4.3.12",
+    "react-hot-loader": "^4.6.0",
     "sass-loader": "^7.1.0",
     "skip-if": "^1.1.1",
     "style-loader": "^0.23.1",

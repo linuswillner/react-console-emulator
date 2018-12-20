@@ -67,7 +67,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "puppeteer": "^1.11.0",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "react-dom": "^16.7.0",
     "react-hot-loader": "^4.6.2",
     "sass-loader": "^7.1.0",
     "skip-if": "^1.1.1",

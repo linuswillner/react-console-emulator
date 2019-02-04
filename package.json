@@ -62,7 +62,7 @@
     "jest": "^23.6.0",
     "jest-puppeteer": "^3.9.0",
     "jsdom": "^13.2.0",
-    "mini-css-extract-plugin": "^0.4.5",
+    "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "puppeteer": "^1.12.1",

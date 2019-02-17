@@ -14,9 +14,9 @@
     "codecov": "codecov --disable=gcov",
     "test": "npm run lint && npm run test-coverage && cross-env PROD_RUN=true npm run test-nocoverage && npm run codecov",
     "test-local": "npm run lint && npm run test-coverage",
-    "test-dev": "jest --detectOpenHandles --watch --config jest.default.js",
-    "test-coverage": "jest --detectOpenHandles --config jest.coverage.js",
-    "test-nocoverage": "jest --detectOpenHandles --config jest.default.js",
+    "test-dev": "jest --watch --config jest.default.js",
+    "test-coverage": "jest --config jest.coverage.js",
+    "test-nocoverage": "jest --config jest.default.js",
     "prepublishOnly": "npm run compile"
   },
   "repository": {

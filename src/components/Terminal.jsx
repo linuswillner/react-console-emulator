@@ -55,8 +55,6 @@ export default class Terminal extends React.Component {
     if (dangerMode) messageElement.innerHTML = message
     else messageElement.innerText = message
 
-    messageElement.style = 'margin: 0px; line-height: 21px;'
-
     content.appendChild(messageElement)
     content.appendChild(inputArea)
     input.value = ''
@@ -120,11 +118,12 @@ export default class Terminal extends React.Component {
   }
 
   showHelp () {
-    for (let c in this.state.commands) {
-      const cmdObj = this.state.commands[c]
-      const usage = cmdObj.usage ? ` - ${cmdObj.usage}` : ''
-      this.pushToStdout(`${c} - ${cmdObj.description}${usage}`)
-    }
+    const helpLabelFn = this.props.helpLabel
+      ? this.props.helpLabel
+      : cmdObj => Object.keys(cmdObj).map((c, i) => <span key={i}>
+        {c} - {cmdObj[c].description} {cmdObj[c].usage}
+      </span>)
+    this.pushToStdout(helpLabelFn(this.state.commands))
   }
 
   pushToStdout (message, rawInput) {
@@ -140,14 +139,10 @@ export default class Terminal extends React.Component {
   }
 
   getStdout () {
-    const lineStyle = {
-      margin: '0',
-      lineHeight: '21px'
-    }
-
+    const stdoutClass = this.props.historyAreaClassName
     return this.state.stdout.map((line, i) => {
-      const safe = <p key={i} style={lineStyle}>{line}</p>
-      const dangerous = <p key={i} style={lineStyle} {...html(line)}></p>
+      const safe = <div key={i} className={stdoutClass}>{line}</div>
+      const dangerous = <div key={i} className={stdoutClass} {...html(line)}></div>
 
       return this.props.dangerMode ? dangerous : safe
     })
@@ -173,8 +168,16 @@ export default class Terminal extends React.Component {
       const args = input // ...and the rest can be used
 
       if (!this.props.noAutomaticStdout) {
-        if (!this.props.noHistory) this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`, rawInput)
-        else this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`)
+        this.pushToStdout([
+            this.props.promptLabel
+              ? this.props.promptLabel()
+              : '$',
+            <span key={rawInput} className={this.props.historyCommandClassName}>{rawInput}</span>
+          ],
+          this.props.noHistory
+            ? undefined
+            : rawInput
+        )
       }
 
       if (rawInput) {
@@ -184,7 +187,12 @@ export default class Terminal extends React.Component {
 
         const cmdObj = this.state.commands[command]
 
-        if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
+        if (!cmdObj) {
+          const errorLabelFn = this.props.errorLabel
+            ? this.props.errorLabel
+            : command => <span>{`Command '${command}' not found!`}</span>
+          this.pushToStdout(errorLabelFn(command))
+        }
         else {
           const res = cmdObj.fn(...args)
 
@@ -287,11 +295,11 @@ export default class Terminal extends React.Component {
       },
       prompt: {
         ...sourceStyles.prompt,
-        color: this.props.promptLabelColor || '#EE9C34'
+        color: this.props.promptLabelColor
       },
       input: {
         ...sourceStyles.input,
-        color: this.props.promptTextColor || '#F0BF81',
+        color: this.props.promptTextColor,
         fontFamily: this.props.inputFontFamily || 'monospace'
       }
     }
@@ -299,36 +307,36 @@ export default class Terminal extends React.Component {
     return (
       <div
         ref={this.terminalRoot}
-        className={this.props.className || null}
+        className={this.props.className}
         name={'react-console-emulator'}
         style={styles.container}
         onClick={this.focusTerminal}
       >
         <div
-          className={this.props.contentClassName || null}
+          className={this.props.contentClassName}
           name={'react-console-emulator__content'}
           style={styles.content}
         >
           {this.getStdout()}
           <div
-            className={this.props.inputAreaClassName || null}
+            className={this.props.inputAreaClassName}
             name={'react-console-emulator__inputArea'}
             style={styles.inputArea}
           >
-            <span
-              className={this.props.promptLabelClassName || null}
-              style={styles.prompt}
-            >
-              {this.props.promptLabel || '$'}
-            </span>
+            {
+              this.props.promptLabel
+                ? this.props.promptLabel()
+                : '$'
+            }
             <input
               ref={this.terminalInput}
-              className={this.props.inputClassName || null}
+              className={this.props.inputClassName}
               name={'react-console-emulator__input'}
               style={styles.input}
               type={'text'}
               onKeyDown={this.handleInput}
               disabled={this.props.disableOnProcess && this.state.processing}
+              autoComplete="off"
             />
           </div>
         </div>

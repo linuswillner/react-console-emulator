@@ -23,9 +23,13 @@ export const types = {
   welcomeMessage: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.array,
-    PropTypes.string
+    PropTypes.string,
+    PropTypes.func
   ]),
-  promptLabel: PropTypes.string,
-  errorText: PropTypes.string,
-  commands: PropTypes.object.isRequired
+  commands: PropTypes.object.isRequired,
+  promptLabel: PropTypes.func,
+  helpLabel: PropTypes.func,
+  errorLabel: PropTypes.func,
+  historyAreaClassName: PropTypes.string,
+  historyCommandClassName: PropTypes.string,
 }

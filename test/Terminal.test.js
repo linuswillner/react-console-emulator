@@ -68,6 +68,7 @@ describe('Terminal HTML structure', () => {
     expect(wrapper.find('[name="react-console-emulator"]')).toHaveLength(1)
     expect(wrapper.find('[name="react-console-emulator__content"]')).toHaveLength(1)
     expect(wrapper.find('[name="react-console-emulator__inputArea"]')).toHaveLength(1)
+    expect(wrapper.find('[name="react-console-emulator__promptLabel"]')).toHaveLength(1)
     expect(wrapper.find('[name="react-console-emulator__input"]')).toHaveLength(1)
   })
 })
@@ -93,7 +94,6 @@ describe('Terminal welcome messages', () => {
     expect(singleContent.childAt(0).text()).toBe('test')
 
     // Renders array of strings correctly
-    expect(multiContent.children('p')).toHaveLength(2)
     expect(multiContent.childAt(0).text()).toBe('test')
     expect(multiContent.childAt(1).text()).toBe('test2')
 

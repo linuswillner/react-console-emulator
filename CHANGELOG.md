@@ -1,3 +1,35 @@
+# 3.0.0
+
+### Breaking changes
+
+`Terminal.manualPushToStdout()` has been removed. If you haven't already, now is the time to migrate to the new [async output method](docs/API.md#async-output).
+
+The following style-related props have been removed and replaced:
+```diff
+- background
+- backgroundSize
+- textColor
+- promptLabelColor
+- promptTextColor
+- contentFontFamily
+- inputFontFamily
++ style
++ contentStyle
++ inputAreaStyle
++ promptLabelStyle
++ inputStyle
+```
+
+Instead of having a unique prop for styling only some parts of the terminal elements, every style aspect is now overridable. Any styles defines in [src/defs/styles/Terminal.js](src/defs/styles/Terminal.js) can be overridden via the new props. See [the guide](docs/CONFIG.md#re-styling) for more details.
+
+### Other changes
+
+Added better structured docs.
+
+Added name to prompt label element for testing purposes.
+
+Internal restructurations for better readability and maintainability.
+
 # 2.0.0
 
 ### Breaking changes

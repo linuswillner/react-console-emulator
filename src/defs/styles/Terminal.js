@@ -1,4 +1,4 @@
-export const sourceStyles = {
+export default {
   container: {
     minWidth: '500x',
     minHeight: '300px',
@@ -6,19 +6,24 @@ export const sourceStyles = {
     maxHeight: '100%', // Fill parent before overflowing
     borderRadius: '5px',
     overflow: 'auto',
-    cursor: 'text'
+    cursor: 'text',
+    background: '#212121',
+    backgroundSize: 'cover'
   },
   content: {
     padding: '20px',
     height: '100%',
-    fontSize: '15px'
+    fontSize: '15px',
+    color: '#FFFFFF',
+    fontFamily: 'monospace'
   },
   inputArea: {
     display: 'inline-flex',
     width: '100%'
   },
-  prompt: {
-    paddingTop: '3px'
+  promptLabel: {
+    paddingTop: '3px',
+    color: '#EE9C34'
   },
   input: {
     border: '0',
@@ -28,6 +33,8 @@ export const sourceStyles = {
     width: '100%',
     height: '22px',
     background: 'transparent',
-    fontSize: '15px'
+    fontSize: '15px',
+    color: '#F0BF81',
+    fontFamily: 'monospace'
   }
 }

@@ -193,7 +193,6 @@ export default class Terminal extends Component {
       inputArea: defaults(this.props.inputAreaStyle, sourceStyles.inputArea),
       promptLabel: defaults(this.props.promptLabelStyle, sourceStyles.promptLabel),
       input: defaults(this.props.inputStyle, sourceStyles.input),
-      inputFocus: sourceStyles.inputFocus
     }
 
     return (
@@ -232,7 +231,6 @@ export default class Terminal extends Component {
               name={'react-console-emulator__input'}
               className={this.props.inputClassName}
               style={styles.input}
-              css={styles.inputFocus}
               onKeyDown={this.handleInput}
               disabled={this.props.disableOnProcess && this.state.processing}
               type={'text'}

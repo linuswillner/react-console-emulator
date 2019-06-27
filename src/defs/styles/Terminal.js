@@ -1,4 +1,3 @@
-import { css } from '@emotion/core'
 
 export default {
   container: {
@@ -37,12 +36,7 @@ export default {
     background: 'transparent',
     fontSize: '15px',
     color: '#F0BF81',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
+    outline: 'none', // Fix for outline showing up on some browsers
   },
-  // Fix for outline showing up on some browsers
-  inputFocus: css`
-    &:focus {
-      outline: none;
-    }
-  `
 }

@@ -80,6 +80,7 @@
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.14",
     "@hot-loader/react-dom": "^16.8.6",
     "defaults": "^1.0.3",
     "prop-types": "^15.7.2",

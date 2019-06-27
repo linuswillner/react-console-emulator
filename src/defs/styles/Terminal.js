@@ -1,3 +1,5 @@
+import { css } from '@emotion/core'
+
 export default {
   container: {
     minWidth: '500x',
@@ -36,5 +38,11 @@ export default {
     fontSize: '15px',
     color: '#F0BF81',
     fontFamily: 'monospace'
-  }
+  },
+  // Fix for outline showing up on some browsers
+  inputFocus: css`
+    &:focus {
+      outline: none;
+    }
+  `
 }

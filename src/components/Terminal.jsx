@@ -1,6 +1,9 @@
+/** @jsx jsx */
+
 import React, { Component } from 'react'
 import stringifyObject from 'stringify-object'
 import defaults from 'defaults'
+import { jsx } from '@emotion/core'
 
 // Components
 import TerminalMessage from './TerminalMessage'
@@ -189,7 +192,8 @@ export default class Terminal extends Component {
       content: defaults(this.props.contentStyle, sourceStyles.content),
       inputArea: defaults(this.props.inputAreaStyle, sourceStyles.inputArea),
       promptLabel: defaults(this.props.promptLabelStyle, sourceStyles.promptLabel),
-      input: defaults(this.props.inputStyle, sourceStyles.input)
+      input: defaults(this.props.inputStyle, sourceStyles.input),
+      inputFocus: sourceStyles.inputFocus
     }
 
     return (
@@ -228,6 +232,7 @@ export default class Terminal extends Component {
               name={'react-console-emulator__input'}
               className={this.props.inputClassName}
               style={styles.input}
+              css={styles.inputFocus}
               onKeyDown={this.handleInput}
               disabled={this.props.disableOnProcess && this.state.processing}
               type={'text'}

@@ -37,6 +37,6 @@ export default {
     fontSize: '15px',
     color: '#F0BF81',
     fontFamily: 'monospace',
-    outline: 'none', // Fix for outline showing up on some browsers
-  },
+    outline: 'none' // Fix for outline showing up on some browsers
+  }
 }

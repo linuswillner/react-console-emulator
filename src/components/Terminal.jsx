@@ -1,9 +1,6 @@
-/** @jsx jsx */
-
 import React, { Component } from 'react'
 import stringifyObject from 'stringify-object'
 import defaults from 'defaults'
-import { jsx } from '@emotion/core'
 
 // Components
 import TerminalMessage from './TerminalMessage'

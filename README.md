@@ -5,8 +5,8 @@
 A simple, powerful and highly customisable Unix terminal emulator for React.
 
 [Live demo](https://linuswillner.me/react-console-emulator/)  
-[Configuration guide](docs/config.md)  
-[Command API](docs/api.md)
+[Configuration guide](docs/CONFIG.md)  
+[Command API](docs/API.md)
 
 ## Features
 

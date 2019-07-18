@@ -1,3 +1,11 @@
+# 3.0.2
+
+Fixed command re-validation reliability issues relating to source-identical commands ([#35](https://github.com/js-rcon/react-console-emulator/issues/35))
+
+# 3.0.1
+
+Fixed input outline showing on Safari ([#258](https://github.com/js-rcon/react-console-emulator/pull/258)) ([Herve07h22](https://github.com/Herve07h22))
+
 # 3.0.0
 
 ### Breaking changes

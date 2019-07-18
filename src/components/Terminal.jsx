@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import stringifyObject from 'stringify-object'
 import defaults from 'defaults'
+import isEqual from 'react-fast-compare'
 
 // Components
 import TerminalMessage from './TerminalMessage'
@@ -174,7 +175,7 @@ export default class Terminal extends Component {
     const currentCommands = stringifyObject(this.props.commands)
 
     // If there was a change in commands, re-validate
-    if (oldCommands !== currentCommands) this.validateCommands()
+    if (!isEqual(oldCommands, currentCommands)) this.validateCommands()
   }
 
   componentDidMount () {

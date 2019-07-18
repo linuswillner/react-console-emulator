@@ -46,7 +46,7 @@ module.exports = {
 
   // Production optimisers
   optimization: {
-    minimizer: dev ? [] : [ JSOptimizerConfig, CSSOptimizerConfig ]
+    minimizer: dev ? [] : [JSOptimizerConfig, CSSOptimizerConfig]
   },
 
   // Entry point

@@ -189,7 +189,7 @@ export default class Terminal extends Component {
       content: defaults(this.props.contentStyle, sourceStyles.content),
       inputArea: defaults(this.props.inputAreaStyle, sourceStyles.inputArea),
       promptLabel: defaults(this.props.promptLabelStyle, sourceStyles.promptLabel),
-      input: defaults(this.props.inputStyle, sourceStyles.input),
+      input: defaults(this.props.inputStyle, sourceStyles.input)
     }
 
     return (

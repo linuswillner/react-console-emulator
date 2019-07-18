@@ -19,7 +19,7 @@ export default function validateCommands (commands, helpFn, clearFn, noDefaults)
   if (!noDefaults) validCommands = { ...defaultCommands }
   else validCommands = {}
 
-  for (let c in commands) {
+  for (const c in commands) {
     // Check that command contains a function
     if (typeof commands[c].fn !== 'function') {
       throw new Error(`'fn' property of command '${c}' is invalid; expected 'function', got '${typeof commands[c].fn}'`)

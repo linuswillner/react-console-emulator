@@ -71,7 +71,7 @@
     "react": "^16.9.0",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.12.10",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^7.2.0",
     "skip-if": "^1.1.1",
     "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^1.4.1",

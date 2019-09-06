@@ -74,7 +74,7 @@
     "sass-loader": "^7.3.1",
     "skip-if": "^1.1.1",
     "style-loader": "^0.23.1",
-    "terser-webpack-plugin": "^1.4.1",
+    "terser-webpack-plugin": "^2.0.0",
     "url-loader": "^2.1.0",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8",

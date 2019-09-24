@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/js-rcon/react-console-emulator#readme",
   "devDependencies": {
-    "@babel/cli": "^7.6.0",
+    "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.0",
     "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.5.4",

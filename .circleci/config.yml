@@ -36,6 +36,9 @@ jobs:
           name: Compile to production
           command: npm run build
       - run:
+          name: Add deployment key to known_hosts
+          command: ssh-keyscan -H $DEPLOYMENT_HOST >> ~/.ssh/known_hosts
+      - run:
           name: Deploy code to server
           command: scp -r ./build/* $DEPLOYMENT_USER@$DEPLOYMENT_HOST:$DEPLOYMENT_DIR
 

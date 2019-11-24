@@ -22,8 +22,8 @@ export default class App extends React.Component {
   }
 
   globalProps = {
-    contentStyle: { fontFamily: `'Inconsolata', monospace` },
-    inputStyle: { fontFamily: `'Inconsolata', monospace` }
+    contentStyle: { fontFamily: '\'Inconsolata\', monospace' },
+    inputStyle: { fontFamily: '\'Inconsolata\', monospace' }
   }
 
   commands = {
@@ -100,7 +100,7 @@ export default class App extends React.Component {
                 'You can set a custom background and change all of the colors in the terminal.',
                 'You can even set a custom prompt label.'
               ]}
-              style={{ background: `url('https://i.linuswillner.me/FeTpWiB.jpg')` }} // Terminal background
+              style={{ background: 'url(\'https://i.linuswillner.me/FeTpWiB.jpg\')' }} // Terminal background
               contentStyle={{ color: '#FF8E00' }} // Text colour
               promptLabelStyle={{ color: '#FFFFFF' }} // Prompt label colour
               inputStyle={{ color: 'red' }} // Prompt text colour

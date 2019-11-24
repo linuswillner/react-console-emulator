@@ -67,7 +67,7 @@ export default class Terminal extends Component {
   showWelcomeMessage () {
     const msg = this.props.welcomeMessage
 
-    if (typeof msg === 'boolean') this.pushToStdout(`Welcome to the React terminal! Type 'help' to get a list of commands.`)
+    if (typeof msg === 'boolean') this.pushToStdout('Welcome to the React terminal! Type \'help\' to get a list of commands.')
     else if (Array.isArray(msg)) msg.map(item => this.pushToStdout(item))
     else this.pushToStdout(msg)
   }
@@ -75,7 +75,7 @@ export default class Terminal extends Component {
   showHelp () {
     const { commands } = this.state
 
-    for (let c in commands) {
+    for (const c in commands) {
       const cmdObj = commands[c]
       const usage = cmdObj.usage ? ` - ${cmdObj.usage}` : ''
 

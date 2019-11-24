@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import stringifyObject from 'stringify-object'
 import defaults from 'defaults'
 import isEqual from 'react-fast-compare'
 
@@ -171,11 +170,8 @@ export default class Terminal extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    const oldCommands = stringifyObject(prevProps.commands)
-    const currentCommands = stringifyObject(this.props.commands)
-
     // If there was a change in commands, re-validate
-    if (!isEqual(oldCommands, currentCommands)) this.validateCommands()
+    if (!isEqual(prevProps.commands, this.props.commands)) this.validateCommands()
   }
 
   componentDidMount () {

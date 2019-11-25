@@ -1,3 +1,7 @@
+# 3.0.3
+
+Removed redundant `stringify-object` dependency to properly enable command re-validation based on raw objects alone. This was supposed to have been fixed in 3.0.2, but due to a mishap the old validation was left dangling. This has now been fixed ([#411](https://github.com/js-rcon/react-console-emulator/issues/411))
+
 # 3.0.2
 
 Fixed command re-validation reliability issues relating to source-identical commands ([#35](https://github.com/js-rcon/react-console-emulator/issues/35))

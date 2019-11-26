@@ -42,7 +42,9 @@ export default class Terminal extends Component {
   static propTypes = types
 
   focusTerminal () {
-    this.terminalInput.current.focus()
+    // Only focus the terminal if text isn't being copied
+    const isTextSelected = window.getSelection().type === 'Range'
+    if (!isTextSelected) this.terminalInput.current.focus()
   }
 
   scrollToBottom () {

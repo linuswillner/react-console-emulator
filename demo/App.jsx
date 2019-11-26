@@ -1,7 +1,7 @@
 // react-console-emulator example app
 import React from 'react'
 
-import Terminal from './components/Terminal' // In your app, import from 'react-console-emulator'
+import Terminal from '../lib/Terminal' // In your app, import from 'react-console-emulator'
 import './demo.scss' // Demo only
 
 // Demo only

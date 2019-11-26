@@ -6,12 +6,12 @@ import isEqual from 'react-fast-compare'
 import TerminalMessage from './TerminalMessage'
 
 // Handlers
-import validateCommands from '../handlers/validateCommands'
-import scrollHistory from '../handlers/scrollHistory'
+import validateCommands from './handlers/validateCommands'
+import scrollHistory from './handlers/scrollHistory'
 
 // Definitions
-import sourceStyles from '../defs/styles/Terminal'
-import types from '../defs/types/Terminal'
+import sourceStyles from './defs/styles/Terminal'
+import types from './defs/types/Terminal'
 
 export default class Terminal extends Component {
   constructor (props) {

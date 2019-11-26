@@ -8,7 +8,7 @@ const OptimizeJSWebpackPlugin = require('terser-webpack-plugin')
 const dev = process.env.NODE_ENV !== 'production' || process.argv.indexOf('-p') === -1
 
 const HTMLInjecterConfig = new HTMLWebpackPlugin({
-  template: path.join(__dirname, '/src/index.html'),
+  template: path.join(__dirname, '/demo/index.html'),
   filename: 'index.html',
   inject: 'body'
 })
@@ -52,7 +52,7 @@ module.exports = {
   // Entry point
   entry: [
     'react-hot-loader/patch',
-    path.join(__dirname, '/src/index.jsx')
+    path.join(__dirname, '/demo/index.jsx')
   ],
 
   // Dummies for native Node modules not present in browser scope

@@ -4,16 +4,16 @@ import React from 'react'
 import { shallow, mount, render } from 'enzyme'
 import skipIf from 'skip-if'
 
-import * as src from '../src/components/Terminal'
-import * as prod from '../lib/components/Terminal'
+import * as src from '../lib/Terminal'
+import * as prod from '../dist/Terminal'
 
 let Terminal
 
 if (process.env.PROD_RUN) {
-  console.log('Performing production run, testing version from "lib".')
+  console.log('Performing production run, testing version from "dist".')
   Terminal = prod.default
 } else {
-  console.log('Performing development run, testing version from "src".')
+  console.log('Performing development run, testing version from "lib".')
   Terminal = src.default
 }
 

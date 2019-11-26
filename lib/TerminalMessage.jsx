@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import html from 'react-inner-html'
 
-import types from '../defs/types/TerminalMessage'
-import sourceStyles from '../defs/styles/TerminalMessage'
+import types from './defs/types/TerminalMessage'
+import sourceStyles from './defs/styles/TerminalMessage'
 
 export default class TerminalMessage extends Component {
   static propTypes = types

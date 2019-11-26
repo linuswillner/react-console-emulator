@@ -2,14 +2,14 @@
   "name": "react-console-emulator",
   "version": "3.0.3",
   "description": "A simple terminal emulator component for React. ",
-  "main": "lib/components/Terminal.js",
+  "main": "dist/Terminal.js",
   "files": [
-    "lib/**"
+    "dist/**"
   ],
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack -p",
-    "compile": "babel src --ignore \"src/**/*.scss\",\"src/**/*.html\",\"src/App.jsx\",\"src/index.jsx\" --out-dir lib",
+    "compile": "babel lib --out-dir dist",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "codecov": "codecov --disable=gcov",

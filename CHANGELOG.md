@@ -1,14 +1,18 @@
+# 3.0.4
+
+Fixed a bug preventing users from selecting text in the terminal output ([#414](https://github.com/js-rcon/react-console-emulator/issues/414)).
+
 # 3.0.3
 
-Removed redundant `stringify-object` dependency to properly enable command re-validation based on raw objects alone. This was supposed to have been fixed in 3.0.2, but due to a mishap the old validation was left dangling. This has now been fixed ([#411](https://github.com/js-rcon/react-console-emulator/issues/411))
+Removed redundant `stringify-object` dependency to properly enable command re-validation based on raw objects alone. This was supposed to have been fixed in 3.0.2, but due to a mishap the old validation was left dangling. This has now been fixed ([#411](https://github.com/js-rcon/react-console-emulator/issues/411)).
 
 # 3.0.2
 
-Fixed command re-validation reliability issues relating to source-identical commands ([#35](https://github.com/js-rcon/react-console-emulator/issues/35))
+Fixed command re-validation reliability issues relating to source-identical commands ([#35](https://github.com/js-rcon/react-console-emulator/issues/35)).
 
 # 3.0.1
 
-Fixed input outline showing on Safari ([#258](https://github.com/js-rcon/react-console-emulator/pull/258)) ([Herve07h22](https://github.com/Herve07h22))
+Fixed input outline showing on Safari ([#258](https://github.com/js-rcon/react-console-emulator/pull/258)) ([Herve07h22](https://github.com/Herve07h22)).
 
 # 3.0.0
 

@@ -134,21 +134,15 @@ describe('Terminal user interactivity', () => {
   }
 
   async function getStdout (whichTerminal) {
-    const output = await page.evaluate(whichTerminal => {
-      const elements = Array.from(document.querySelectorAll('[name="react-console-emulator__content"]'))
-      return elements[whichTerminal || 0].innerText.trim().replace(/\n/gi, '|')
-    })
-
-    return output
+    const element = (await page.$$('[name="react-console-emulator__content"]'))[whichTerminal || 0]
+    const rawOutput = await (await element.getProperty('innerText')).jsonValue()
+    return rawOutput.trim().replace(/\n/gi, '|')
   }
 
   async function getInputValue (whichTerminal) {
-    const output = await page.evaluate(whichTerminal => {
-      const elements = Array.from(document.querySelectorAll('[name="react-console-emulator__input"]'))
-      return elements[whichTerminal || 0].value
-    })
-
-    return output
+    const element = (await page.$$('[name="react-console-emulator__input"]'))[whichTerminal || 0]
+    const input = await (await element.getProperty('value')).jsonValue()
+    return input
   }
 
   async function clearStdout () {

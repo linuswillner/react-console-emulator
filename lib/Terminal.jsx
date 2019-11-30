@@ -41,12 +41,14 @@ export default class Terminal extends Component {
 
   static propTypes = types
 
+  /* istanbul ignore next: Covered by interactivity tests */
   focusTerminal () {
     // Only focus the terminal if text isn't being copied
     const isTextSelected = window.getSelection().type === 'Range'
     if (!isTextSelected) this.terminalInput.current.focus()
   }
 
+  /* istanbul ignore next: Covered by interactivity tests */
   scrollToBottom () {
     const rootNode = this.terminalRoot.current
 
@@ -73,6 +75,7 @@ export default class Terminal extends Component {
     else this.pushToStdout(msg)
   }
 
+  /* istanbul ignore next: Covered by interactivity tests */
   showHelp () {
     const { commands } = this.state
 
@@ -89,6 +92,7 @@ export default class Terminal extends Component {
 
     stdout.push(message)
 
+    /* istanbul ignore if: Covered by interactivity tests */
     if (rawInput) { // Only supplied if history is enabled
       history.push(rawInput)
       this.setState({ stdout: stdout, history: history, historyPosition: null })
@@ -101,15 +105,18 @@ export default class Terminal extends Component {
     return this.state.stdout.map((line, i) => <TerminalMessage key={i} content={line} />)
   }
 
+  /* istanbul ignore next: Covered by interactivity tests */
   clearStdout () {
     this.setState({ stdout: [] })
   }
 
+  /* istanbul ignore next: Covered by interactivity tests */
   clearInput () {
     this.setState({ historyPosition: null })
     this.terminalInput.current.value = ''
   }
 
+  /* istanbul ignore next: Covered by interactivity tests */
   processCommand () {
     this.setState({ processing: true }, () => {
       // Initialise command result object
@@ -150,6 +157,7 @@ export default class Terminal extends Component {
     })
   }
 
+  /* istanbul ignore next: Covered by interactivity tests */
   scrollHistory (direction) {
     const toUpdate = scrollHistory(
       direction,
@@ -163,6 +171,7 @@ export default class Terminal extends Component {
     this.setState(toUpdate)
   }
 
+  /* istanbul ignore next: Covered by interactivity tests */
   handleInput (event) {
     switch (event.key) {
       case 'Enter': this.processCommand(); break
@@ -179,6 +188,7 @@ export default class Terminal extends Component {
   componentDidMount () {
     this.validateCommands()
     if (this.props.welcomeMessage) this.showWelcomeMessage()
+    /* istanbul ignore next: Covered by interactivity tests */
     if (this.props.autoFocus) this.focusTerminal()
   }
 
@@ -228,9 +238,12 @@ export default class Terminal extends Component {
               className={this.props.inputClassName}
               style={styles.input}
               onKeyDown={this.handleInput}
-              disabled={this.props.disableOnProcess && this.state.processing}
               type={'text'}
               autoComplete={'off'}
+              disabled={
+                this.props.disableOnProcess &&
+                /* istanbul ignore next: Covered by interactivity tests */ this.state.processing
+              }
             />
           </div>
         </div>

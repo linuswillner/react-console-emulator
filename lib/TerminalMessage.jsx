@@ -15,7 +15,7 @@ export default class TerminalMessage extends Component {
     }
 
     return this.props.dangerMode
-      ? <p style={styles.message} {...html(content)}/>
-      : <p style={styles.message}>{content}</p>
+      ? <div style={styles.message} {...html(content)}/>
+      : <div style={styles.message}>{content}</div>
   }
 }

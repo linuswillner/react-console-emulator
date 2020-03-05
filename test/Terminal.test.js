@@ -154,7 +154,7 @@ describe('Terminal user interactivity', () => {
     await enterCommand()
     const output = await getStdout()
 
-    expect(output).toBe('$||$')
+    expect(output).toBe('$|$')
     await clearStdout()
   })
 
@@ -162,7 +162,7 @@ describe('Terminal user interactivity', () => {
     await enterCommand('doot')
     const output = await getStdout()
 
-    expect(output.split('||')[1]).toBe('Command \'doot\' not found!')
+    expect(output.split('|')[1]).toBe('Command \'doot\' not found!')
     await clearStdout()
   })
 
@@ -170,7 +170,7 @@ describe('Terminal user interactivity', () => {
     await enterCommand('echo test')
     const output = await getStdout()
 
-    expect(output.split('||')[1]).toBe('test')
+    expect(output.split('|')[1]).toBe('test')
     await clearStdout()
   })
 
@@ -178,7 +178,7 @@ describe('Terminal user interactivity', () => {
     await enterCommand('help')
     const output = await getStdout()
 
-    expect(output.split('||')[1]).toBe('help - Show a list of available commands.')
+    expect(output.split('|')[1]).toBe('help - Show a list of available commands.')
     await clearStdout()
   })
 

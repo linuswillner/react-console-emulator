@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, no-unused-vars */
 
 import React from 'react'
 import { shallow, mount, render } from 'enzyme'

@@ -48,7 +48,7 @@ The terminal has several options you can use to change the behaviour of it.
 | dangerMode | Enable parsing of HTML in terminal messages. | Boolean | `false` |
 | disableOnProcess | Disable input to the terminal during command execution. | Boolean | `false` |
 | noDefaults | Do not register any default commands (`help` and `clear`). | Boolean | `false` |
-| noAutomaticStdout | Disable *nix-like displaying of the entered command before the result of it. | Boolean | `false` |
+| noEchoBack | Disable command echoes (The terminal outputs of the commands entered). | Boolean | `false` |
 | noHistory | Disable the storing and scrolling of history of the commands entered in the terminal. | Boolean | `false`
 | noAutoScroll | Do not automatically scroll to the bottom of the terminal when a command is executed (*nix-like). | Boolean | `false`
 

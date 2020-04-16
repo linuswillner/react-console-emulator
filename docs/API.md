@@ -80,7 +80,7 @@ Per standard, the terminal operates in the following way when a command is enter
 - The [handleInput](../lib/Terminal.jsx#L164) function behaves as follows:
   - If the either up or down arrow was pressed, [scrollHistory](../lib/Terminal.jsx#L151) is called with either `up` or `down` as a parameter, corresponding to the arrow key that was pressed.
   - If the Enter key was pressed, [processCommand](../lib/Terminal.jsx#111) is called.
-- Following the Enter path, if automatic output isn't disabled via the `noAutomaticStdout` prop, [pushToStdout](../lib/Terminal.jsx#L85) is called for the first time. This echoes the command that was entered into the terminal verbatim to mimic a UNIX terminal.
+- Following the Enter path, if automatic output isn't disabled via the `noEchoBack` prop, [pushToStdout](../lib/Terminal.jsx#L85) is called for the first time. This echoes the command that was entered into the terminal verbatim to mimic a UNIX terminal.
   - If history isn't disabled via the `noHistory` prop, the entered command is also stored in the history at this stage.
 - If the input isn't empty, command processing begins.
   - If the command doesn't exist, an error message is pushed to the output. If a custom error text is set via the `errorText` prop, it takes precedence over the default one.

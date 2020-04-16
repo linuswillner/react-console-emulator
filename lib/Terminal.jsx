@@ -33,6 +33,7 @@ export default class Terminal extends Component {
     this.showWelcomeMessage = this.showWelcomeMessage.bind(this)
     this.showHelp = this.showHelp.bind(this)
     this.pushToStdout = this.pushToStdout.bind(this)
+    this.pushToHistory = this.pushToHistory.bind(this)
     this.getStdout = this.getStdout.bind(this)
     this.clearStdout = this.clearStdout.bind(this)
     this.processCommand = this.processCommand.bind(this)
@@ -87,22 +88,39 @@ export default class Terminal extends Component {
     }
   }
 
-  pushToStdout (message, rawInput) {
-    const { stdout, history } = this.state
+  /**
+   * @param {String} message
+   * @param {Object} options {
+   *  rawInput: Raw input from the terminal (For history)
+   *  isEcho: For distinguishing echo messages (Exemption from message styling)
+   * }
+   */
+  pushToStdout (message, options) {
+    const { stdout } = this.state
+    stdout.push({ message, isEcho: options && options.isEcho })
 
-    stdout.push(message)
+    if (options && options.rawInput) this.pushToHistory(options.rawInput)
+    this.setState({ stdout: stdout })
+  }
 
-    /* istanbul ignore if: Covered by interactivity tests */
-    if (rawInput) { // Only supplied if history is enabled
-      history.push(rawInput)
-      this.setState({ stdout: stdout, history: history, historyPosition: null })
-    } else {
-      this.setState({ stdout: stdout })
-    }
+  /**
+   * @param {String} rawInput Raw command input from the terminal
+   */
+  pushToHistory (rawInput) {
+    const { history } = this.state
+    history.push(rawInput)
+    this.setState({ history: history, historyPosition: null })
   }
 
   getStdout () {
-    return this.state.stdout.map((line, i) => <TerminalMessage key={i} content={line} />)
+    return this.state.stdout.map((line, i) => {
+      return <TerminalMessage
+        key={i}
+        content={line.message}
+        className={!line.isEcho ? this.props.messageClassName : undefined}
+        style={!line.isEcho ? this.props.messageStyle : undefined}
+      />
+    })
   }
 
   /* istanbul ignore next: Covered by interactivity tests */
@@ -123,9 +141,13 @@ export default class Terminal extends Component {
       const commandResult = { command: null, args: [], rawInput: null, result: null }
       const rawInput = this.terminalInput.current.value
 
-      if (!this.props.noAutomaticStdout) {
-        if (!this.props.noHistory) this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`, rawInput)
-        else this.pushToStdout(`${this.props.promptLabel || '$'} ${rawInput}`)
+      if (!this.props.noHistory) this.pushToHistory(rawInput)
+
+      if (!this.props.noEchoBack) {
+        // Mimic native terminal by echoing command back
+        // Also exempt it from message since it should not really be a message despite behaving like one
+        const echo = `${this.props.promptLabel || '$'} ${rawInput}`
+        this.pushToStdout(echo, { isEcho: true })
       }
 
       if (rawInput) {
@@ -164,8 +186,7 @@ export default class Terminal extends Component {
       this.state.history,
       this.state.historyPosition,
       this.state.previousHistoryPosition,
-      this.terminalInput,
-      this.props.noAutomaticStdout
+      this.terminalInput
     )
 
     this.setState(toUpdate)
@@ -232,6 +253,7 @@ export default class Terminal extends Component {
               {this.props.promptLabel || '$'}
             </span>
             {/* Input */}
+            {/* TODO: Fix that random bug where the cursor ends up at the beginning of the line instead of at the end */}
             <input
               ref={this.terminalInput}
               name={'react-console-emulator__input'}

@@ -47,10 +47,11 @@ The terminal has several options you can use to change the behaviour of it.
 | autoFocus | Focus the terminal on page load. | Boolean | `false` |
 | dangerMode | Enable parsing of HTML in terminal messages. | Boolean | `false` |
 | disableOnProcess | Disable input to the terminal during command execution. | Boolean | `false` |
+| styleEchoBack | Style command echoes (The terminal outputs of the commands entered) as regular terminal messages. | Boolean | `false` |
 | noDefaults | Do not register any default commands (`help` and `clear`). | Boolean | `false` |
 | noEchoBack | Disable command echoes (The terminal outputs of the commands entered). | Boolean | `false` |
-| noHistory | Disable the storing and scrolling of history of the commands entered in the terminal. | Boolean | `false`
-| noAutoScroll | Do not automatically scroll to the bottom of the terminal when a command is executed (*nix-like). | Boolean | `false`
+| noHistory | Disable the storing and scrolling of history of the commands entered in the terminal. | Boolean | `false` |
+| noAutoScroll | Do not automatically scroll to the bottom of the terminal when a command is executed (*nix-like). | Boolean | `false` |
 
 ### Re-styling
 
@@ -65,5 +66,6 @@ The default styles for the terminal can be found in [src/defs/styles/Terminal.js
 | inputAreaStyle / inputAreaClassName | Input area element (Container for prompt label and input field). |
 | promptLabelStyle / promptLabelClassName | Prompt label (The prefix for the input). |
 | inputStyle / inputClassName | Text input field. |
+| messageStyle / messageClassName | Terminal messages (Incl. command echoes if enabled via the `styleEchoBack` prop). |
 
 Examples on how to override the terminal styles can be found in [src/App.jsx](../src/App.jsx).

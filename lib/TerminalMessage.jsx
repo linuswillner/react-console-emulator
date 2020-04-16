@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import html from 'react-inner-html'
+import defaults from 'defaults'
 
 import types from './defs/types/TerminalMessage'
 import sourceStyles from './defs/styles/TerminalMessage'
@@ -8,14 +9,14 @@ export default class TerminalMessage extends Component {
   static propTypes = types
 
   render () {
-    const { content } = this.props
+    const { content, style, className } = this.props
 
     const styles = {
-      message: sourceStyles
+      message: defaults(style, sourceStyles)
     }
 
     return this.props.dangerMode
-      ? <div style={styles.message} {...html(content)}/>
-      : <div style={styles.message}>{content}</div>
+      ? <div className={className} style={styles.message} {...html(content)}/>
+      : <div className={className} style={styles.message}>{content}</div>
   }
 }

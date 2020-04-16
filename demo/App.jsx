@@ -114,7 +114,12 @@ export default class App extends React.Component {
               {...this.globalProps}
               ref={this.terminal}
               commands={this.manualPushCommands}
-              welcomeMessage={'This terminal uses manual pushing, yet works as any normal terminal. Check the help command for more information.'}
+              messageStyle={{ color: 'red' }} // Message colour
+              noEchoBack={true}
+              welcomeMessage={[
+                'This terminal uses manual pushing, yet works as any normal terminal. Check the help command for more information.',
+                'This terminal also has custom message styling.'
+              ]}
             />
           </DemoTile>
           <DemoTile>

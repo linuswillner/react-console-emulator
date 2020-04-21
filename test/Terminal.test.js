@@ -75,7 +75,7 @@ describe('Terminal HTML structure', () => {
 
 describe('Terminal welcome messages', () => {
   it('Displays default welcome', () => {
-    const wrapper = mount(<Terminal commands={commands} welcomeMessage={true}/>)
+    const wrapper = mount(<Terminal commands={commands} welcomeMessage/>)
     const content = wrapper.find('[name="react-console-emulator__content"]')
 
     expect(content.childAt(0).text()).toBe('Welcome to the React terminal! Type \'help\' to get a list of commands.')
@@ -84,7 +84,7 @@ describe('Terminal welcome messages', () => {
   })
 
   it('Displays custom welcomes', () => {
-    const wrapperSingle = mount(<Terminal commands={commands} welcomeMessage={'test'}/>)
+    const wrapperSingle = mount(<Terminal commands={commands} welcomeMessage='test'/>)
     const wrapperMulti = mount(<Terminal commands={commands} welcomeMessage={['test', 'test2']}/>)
 
     const singleContent = wrapperSingle.find('[name="react-console-emulator__content"]')
@@ -115,7 +115,7 @@ describe('Terminal functionality', () => {
   })
 
   it('Registers new default commands', () => {
-    const wrapper = mount(<Terminal commands={newDefaultCommands} noDefaults={true}/>)
+    const wrapper = mount(<Terminal commands={newDefaultCommands} noDefaults/>)
 
     expect(wrapper.state().commands).toHaveProperty('validation')
     expect(wrapper.state().commands).toHaveProperty('help')

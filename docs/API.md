@@ -33,10 +33,10 @@ If you terminal deals with HTTP requests or cross-component functionality, you m
 To do this, you can use the [React refs API](https://reactjs.org/docs/refs-and-the-dom.html). Below is an example component that uses async pushing.
 
 ```jsx
-import React from 'react'
+import React, { Component } from 'react'
 import Terminal from 'react-console-emulator'
 
-class MyTerminal extends React.Component {
+class MyTerminal extends Component {
   constructor (props) {
     super(props)
     this.terminal = React.createRef()

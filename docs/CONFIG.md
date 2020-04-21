@@ -35,7 +35,7 @@ The different labels used by the terminal can be easily changed via the followin
 | Prop | Description | Type | Default |
 | ---- | ----------- | ---- | ------- |
 | welcomeMessage | The terminal welcome message. Set to `false` to disable, `true` to show the default, or supply a string (Or an array of them) to set a custom one. | Boolean/String/Array<String\> | `false` |
-| promptLabel | The prefix to use for the input field. | String | `$` |
+| promptLabel | The prefix to use for the input field. Can be either string or element. | Node | `$` |
 | errorText | The text to display when a command does not exist. Use the `[command]` placeholder for input substitution. | String | `Command '[command]' not found!` |
 
 ### Options

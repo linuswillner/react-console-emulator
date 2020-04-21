@@ -47,11 +47,12 @@ The terminal has several options you can use to change the behaviour of it.
 | autoFocus | Focus the terminal on page load. | Boolean | `false` |
 | dangerMode | Enable parsing of HTML in terminal messages. | Boolean | `false` |
 | disableOnProcess | Disable input to the terminal during command execution. | Boolean | `false` |
-| styleEchoBack | Style command echoes (The terminal outputs of the commands entered) as regular terminal messages. | Boolean | `false` |
-| noDefaults | Do not register any default commands (`help` and `clear`). | Boolean | `false` |
-| noEchoBack | Disable command echoes (The terminal outputs of the commands entered). | Boolean | `false` |
+| styleEchoBack | Style command echoes (Terminal outputs of any commands entered) as regular terminal messages. | Boolean | `false` |
+| noDefaults | Do not register the default commands (`help` and `clear`). Useful if you want to override the functionality of either. | Boolean | `false` |
+| noEchoBack | Disable command echoes (Terminal outputs of any commands entered). | Boolean | `false` |
 | noHistory | Disable the storing and scrolling of history of the commands entered in the terminal. | Boolean | `false` |
-| noAutoScroll | Do not automatically scroll to the bottom of the terminal when a command is executed (*nix-like). | Boolean | `false` |
+| noAutoScroll | Disable automatic scrolling to the bottom of the terminal when a command is executed (*nix-like). | Boolean | `false` |
+| noNewlineParsing | Disable the parsing line breaks (\n) in command outputs as separate message, leave them unchanged. | Boolean | `false` |
 
 ### Re-styling
 

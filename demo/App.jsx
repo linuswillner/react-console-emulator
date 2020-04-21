@@ -95,9 +95,33 @@ export default class App extends Component {
               {...globalProps}
               commands={commands}
               welcomeMessage={[
-                'The terminal keeps track of your commands (Unless disabled) and allows you to recall them.',
-                'Try running some now and use the up and down arrow keys to navigate your history.'
+                'The terminal also keeps track of your commands and allows you to recall them. Use the up and down arrow keys to navigate your history.'
               ]}
+            />
+          </Tile>
+        </Row>
+        <Row>
+          {/* EOL parsing enabled */}
+          <Tile>
+            <Terminal
+              {...globalProps}
+              commands={commands}
+              welcomeMessage={[
+                'This terminal parses LF line breaks (\\\u200Bn).',
+                'Try putting some line breaks in the echo command and see what happens!'
+              ]}
+            />
+          </Tile>
+          {/* EOL parsing disabled */}
+          <Tile>
+            <Terminal
+              {...globalProps}
+              commands={commands}
+              welcomeMessage={[
+                'This terminal does not parse line breaks.',
+                'Try putting some line breaks in the echo command and see what happens!'
+              ]}
+              noNewlineParsing
             />
           </Tile>
         </Row>

@@ -85,7 +85,8 @@
     "eslint-config-standard-react": "^9.2.0",
     "prop-types": "^15.7.2",
     "react-fast-compare": "^3.0.1",
-    "react-inner-html": "^1.0.1"
+    "react-inner-html": "^1.0.1",
+    "react-innertext": "^1.1.5"
   },
   "peerDependencies": {
     "react": "^16.3.0",

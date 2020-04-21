@@ -8,6 +8,7 @@ import TerminalMessage from './TerminalMessage'
 // Handlers
 import validateCommands from './handlers/validateCommands'
 import scrollHistory from './handlers/scrollHistory'
+import parseEOL from './handlers/parseEOL'
 
 // Definitions
 import sourceStyles from './defs/styles/Terminal'
@@ -113,7 +114,10 @@ export default class Terminal extends Component {
   }
 
   getStdout () {
-    return this.state.stdout.map((line, i) => {
+    // Parse EOL if it isn't disabled
+    const stdout = !this.props.noNewlineParsing ? parseEOL(this.state.stdout) : this.state.stdout
+
+    return stdout.map((line, i) => {
       return <TerminalMessage
         key={i}
         content={line.message}

@@ -1,139 +1,108 @@
 // react-console-emulator example app
-import React from 'react'
-
-import Terminal from '../lib/Terminal' // In your app, import from 'react-console-emulator'
-import './demo.scss' // Demo only
+import React, { Component } from 'react'
 
 // Demo only
-class DemoTile extends React.Component {
-  render () {
-    return (
-      <div className={'terminal'}>
-        {this.props.children}
-      </div>
-    )
-  }
-}
+import './extra/demo.scss'
+import config from './extra/config'
+import Header from './extra/components/Header'
+import Tile from './extra/components/Tile'
+import Row from './extra/components/Row'
+import Footer from './extra/components/Footer'
 
-export default class App extends React.Component {
+import Terminal from '../lib/Terminal' // In your app, import from 'react-console-emulator'
+
+export default class App extends Component {
   constructor (props) {
     super(props)
     this.terminal = React.createRef()
   }
 
-  globalProps = {
-    contentStyle: { fontFamily: '\'Inconsolata\', monospace' },
-    inputStyle: { fontFamily: '\'Inconsolata\', monospace' }
-  }
-
-  commands = {
-    echo: {
-      description: 'Echo a passed string.',
-      usage: 'echo <string>',
-      fn: function () {
-        return `${Array.from(arguments).join(' ')}`
-      }
-    },
-    danger: {
-      description: 'This command returns HTML. It will only work with terminals that have dangerous mode.',
-      fn: () => 'I can<br/>use HTML in this<br/>and it will be parsed'
-    }
-  }
-
-  newDefaultCommands = {
-    help: {
-      description: 'Custom help command.',
-      fn: () => 'This help command was assigned with the help of noDefaults.'
-    }
-  }
-
-  manualPushCommands = {
-    wait: {
-      description: 'Waits 1000 ms and then pushes content to the output like any command.',
-      fn: () => {
-        const terminal = this.terminal.current
-        setTimeout(() => terminal.pushToStdout('Tada! 1000 ms passed!'), 1000)
-        return 'Running, please wait...'
-      }
-    }
-  }
-
   render () {
+    const { globalProps, commands, newDefaultCommands, manualPushCommands } = config
+
     return (
-      <div>
-        <div className={'demo'}>
-          <DemoTile>
+      <main>
+        <Header/>
+        <Row>
+          {/* Minimum viable terminal with autofocus on page load */}
+          <Tile>
             <Terminal
-              {...this.globalProps}
-              commands={this.commands}
+              {...globalProps}
+              commands={commands}
+              autoFocus
             />
-          </DemoTile>
-          <DemoTile>
+          </Tile>
+          {/* Using the default welcome message */}
+          <Tile>
             <Terminal
-              {...this.globalProps}
-              commands={this.commands}
-              welcomeMessage={true}
+              {...globalProps}
+              commands={commands}
+              welcomeMessage
             />
-          </DemoTile>
-        </div>
-        <div className={'demo'}>
-          <DemoTile>
+          </Tile>
+        </Row>
+        <Row>
+          {/* Using custom welcome message as an array, with default command overrides and custom error message + command callback */}
+          <Tile>
             <Terminal
-              {...this.globalProps}
-              commands={this.newDefaultCommands}
+              {...globalProps}
+              commands={newDefaultCommands}
               welcomeMessage={[
-                'This terminal is automatically focused on page load and has no default commands. It also has a custom error message.',
-                'Commands entered in this terminal will get their results output to the console via the command callback.'
+                'This terminal has no default commands and a custom error message when a command cannot be found.',
+                'Commands entered in this terminal will get their results output to the console via the command callback. See it by pressing F12.'
               ]}
-              autoFocus={true}
-              noDefaults={true}
+              noDefaults
               errorText={'I couldn\'t find a command called [command]!'} // The [command] placeholder is replaced at runtime with the input name
               commandCallback={commandResult => console.log('Command executed, result:', commandResult)}
             />
-          </DemoTile>
-          <DemoTile>
+          </Tile>
+          {/* Using custom styles on the terminal elements (Incl. restyling the background) and JSX as prompt label */}
+          <Tile>
             <Terminal
-              {...this.globalProps}
-              commands={this.commands}
+              {...globalProps}
+              commands={commands}
               welcomeMessage={[
                 'The terminal is extensively customisable.',
                 'You can set a custom background and change all of the colors in the terminal.',
                 'You can even set a custom prompt label.'
               ]}
-              style={{ background: 'url(\'https://i.linuswillner.me/FeTpWiB.jpg\')' }} // Terminal background
+              style={{ background: 'url(\'https://storage.needpix.com/rsynced_images/abstract-wallpaper-1442844111BON.jpg\')' }} // Terminal BG
               contentStyle={{ color: '#FF8E00' }} // Text colour
               promptLabelStyle={{ color: '#FFFFFF' }} // Prompt label colour
               inputStyle={{ color: 'red' }} // Prompt text colour
-              promptLabel={'admin@demo:~$'}
+              promptLabel={<b>root@React:~$</b>}
             />
-          </DemoTile>
-        </div>
-        <div className={'demo'}>
-          <DemoTile>
+          </Tile>
+        </Row>
+        <Row>
+          {/* Using manual pushing with no echo back (Done via the manual push commands) and custom terminal message colours */}
+          <Tile>
             <Terminal
-              {...this.globalProps}
+              {...globalProps}
               ref={this.terminal}
-              commands={this.manualPushCommands}
+              commands={manualPushCommands}
               messageStyle={{ color: 'red' }} // Message colour
-              noEchoBack={true}
+              noEchoBack
               welcomeMessage={[
                 'This terminal uses manual pushing, yet works as any normal terminal. Check the help command for more information.',
                 'This terminal also has custom message styling.'
               ]}
             />
-          </DemoTile>
-          <DemoTile>
+          </Tile>
+          {/* History demo */}
+          <Tile>
             <Terminal
-              {...this.globalProps}
-              commands={this.commands}
+              {...globalProps}
+              commands={commands}
               welcomeMessage={[
                 'The terminal keeps track of your commands (Unless disabled) and allows you to recall them.',
                 'Try running some now and use the up and down arrow keys to navigate your history.'
               ]}
             />
-          </DemoTile>
-        </div>
-      </div>
+          </Tile>
+        </Row>
+        <Footer/>
+      </main>
     )
   }
 }

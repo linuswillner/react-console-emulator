@@ -146,7 +146,8 @@ export default class Terminal extends Component {
       if (!this.props.noEchoBack) {
         // Mimic native terminal by echoing command back
         // Also exempt it from message since it should not really be a message despite behaving like one
-        const echo = `${this.props.promptLabel || '$'} ${rawInput}`
+        // Containing it in a span to allow JSX values in the prompt label
+        const echo = <span>{this.props.promptLabel || '$'} {rawInput}</span>
         this.pushToStdout(echo, { isEcho: true })
       }
 
@@ -181,13 +182,14 @@ export default class Terminal extends Component {
 
   /* istanbul ignore next: Covered by interactivity tests */
   scrollHistory (direction) {
-    const toUpdate = scrollHistory(
-      direction,
-      this.state.history,
-      this.state.historyPosition,
-      this.state.previousHistoryPosition,
-      this.terminalInput
-    )
+    const { history, historyPosition, previousHistoryPosition } = this.state
+
+    const toUpdate = scrollHistory(direction, {
+      history,
+      historyPosition,
+      previousHistoryPosition,
+      terminalInput: this.terminalInput
+    })
 
     this.setState(toUpdate)
   }
@@ -225,14 +227,14 @@ export default class Terminal extends Component {
     return (
       <div
         ref={this.terminalRoot}
-        name={'react-console-emulator'}
+        name='react-console-emulator'
         className={this.props.className}
         style={styles.container}
         onClick={this.focusTerminal}
       >
         {/* Content */}
         <div
-          name={'react-console-emulator__content'}
+          name='react-console-emulator__content'
           className={this.props.contentClassName}
           style={styles.content}
         >
@@ -240,13 +242,13 @@ export default class Terminal extends Component {
           {this.getStdout()}
           {/* Input area */}
           <div
-            name={'react-console-emulator__inputArea'}
+            name='react-console-emulator__inputArea'
             className={this.props.inputAreaClassName}
             style={styles.inputArea}
           >
             {/* Prompt label */}
             <span
-              name={'react-console-emulator__promptLabel'}
+              name='react-console-emulator__promptLabel'
               className={this.props.promptLabelClassName}
               style={styles.promptLabel}
             >
@@ -256,12 +258,12 @@ export default class Terminal extends Component {
             {/* TODO: Fix that random bug where the cursor ends up at the beginning of the line instead of at the end */}
             <input
               ref={this.terminalInput}
-              name={'react-console-emulator__input'}
+              name='react-console-emulator__input'
               className={this.props.inputClassName}
               style={styles.input}
               onKeyDown={this.handleInput}
-              type={'text'}
-              autoComplete={'off'}
+              type='text'
+              autoComplete='off'
               disabled={
                 this.props.disableOnProcess &&
                 /* istanbul ignore next: Covered by interactivity tests */ this.state.processing

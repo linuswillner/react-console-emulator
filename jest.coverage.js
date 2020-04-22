@@ -3,6 +3,6 @@ module.exports = {
   preset: 'jest-puppeteer',
   setupFilesAfterEnv: ['<rootDir>/test/setupTests.js'],
   collectCoverage: true,
-  collectCoverageFrom: ['<rootDir>/lib/Terminal.jsx'],
+  collectCoverageFrom: ['<rootDir>/src/Terminal.jsx'],
   coverageDirectory: './coverage/'
 }

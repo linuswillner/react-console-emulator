@@ -9,7 +9,7 @@ import Tile from './extra/components/Tile'
 import Row from './extra/components/Row'
 import Footer from './extra/components/Footer'
 
-import Terminal from '../lib/Terminal' // In your app, import from 'react-console-emulator'
+import Terminal from '../src/Terminal' // In your app, import from 'react-console-emulator'
 
 export default class App extends Component {
   constructor (props) {

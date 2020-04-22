@@ -1,5 +1,5 @@
 demo
-lib
+src
 coverage
 test
 .circleci

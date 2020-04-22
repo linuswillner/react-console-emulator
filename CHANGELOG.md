@@ -36,7 +36,7 @@ The following style-related props have been removed and replaced:
 + inputStyle
 ```
 
-Instead of having a unique prop for styling only some parts of the terminal elements, every style aspect is now overridable. Any styles defines in [lib/defs/styles/Terminal.js](lib/defs/styles/Terminal.js) can be overridden via the new props. See [the guide](docs/CONFIG.md#re-styling) for more details.
+Instead of having a unique prop for styling only some parts of the terminal elements, every style aspect is now overridable. Any styles defines in [src/defs/styles/Terminal.js](src/defs/styles/Terminal.js) can be overridden via the new props. See [the guide](docs/CONFIG.md#re-styling) for more details.
 
 ### Other changes
 

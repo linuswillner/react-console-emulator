@@ -76,15 +76,15 @@ The only notable caveat of this method is the breaking of component encapsulatio
 
 Per standard, the terminal operates in the following way when a command is entered. You can hook into these processes when the terminal is exposed via the refs API.
 
-- A key event triggers the [handleInput](../lib/Terminal.jsx#L164) function.
-- The [handleInput](../lib/Terminal.jsx#L164) function behaves as follows:
-  - If the either up or down arrow was pressed, [scrollHistory](../lib/Terminal.jsx#L151) is called with either `up` or `down` as a parameter, corresponding to the arrow key that was pressed.
-  - If the Enter key was pressed, [processCommand](../lib/Terminal.jsx#111) is called.
-- Following the Enter path, if automatic output isn't disabled via the `noEchoBack` prop, [pushToStdout](../lib/Terminal.jsx#L85) is called for the first time. This echoes the command that was entered into the terminal verbatim to mimic a UNIX terminal.
+- A key event triggers the [handleInput](../src/Terminal.jsx#L164) function.
+- The [handleInput](../src/Terminal.jsx#L164) function behaves as follows:
+  - If the either up or down arrow was pressed, [scrollHistory](../src/Terminal.jsx#L151) is called with either `up` or `down` as a parameter, corresponding to the arrow key that was pressed.
+  - If the Enter key was pressed, [processCommand](../src/Terminal.jsx#111) is called.
+- Following the Enter path, if automatic output isn't disabled via the `noEchoBack` prop, [pushToStdout](../src/Terminal.jsx#L85) is called for the first time. This echoes the command that was entered into the terminal verbatim to mimic a UNIX terminal.
   - If history isn't disabled via the `noHistory` prop, the entered command is also stored in the history at this stage.
 - If the input isn't empty, command processing begins.
   - If the command doesn't exist, an error message is pushed to the output. If a custom error text is set via the `errorText` prop, it takes precedence over the default one.
   - If the command exists, the command function is executed and the return value of that function is pushed to the terminal (Without storing the return value in history). If the `explicitExec` property on the command object is truthy, the function will explicitly execute a second time after the output being sent.
-- The [clearInput](../lib/Terminal.jsx#L106) function is called.
+- The [clearInput](../src/Terminal.jsx#L106) function is called.
 - If automatic scrolling isn't disabled via the `noAutoScroll` prop, the terminal will scroll to the bottom of the output.
 - If a command callback function is defined via the `commandCallback` prop, it is called at this stage.

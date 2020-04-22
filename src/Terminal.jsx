@@ -195,7 +195,8 @@ export default class Terminal extends Component {
       terminalInput: this.terminalInput
     })
 
-    this.setState(toUpdate)
+    // Only update if there is something to update
+    if (toUpdate) this.setState(toUpdate)
   }
 
   /* istanbul ignore next: Covered by interactivity tests */

@@ -24,7 +24,7 @@ const optionTypes = {
   noEchoBack: PropTypes.bool,
   noHistory: PropTypes.bool,
   noAutoScroll: PropTypes.bool,
-  noNewlineParsing: PropTypes.bool,
+  noNewlineParsing: PropTypes.bool
 }
 
 const labelTypes = {

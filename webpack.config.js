@@ -1,9 +1,13 @@
+require('colors')
 const path = require('path')
 const webpack = require('webpack')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const ExtractCSSWebpackPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 const OptimizeJSWebpackPlugin = require('terser-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin')
+const ErrorOverlayWebpackPlugin = require('error-overlay-webpack-plugin')
 
 const dev = process.env.NODE_ENV !== 'production' || process.argv.indexOf('-p') === -1
 
@@ -26,20 +30,51 @@ const JSOptimizerConfig = new OptimizeJSWebpackPlugin({
 
 const CSSOptimizerConfig = new OptimizeCSSWebpackPlugin({})
 
+const ProgressBarConfig = new ProgressBarWebpackPlugin({
+  format: `${':msg'.cyan} [:bar] ${':percent'.green} (${':elapsed'.green} seconds)`,
+  clear: false
+})
+
 const EnvironmentConfig = new webpack.DefinePlugin({
   'process.env': {
     NODE_ENV: JSON.stringify('production')
   }
 })
 
+const devPlugins = [
+  HTMLInjecterConfig,
+  CSSExtracterConfig,
+  new ErrorOverlayWebpackPlugin(),
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NamedModulesPlugin()
+]
+
+const prodPlugins = [
+  HTMLInjecterConfig,
+  CSSExtracterConfig,
+  EnvironmentConfig,
+  new webpack.ProgressPlugin()
+]
+
+// If clean build is desired, add CleanWebpackPlugin
+if (process.argv.indexOf('-c') !== -1) prodPlugins.push(new CleanWebpackPlugin())
+
+// If in CI, don't output progress to stdout to reduce log clutter
+if (!process.env.CI) prodPlugins.push(ProgressBarConfig)
+
+// Helper for easier alias creation
+// const createAlias = modulePath => path.resolve(__dirname, modulePath)
+
+console.log(process.env.TEST)
+
 // Webpack config
 module.exports = {
   // Development server
   devServer: {
     host: 'localhost',
-    port: '8000',
+    port: 8000,
     hot: true,
-    open: true,
+    open: (!process.env.TEST && !process.env.CI) && true,
     headers: {
       'Access-Control-Allow-Origin': '*' // Allow CORS
     }
@@ -94,7 +129,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      'react-dom': '@hot-loader/react-dom'
+      'react-dom': '@hot-loader/react-dom' // DOM patches for react-hot-loader
+      // Internal shortcuts
     }
   },
 
@@ -104,16 +140,7 @@ module.exports = {
     path: path.join(__dirname, '/build')
   },
 
+  devtool: 'cheap-module-source-map',
   mode: dev ? 'development' : 'production',
-  plugins:
-    dev ? [
-      HTMLInjecterConfig,
-      CSSExtracterConfig,
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin()
-    ] : [
-      HTMLInjecterConfig,
-      CSSExtracterConfig,
-      EnvironmentConfig
-    ]
+  plugins: dev ? devPlugins : prodPlugins
 }

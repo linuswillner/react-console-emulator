@@ -4,18 +4,7 @@ import React from 'react'
 import { shallow, mount, render } from 'enzyme'
 import skipIf from 'skip-if'
 
-import * as src from '../src/Terminal'
-import * as prod from '../dist/Terminal'
-
-let Terminal
-
-if (process.env.PROD_RUN) {
-  console.log('Performing production run, testing version from "dist".')
-  Terminal = prod.default
-} else {
-  console.log('Performing development run, testing version from "src".')
-  Terminal = src.default
-}
+import Terminal from '../src/Terminal'
 
 const skipIfCI = skipIf(process.env.CI)
 

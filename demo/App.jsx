@@ -18,7 +18,7 @@ export default class App extends Component {
   }
 
   render () {
-    const { globalProps, commands, newDefaultCommands, manualPushCommands } = config
+    const { globalProps, commands, newDefaultCommands, manualPushCommands, casingCommands } = config
 
     return (
       <main>
@@ -122,6 +122,31 @@ export default class App extends Component {
                 'Try putting some line breaks in the echo command and see what happens!'
               ]}
               noNewlineParsing
+            />
+          </Tile>
+        </Row>
+        <Row>
+          {/* Case sensitive command validation */}
+          <Tile>
+            <Terminal
+              {...globalProps}
+              commands={casingCommands}
+              welcomeMessage={[
+                'This terminal requires commands to be input in correct casing.',
+                'Try running "help" and then running both "CaSeMatTeRs" and "casematters"!'
+              ]}
+            />
+          </Tile>
+          {/* Case insensitive command validation */}
+          <Tile>
+            <Terminal
+              {...globalProps}
+              commands={casingCommands}
+              welcomeMessage={[
+                'This terminal does not require commands to be input in correct casing.',
+                'Try running "help" and then running both "CaSeMatTeRs" and "casematters"!'
+              ]}
+              ignoreCommandCase
             />
           </Tile>
         </Row>

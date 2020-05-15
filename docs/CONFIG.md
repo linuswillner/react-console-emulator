@@ -53,6 +53,7 @@ The terminal has several options you can use to change the behaviour of it.
 | noHistory | Disable the storing and scrolling of history of the commands entered in the terminal. | Boolean | `false` |
 | noAutoScroll | Disable automatic scrolling to the bottom of the terminal when a command is executed (*nix-like). | Boolean | `false` |
 | noNewlineParsing | Disable the parsing line breaks (\n) in command outputs as separate message, leave them unchanged. | Boolean | `false` |
+| ignoreCommandCase | Disable case-sensitive matching of command inputs. **Note:** Enabling this feature results in a restriction of command names to alphanumeric characters, dashes and underscores, for security reasons. | Boolean | `false` |
 
 ### Re-styling
 

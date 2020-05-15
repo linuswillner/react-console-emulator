@@ -14,6 +14,9 @@ import parseEOL from './handlers/parseEOL'
 import sourceStyles from './defs/styles/Terminal'
 import types from './defs/types/Terminal'
 
+// Utils
+import commandExists from './utils/commandExists'
+
 export default class Terminal extends Component {
   constructor (props) {
     super(props)
@@ -23,6 +26,7 @@ export default class Terminal extends Component {
       history: [],
       historyPosition: null,
       previousHistoryPosition: null,
+      // TODO: Add prop-controlled enable/disable on the input
       processing: false
     }
 
@@ -59,13 +63,8 @@ export default class Terminal extends Component {
   }
 
   validateCommands () {
-    const validCommands = validateCommands(
-      this.props.commands,
-      this.showHelp,
-      this.clearStdout,
-      this.props.noDefaults
-    )
-
+    const { commands, noDefaults, ignoreCommandCase } = this.props
+    const validCommands = validateCommands(commands, this.showHelp, this.clearStdout, { noDefaults, ignoreCommandCase })
     this.setState({ commands: validCommands })
   }
 
@@ -98,9 +97,9 @@ export default class Terminal extends Component {
    */
   pushToStdout (message, options) {
     const { stdout } = this.state
-    stdout.push({ message, isEcho: options && options.isEcho })
+    stdout.push({ message, isEcho: options?.isEcho || false })
 
-    if (options && options.rawInput) this.pushToHistory(options.rawInput)
+    if (options?.rawInput) this.pushToHistory(options.rawInput)
     this.setState({ stdout: stdout })
   }
 
@@ -157,22 +156,27 @@ export default class Terminal extends Component {
 
       if (rawInput) {
         const input = rawInput.split(' ')
-        const command = input.splice(0, 1)[0] // Removed portion is returned...
+        const rawCommand = input.splice(0, 1)[0] // Removed portion is returned...
         const args = input // ...and the rest can be used
 
         commandResult.rawInput = rawInput
-        commandResult.command = command
+        commandResult.command = rawCommand
         commandResult.args = args
 
-        const cmdObj = this.state.commands[command]
+        const { exists, command } = commandExists(this.state.commands, rawCommand, this.props.ignoreCommandCase)
 
-        if (!cmdObj) this.pushToStdout(this.props.errorText ? this.props.errorText.replace(/\[command\]/gi, command) : `Command '${command}' not found!`)
-        else {
-          const res = cmdObj.fn(...args)
+        if (!exists) {
+          this.pushToStdout(this.props.errorText
+            ? this.props.errorText.replace(/\[command\]/gi, command)
+            : `Command '${rawCommand}' not found!`
+          )
+        } else {
+          const cmd = this.state.commands[command]
+          const res = cmd.fn(...args)
 
           this.pushToStdout(res)
           commandResult.result = res
-          if (cmdObj.explicitExec) cmdObj.fn(...args)
+          if (cmd.explicitExec) cmd.fn(...args)
         }
       }
 

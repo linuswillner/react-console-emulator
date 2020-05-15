@@ -20,6 +20,7 @@ const optionTypes = {
   autoFocus: PropTypes.bool,
   dangerMode: PropTypes.bool,
   disableOnProcess: PropTypes.bool,
+  ignoreCommandCase: PropTypes.bool,
   noDefaults: PropTypes.bool,
   noEchoBack: PropTypes.bool,
   noHistory: PropTypes.bool,
@@ -30,7 +31,7 @@ const optionTypes = {
 const labelTypes = {
   welcomeMessage: PropTypes.oneOfType([
     PropTypes.bool,
-    PropTypes.array,
+    PropTypes.arrayOf(PropTypes.string),
     PropTypes.string
   ]),
   promptLabel: PropTypes.node,
@@ -38,7 +39,7 @@ const labelTypes = {
 }
 
 const commandTypes = {
-  commands: PropTypes.object.isRequired,
+  commands: PropTypes.object.isRequired, // Cannot validate beyond this because names are dynamic
   commandCallback: PropTypes.func
 }
 

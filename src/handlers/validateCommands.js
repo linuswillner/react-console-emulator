@@ -1,5 +1,14 @@
-// Commands validator
-export default (commands, helpFn, clearFn, noDefaults) => {
+import commandExists from '../utils/commandExists'
+
+/**
+ * @param {Object} commands Command definitions
+ * @param {Function} helpFn Function to display default help output
+ * @param {Function} clearFn Function to clear the screen
+ * @param {Object} options
+ * @param {Object} options.noDefaults Whether to register default commands or not
+ * @param {Object} options.ignoreCommandCase Whether to match command names case-insensitively or not
+*/
+export default (commands, helpFn, clearFn, options) => {
   const defaultCommands = {
     help: {
       description: 'Show a list of available commands.',
@@ -17,17 +26,30 @@ export default (commands, helpFn, clearFn, noDefaults) => {
   let validCommands
 
   // Pre-register defaults
-  if (!noDefaults) validCommands = { ...defaultCommands }
+  if (!options.noDefaults) validCommands = { ...defaultCommands }
   else validCommands = {}
 
   for (const c in commands) {
+    // If matching commands case-insensitively, ensure that command names are clean to avoid regex DoS
+    // JS prop names don't allow weird characters unless quoted, but this is just a safety feature
+    if (options.ignoreCommandCase && /[^a-zA-Z0-9-_]/gi.test(c)) {
+      throw new Error(`Command name '${c}' is invalid; command names can only contain latin characters (A-Z), numbers (0-9) and dashes/underscores (- or _)`)
+    }
+
+    const { exists } = commandExists(validCommands, c, options.ignoreCommandCase)
+
+    // Check that command does not already exist
+    if (exists) {
+      throw new Error(`Attempting to override existing command '${c}'; please only supply one definition of a certain command`)
+    }
+
     // Check that command contains a function
     if (typeof commands[c].fn !== 'function') {
       throw new Error(`'fn' property of command '${c}' is invalid; expected 'function', got '${typeof commands[c].fn}'`)
     }
 
-    // Check that the command does not attempt to override immutables
-    if (!noDefaults && immutables.includes(c)) {
+    // Check that the command does not attempt to override immutables, if not disabled
+    if (!options.noDefaults && immutables.includes(c)) {
       throw new Error(`Cannot overwrite default command '${immutables[immutables.indexOf(c)]}'; set the noDefaults prop to true to enable overriding of default commands`)
     }
 

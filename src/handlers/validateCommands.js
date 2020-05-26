@@ -21,8 +21,6 @@ export default (commands, helpFn, clearFn, options) => {
     }
   }
 
-  const immutables = Object.keys(defaultCommands)
-
   let validCommands
 
   // Pre-register defaults

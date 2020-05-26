@@ -65,8 +65,6 @@ if (!process.env.CI) prodPlugins.push(ProgressBarConfig)
 // Helper for easier alias creation
 // const createAlias = modulePath => path.resolve(__dirname, modulePath)
 
-console.log(process.env.TEST)
-
 // Webpack config
 module.exports = {
   // Development server

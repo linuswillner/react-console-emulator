@@ -46,6 +46,7 @@ The terminal has several options you can use to change the behaviour of it.
 | ---- | ----------- | ---- | ------- |
 | autoFocus | Focus the terminal on page load. | Boolean | `false` |
 | dangerMode | Enable parsing of HTML in terminal messages. | Boolean | `false` |
+| disabled | Whether to enable terminal input or not. | Boolean | `false` |
 | disableOnProcess | Disable input to the terminal during command execution. | Boolean | `false` |
 | styleEchoBack | Style command echoes (Terminal outputs of any commands entered) as regular terminal messages. | Boolean | `false` |
 | noDefaults | Do not register the default commands (`help` and `clear`). Useful if you want to override the functionality of either. | Boolean | `false` |

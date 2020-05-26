@@ -80,7 +80,7 @@ export default class Terminal extends Component {
   /**
    * @param {String} message
    * @param {Object} options {
-   *  rawInput: Raw input from the terminal (For history)
+   *  rawInput: Raw input from the terminal (For history),
    *  isEcho: For distinguishing echo messages (Exemption from message styling)
    * }
    */
@@ -262,8 +262,8 @@ export default class Terminal extends Component {
               type='text'
               autoComplete='off'
               disabled={
-                this.props.disableOnProcess &&
-                /* istanbul ignore next: Covered by interactivity tests */ this.state.processing
+                this.props.disabled ||
+                (this.props.disableOnProcess && /* istanbul ignore next: Covered by interactivity tests */ this.state.processing)
               }
             />
           </div>

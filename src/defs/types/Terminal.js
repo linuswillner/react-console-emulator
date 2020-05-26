@@ -19,6 +19,7 @@ const classNameTypes = {
 const optionTypes = {
   autoFocus: PropTypes.bool,
   dangerMode: PropTypes.bool,
+  disabled: PropTypes.bool,
   disableOnProcess: PropTypes.bool,
   ignoreCommandCase: PropTypes.bool,
   noDefaults: PropTypes.bool,

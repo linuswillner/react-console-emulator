@@ -253,7 +253,6 @@ export default class Terminal extends Component {
               {this.props.promptLabel || '$'}
             </span>
             {/* Input */}
-            {/* TODO: Fix that random bug where the cursor ends up at the beginning of the line instead of at the end */}
             <input
               ref={this.terminalInput}
               name='react-console-emulator__input'

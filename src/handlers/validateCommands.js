@@ -40,17 +40,12 @@ export default (commands, helpFn, clearFn, options) => {
 
     // Check that command does not already exist
     if (exists) {
-      throw new Error(`Attempting to override existing command '${c}'; please only supply one definition of a certain command`)
+      throw new Error(`Attempting to override existing command '${c}'; please only supply one definition of a certain command, or set the noDefaults property to enable overriding of existing commands`)
     }
 
     // Check that command contains a function
     if (typeof commands[c].fn !== 'function') {
       throw new Error(`'fn' property of command '${c}' is invalid; expected 'function', got '${typeof commands[c].fn}'`)
-    }
-
-    // Check that the command does not attempt to override immutables, if not disabled
-    if (!options.noDefaults && immutables.includes(c)) {
-      throw new Error(`Cannot overwrite default command '${immutables[immutables.indexOf(c)]}'; set the noDefaults prop to true to enable overriding of default commands`)
     }
 
     // Add description if missing

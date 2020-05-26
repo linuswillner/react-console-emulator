@@ -88,6 +88,7 @@ export default class Terminal extends Component {
     const { stdout } = this.state
     stdout.push({ message, isEcho: options?.isEcho || false })
 
+    /* istanbul ignore next: Covered by interactivity tests */
     if (options?.rawInput) this.pushToHistory(options.rawInput)
     this.setState({ stdout: stdout })
   }
@@ -95,6 +96,7 @@ export default class Terminal extends Component {
   /**
    * @param {String} rawInput Raw command input from the terminal
    */
+  /* istanbul ignore next: Covered by interactivity tests */
   pushToHistory = rawInput => {
     const { history } = this.state
     history.push(rawInput)
@@ -109,8 +111,9 @@ export default class Terminal extends Component {
       return <TerminalMessage
         key={i}
         content={line.message}
-        className={!line.isEcho ? this.props.messageClassName : undefined}
-        style={!line.isEcho ? this.props.messageStyle : undefined}
+        dangerMode={this.props.dangerMode}
+        className={!line.isEcho ? this.props.messageClassName : /* istanbul ignore next: Covered by interactivity tests */ undefined}
+        style={!line.isEcho ? this.props.messageStyle : /* istanbul ignore next: Covered by interactivity tests */ undefined}
       />
     })
   }

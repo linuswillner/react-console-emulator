@@ -9,7 +9,8 @@ module.exports = {
     '/src/defs', // Defs cannot be tested
     // These are covered by interactivity tests or other tests
     'cleanArray.js',
-    'scrollHistory.js'
+    'scrollHistory.js',
+    'sendCursorToEnd.js'
   ],
   coverageDirectory: './coverage/'
 }

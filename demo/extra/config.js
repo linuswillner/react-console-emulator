@@ -1,4 +1,7 @@
 export default {
+  globalStyles: {
+    maxHeight: '300px'
+  },
   commands: {
     echo: {
       description: 'Echo a passed string.',

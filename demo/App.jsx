@@ -45,29 +45,33 @@ export default class App extends Component {
   }
 
   render () {
-    const { commands, casingCommands } = config
+    const { globalStyles, commands, casingCommands } = config
 
     const terminals = [
       {
         title: 'Default terminal (With autoFocus enabled)',
         link: 'https://github.com/js-rcon/react-console-emulator/blob/master/demo/App.jsx#L54-L55',
         component: <Terminal
+          style={globalStyles}
           commands={commands}
           autoFocus
         />
       },
       {
-        title: 'Default welcome message',
+        title: 'Default welcome message (With danger mode enabled)',
         link: 'https://github.com/js-rcon/react-console-emulator/blob/master/demo/App.jsx#L63-L64',
         component: <Terminal
+          style={globalStyles}
           commands={commands}
           welcomeMessage
+          dangerMode
         />
       },
       {
         title: 'Custom welcome message as an array, overriding of default commands enabled, custom error message and command callback',
         link: 'https://github.com/js-rcon/react-console-emulator/blob/master/demo/App.jsx#L71-L83',
         component: <Terminal
+          style={globalStyles}
           commands={{
             help: {
               description: 'Custom help command.',
@@ -105,6 +109,7 @@ export default class App extends Component {
         title: 'Manual pushing with no echo back (Due to manual pushing) and custom terminal message colours',
         link: 'https://github.com/js-rcon/react-console-emulator/blob/master/demo/App.jsx#L108-L124',
         component: <Terminal
+          style={globalStyles}
           ref={this.terminal}
           commands={{
             wait: {
@@ -128,6 +133,7 @@ export default class App extends Component {
         title: 'History demo',
         link: 'https://github.com/js-rcon/react-console-emulator/blob/master/demo/App.jsx#L131-L132',
         component: <Terminal
+          style={globalStyles}
           commands={commands}
           welcomeMessage='The terminal also keeps track of your commands and allows you to recall them. Use the up and down arrow keys to navigate your history.'
         />
@@ -136,6 +142,7 @@ export default class App extends Component {
         title: 'EOL parsing enabled',
         link: 'https://github.com/js-rcon/react-console-emulator/blob/master/demo/App.jsx#L139-L144',
         component: <Terminal
+          style={globalStyles}
           commands={commands}
           welcomeMessage={[
             // I have to use 0-width space here, because otherwise this will get parsed as a line break too :D
@@ -148,6 +155,7 @@ export default class App extends Component {
         title: 'EOL parsing disabled',
         link: 'https://github.com/js-rcon/react-console-emulator/blob/master/demo/App.jsx#L151-L156',
         component: <Terminal
+          style={globalStyles}
           commands={commands}
           welcomeMessage={[
             'This terminal does not parse line breaks.',
@@ -160,6 +168,7 @@ export default class App extends Component {
         title: 'Case sensitive command validation',
         link: 'https://github.com/js-rcon/react-console-emulator/blob/master/demo/App.jsx#L163-L167',
         component: <Terminal
+          style={globalStyles}
           commands={casingCommands}
           welcomeMessage={[
             'This terminal requires commands to be input in correct casing.',
@@ -171,6 +180,7 @@ export default class App extends Component {
         title: 'Case insensitive command validation',
         link: 'https://github.com/js-rcon/react-console-emulator/blob/master/demo/App.jsx#L174-L179',
         component: <Terminal
+          style={globalStyles}
           commands={casingCommands}
           welcomeMessage={[
             'This terminal does not require commands to be input in correct casing.',

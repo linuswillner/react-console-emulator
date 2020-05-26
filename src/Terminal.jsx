@@ -32,43 +32,32 @@ export default class Terminal extends Component {
 
     this.terminalRoot = React.createRef()
     this.terminalInput = React.createRef()
-
-    this.focusTerminal = this.focusTerminal.bind(this)
-    this.validateCommands = this.validateCommands.bind(this)
-    this.showWelcomeMessage = this.showWelcomeMessage.bind(this)
-    this.showHelp = this.showHelp.bind(this)
-    this.pushToStdout = this.pushToStdout.bind(this)
-    this.pushToHistory = this.pushToHistory.bind(this)
-    this.getStdout = this.getStdout.bind(this)
-    this.clearStdout = this.clearStdout.bind(this)
-    this.processCommand = this.processCommand.bind(this)
-    this.handleInput = this.handleInput.bind(this)
   }
 
   static propTypes = types
 
   /* istanbul ignore next: Covered by interactivity tests */
-  focusTerminal () {
+  focusTerminal = () => {
     // Only focus the terminal if text isn't being copied
     const isTextSelected = window.getSelection().type === 'Range'
     if (!isTextSelected) this.terminalInput.current.focus()
   }
 
   /* istanbul ignore next: Covered by interactivity tests */
-  scrollToBottom () {
+  scrollToBottom = () => {
     const rootNode = this.terminalRoot.current
 
     // This may look ridiculous, but it is necessary to decouple execution for just a millisecond in order to scroll all the way
     setTimeout(() => { rootNode.scrollTop = rootNode.scrollHeight }, 1)
   }
 
-  validateCommands () {
+  validateCommands = () => {
     const { commands, noDefaults, ignoreCommandCase } = this.props
     const validCommands = validateCommands(commands, this.showHelp, this.clearStdout, { noDefaults, ignoreCommandCase })
     this.setState({ commands: validCommands })
   }
 
-  showWelcomeMessage () {
+  showWelcomeMessage = () => {
     const msg = this.props.welcomeMessage
 
     if (typeof msg === 'boolean') this.pushToStdout('Welcome to the React terminal! Type \'help\' to get a list of commands.')
@@ -77,7 +66,7 @@ export default class Terminal extends Component {
   }
 
   /* istanbul ignore next: Covered by interactivity tests */
-  showHelp () {
+  showHelp = () => {
     const { commands } = this.state
 
     for (const c in commands) {
@@ -95,7 +84,7 @@ export default class Terminal extends Component {
    *  isEcho: For distinguishing echo messages (Exemption from message styling)
    * }
    */
-  pushToStdout (message, options) {
+  pushToStdout = (message, options) => {
     const { stdout } = this.state
     stdout.push({ message, isEcho: options?.isEcho || false })
 
@@ -106,13 +95,13 @@ export default class Terminal extends Component {
   /**
    * @param {String} rawInput Raw command input from the terminal
    */
-  pushToHistory (rawInput) {
+  pushToHistory = rawInput => {
     const { history } = this.state
     history.push(rawInput)
     this.setState({ history: history, historyPosition: null })
   }
 
-  getStdout () {
+  getStdout = () => {
     // Parse EOL if it isn't disabled
     const stdout = !this.props.noNewlineParsing ? parseEOL(this.state.stdout) : this.state.stdout
 
@@ -127,18 +116,18 @@ export default class Terminal extends Component {
   }
 
   /* istanbul ignore next: Covered by interactivity tests */
-  clearStdout () {
+  clearStdout = () => {
     this.setState({ stdout: [] })
   }
 
   /* istanbul ignore next: Covered by interactivity tests */
-  clearInput () {
+  clearInput = () => {
     this.setState({ historyPosition: null })
     this.terminalInput.current.value = ''
   }
 
   /* istanbul ignore next: Covered by interactivity tests */
-  processCommand () {
+  processCommand = () => {
     this.setState({ processing: true }, () => {
       // Initialise command result object
       const commandResult = { command: null, args: [], rawInput: null, result: null }
@@ -189,7 +178,7 @@ export default class Terminal extends Component {
   }
 
   /* istanbul ignore next: Covered by interactivity tests */
-  scrollHistory (direction) {
+  scrollHistory = direction => {
     const { history, historyPosition, previousHistoryPosition } = this.state
 
     const toUpdate = scrollHistory(direction, {
@@ -204,7 +193,7 @@ export default class Terminal extends Component {
   }
 
   /* istanbul ignore next: Covered by interactivity tests */
-  handleInput (event) {
+  handleInput = event => {
     switch (event.key) {
       case 'Enter': this.processCommand(); break
       case 'ArrowUp': this.scrollHistory('up'); break

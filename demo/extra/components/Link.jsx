@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 export default class Footer extends Component {
   static propTypes = {
     to: PropTypes.string.isRequired,
-    children: PropTypes.any.isRequired
+    children: PropTypes.node.isRequired
   }
 
   render () {

@@ -1,9 +1,20 @@
-@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap');
 
 body, html {
   margin-top: 0;
   margin-bottom: 0;
   background-color: #26262B;
+}
+
+%title {
+  color: #FFFFFF;
+  font-family: 'Roboto Mono', monospace;
+}
+
+%text {
+  color: #FFFFFF;
+  font-family: 'Inconsolata', monospace;
 }
 
 header {
@@ -14,14 +25,13 @@ header {
   margin: 10px 0px 20px 0px;
 
   h1 {
-    color: #FFFFFF;
-    font-family: 'Inconsolata', monospace;
+    @extend %text;
+    font-size: 50px;
   }
 
   p {
-    color: #FFFFFF;
-    font-family: 'Inconsolata', monospace;
     margin: 0px 0px 5px 0px;
+    @extend %text;
   }
 }
 
@@ -31,11 +41,22 @@ header {
 
 .row {
   display: flex;
-  height: 340px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
 
   .tile {
-    flex: 1;
-    margin: 20px;
+    flex: 1 0 45%;
+    margin: 25px;
+
+    p {
+      font-weight: bold;
+      @extend %title;
+
+      a {
+        color: inherit;
+      }
+    }
   }
 }
 
@@ -47,8 +68,7 @@ footer {
   text-align: center;
 
   p {
-    color: #FFFFFF;
-    font-family: 'Inconsolata', monospace;
     margin: 5px 0px 5px 0px;
+    @extend %text;
   }
 }

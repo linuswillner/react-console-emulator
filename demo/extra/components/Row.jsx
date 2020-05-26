@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export default class Row extends Component {
   static propTypes = {
-    children: PropTypes.any
+    children: PropTypes.node.isRequired
   }
 
   render () {

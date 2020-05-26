@@ -1,4 +1,5 @@
 import cleanArray from '../utils/cleanArray'
+import sendCursorToEnd from '../utils/sendCursorToEnd'
 
 /**
  * Scrolls command history in a given direction
@@ -11,6 +12,8 @@ import cleanArray from '../utils/cleanArray'
  */
 export default (direction, options) => {
   const { history, historyPosition, previousHistoryPosition, terminalInput } = options
+
+  // BUG: I have to duplicate sendCursorToEnd for each condition, because doing so in a catch-all manner doesn't seem to work at all
 
   // Clean potential empty items and reverse order to ease position tracking
   // (Reverse = starting from the newest first when going up and vice versa)
@@ -30,6 +33,7 @@ export default (direction, options) => {
         if (position === null) {
           // If at no yet defined position, get most recent entry
           terminal.value = latest
+          sendCursorToEnd(terminal)
 
           return {
             historyPosition: 0,
@@ -40,6 +44,7 @@ export default (direction, options) => {
           // EXCEPT: If there is only 1 unit in the history, our previous position was actually null, not zero as defined above
           // Hence why in one-unit histories the previous position has to be set to null, not 0
           terminal.value = first
+          sendCursorToEnd(terminal)
 
           return {
             historyPosition: commandHistory.length - 1,
@@ -48,6 +53,7 @@ export default (direction, options) => {
         } else {
           // Normal increment by one
           terminal.value = next
+          sendCursorToEnd(terminal)
 
           return {
             historyPosition: position + 1,
@@ -64,6 +70,7 @@ export default (direction, options) => {
         if (position === null || !commandHistory[position]) {
           // If at initial or out of range, clear (Unix-like behaviour)
           terminal.value = empty
+          sendCursorToEnd(terminal)
 
           return {
             historyPosition: null,
@@ -73,6 +80,7 @@ export default (direction, options) => {
           // Clear because user is either pressing up once and is now pressing down again, or is reaching the latest entry
           if (previousPosition === null || (position === 0 && previousPosition === 1)) terminal.value = empty
           else terminal.value = latest
+          sendCursorToEnd(terminal)
 
           return {
             historyPosition: null,
@@ -81,6 +89,7 @@ export default (direction, options) => {
         } else {
           // Normal decrement by one
           terminal.value = next
+          sendCursorToEnd(terminal)
 
           return {
             historyPosition: position - 1,

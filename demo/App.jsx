@@ -50,7 +50,7 @@ export default class App extends Component {
     const terminals = [
       {
         title: 'Default terminal (With autoFocus enabled)',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L54-L55',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L55-L57',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -59,7 +59,7 @@ export default class App extends Component {
       },
       {
         title: 'Default welcome message (With danger mode enabled)',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L63-L64',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L64-L67',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -69,7 +69,7 @@ export default class App extends Component {
       },
       {
         title: 'Custom welcome message as an array, overriding of default commands enabled, custom error message and command callback',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L71-L83',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L74-L87',
         component: <Terminal
           style={globalStyles}
           commands={{
@@ -89,7 +89,7 @@ export default class App extends Component {
       },
       {
         title: 'Custom styles on the terminal elements (Incl. restyling the background) and JSX as prompt label',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L90-L101',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L94-L105',
         component: <Terminal
           commands={commands}
           welcomeMessage={[
@@ -107,7 +107,7 @@ export default class App extends Component {
       },
       {
         title: 'Manual pushing with no echo back (Due to manual pushing) and custom terminal message colours',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L108-L124',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L112-L129',
         component: <Terminal
           style={globalStyles}
           ref={this.terminal}
@@ -131,7 +131,7 @@ export default class App extends Component {
       },
       {
         title: 'History demo',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L131-L132',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L136-L138',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -140,7 +140,7 @@ export default class App extends Component {
       },
       {
         title: 'EOL parsing enabled',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L139-L144',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L145-L151',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -153,7 +153,7 @@ export default class App extends Component {
       },
       {
         title: 'EOL parsing disabled',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L151-L156',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L158-L164',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -166,7 +166,7 @@ export default class App extends Component {
       },
       {
         title: 'Case sensitive command validation',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L163-L167',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L171-L176',
         component: <Terminal
           style={globalStyles}
           commands={casingCommands}
@@ -178,7 +178,7 @@ export default class App extends Component {
       },
       {
         title: 'Case insensitive command validation',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L174-L179',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L183-L189',
         component: <Terminal
           style={globalStyles}
           commands={casingCommands}

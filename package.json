@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/js-rcon/react-console-emulator.git"
+    "url": "git+https://github.com/linuswillner/react-console-emulator.git"
   },
   "keywords": [
     "react",
@@ -33,9 +33,9 @@
   "author": "Linus Willner <hello@linuswillner.me>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/js-rcon/react-console-emulator/issues"
+    "url": "https://github.com/linuswillner/react-console-emulator/issues"
   },
-  "homepage": "https://github.com/js-rcon/react-console-emulator#readme",
+  "homepage": "https://github.com/linuswillner/react-console-emulator#readme",
   "devDependencies": {
     "@babel/cli": "^7.10.0",
     "@babel/core": "^7.10.0",

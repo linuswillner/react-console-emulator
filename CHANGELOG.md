@@ -1,3 +1,44 @@
+# 4.0.0
+
+This update brings with it the biggest batch of changes to react-console-emulator since its initial release. Changes include a move to a new location, major restructurations of the repository and the internal logic, a whole bunch of changes, improvements, new features and of course some bug fixes.
+
+### Breaking changes
+
+Moved repositories; js-rcon/react-console-emulator is now linuswillner/react-console-emulator!
+
+Renamed `noAutomaticStdout` prop to `noEchoBack` for added clarity.
+
+### Main changes
+
+Terminal message styling is here! You can now re-style the messages output by the terminal (Including echoes, optionally with the `styleEchoBack` prop) using the `messageStyle` and `messageClassName` props ([#518](https://github.com/js-rcon/react-console-emulator/issues/518)).
+
+JSX prompt labels! Prompt labels now support elements instead of just plain old strings ([#210](https://github.com/js-rcon/react-console-emulator/issues/210)).
+
+Newline parsing is now possible! The terminal can now parse newline characters in terminal messages - anything with a \n character in it will be rendered as a separate line in the response message. This does of course not apply to command back-echoes. This behaviour can also be disabled, if desired, using the `noNewlineParsing` prop ([#519](https://github.com/js-rcon/react-console-emulator/issues/519)).
+
+
+Case-insensitive command matching! You can now supply the `ignoreCommandCase` prop to allow matching commands even when their casing is not correct. Do note that for security reasons, enabling case-insensitive command matching restricts command names to letters, numbers and dashes/underscores ([#415](https://github.com/js-rcon/react-console-emulator/issues/415)).
+
+### Other changes
+
+The acceptance of terminal input can now be controlled with a prop. Setting the `disabled` prop will enable/disable character input to the terminal.
+
+Fixed an extremely long-running bug where, when the history only had one unit in it, the terminal would not correctly reset the input value and would show the same value twice. This has now finally been fixed after having been in the library for over two years.
+
+Completely reworked demo page - the old one was really drab and plain, so I took the time to make it a lot more pretty and informative.
+
+A full run-down of the prop changes is as follows:
+```diff
+- noAutomaticStdout
++ noEchoBack
++ noNewlineParsing
++ ignoreCommandCase
++ styleEchoBack
++ messageStyle
++ messageClassName
++ disabled
+```
+
 # 3.0.4
 
 Fixed a bug preventing users from selecting text in the terminal output ([#414](https://github.com/js-rcon/react-console-emulator/issues/414)).

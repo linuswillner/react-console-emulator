@@ -1,4 +1,4 @@
-<img src="https://i.linuswillner.me/ot0GAp8.png" height="250px">
+<img src=".github/logo.png" height="250px">
 
 # react-console-emulator
 
@@ -20,7 +20,7 @@ A simple, powerful and highly customisable Unix terminal emulator for React.
 ## Usage
 
 ```jsx
-import React from 'react'
+import React, { Component } from 'react'
 import Terminal from 'react-console-emulator'
 
 const commands = {
@@ -33,7 +33,7 @@ const commands = {
   }
 }
 
-export default class MyTerminal extends React.Component {
+export default class MyTerminal extends Component {
   render () {
     return (
       <Terminal

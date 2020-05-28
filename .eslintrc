@@ -13,8 +13,16 @@
     },
     "sourceType": "module"
   },
-  "extends": "standard",
+  "extends": [
+    "standard",
+    "standard-react"
+  ],
   "plugins": [
     "standard"
-  ]
+  ],
+  "rules": {
+    "react/jsx-closing-bracket-location": "off",
+    "react/jsx-handler-names": "off",
+    "react/jsx-tag-spacing": "off"
+  }
 }

@@ -19,26 +19,34 @@ const classNameTypes = {
 const optionTypes = {
   autoFocus: PropTypes.bool,
   dangerMode: PropTypes.bool,
+  disabled: PropTypes.bool,
   disableOnProcess: PropTypes.bool,
+  ignoreCommandCase: PropTypes.bool,
   noDefaults: PropTypes.bool,
-  noAutomaticStdout: PropTypes.bool,
+  noEchoBack: PropTypes.bool,
   noHistory: PropTypes.bool,
-  noAutoScroll: PropTypes.bool
+  noAutoScroll: PropTypes.bool,
+  noNewlineParsing: PropTypes.bool
 }
 
 const labelTypes = {
   welcomeMessage: PropTypes.oneOfType([
     PropTypes.bool,
-    PropTypes.array,
+    PropTypes.arrayOf(PropTypes.string),
     PropTypes.string
   ]),
-  promptLabel: PropTypes.string,
+  promptLabel: PropTypes.node,
   errorText: PropTypes.string
 }
 
 const commandTypes = {
-  commands: PropTypes.object.isRequired,
+  commands: PropTypes.object.isRequired, // Cannot validate beyond this because names are dynamic
   commandCallback: PropTypes.func
+}
+
+const messageTypes = {
+  messageStyle: PropTypes.object,
+  messageClassName: PropTypes.string
 }
 
 export default {
@@ -46,5 +54,6 @@ export default {
   ...classNameTypes,
   ...optionTypes,
   ...labelTypes,
-  ...commandTypes
+  ...commandTypes,
+  ...messageTypes
 }

@@ -1,14 +1,13 @@
 
 export default {
   container: {
-    minWidth: '500px',
     minHeight: '300px',
     maxWidth: '100%', // Fill parent before overflowing
     maxHeight: '100%', // Fill parent before overflowing
     borderRadius: '5px',
     overflow: 'auto',
     cursor: 'text',
-    background: '#212121',
+    backgroundColor: '#212121',
     backgroundSize: 'cover'
   },
   content: {

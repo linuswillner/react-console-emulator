@@ -59,6 +59,7 @@
     "error-overlay-webpack-plugin": "^0.4.1",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.1",
+    "eslint-config-standard-react": "^9.2.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-node": "^11.1.0",
@@ -91,7 +92,6 @@
   "dependencies": {
     "@hot-loader/react-dom": "^16.13.0",
     "defaults": "^1.0.3",
-    "eslint-config-standard-react": "^9.2.0",
     "prop-types": "^15.7.2",
     "react-fast-compare": "^3.1.1",
     "react-inner-html": "^1.0.1",

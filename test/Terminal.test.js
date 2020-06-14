@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, no-unused-vars */
 
 import React from 'react'
-import { shallow, mount, render } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import skipIf from 'skip-if'
 
 import Terminal from '../src/Terminal'
@@ -62,6 +62,8 @@ const invalidCommands = {
   noFn: {}
 }
 
+const noCommands = {}
+
 beforeAll(async () => {
   await page.goto('http://localhost:8000')
 })
@@ -114,6 +116,45 @@ describe('Terminal welcome messages', () => {
     expect(content.childAt(0).html()).toBe('<div style="line-height: 21px;"><span color="red">test</span></div>')
 
     wrapper.unmount()
+  })
+})
+
+describe('#pushToStdout', () => {
+  let wrapper, instance
+
+  beforeEach(() => {
+    wrapper = mount(<Terminal commands={noCommands}/>)
+    instance = wrapper.instance()
+  })
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  function expectInputToRender (input, expectedOutput) {
+    instance.pushToStdout(input, {})
+    wrapper.update()
+
+    const content = wrapper.find('[name="react-console-emulator__content"]')
+    expect(content.childAt(0).text()).toBe(expectedOutput)
+  }
+
+  it('Renders a string in the terminal', () => {
+    const input = 'some string value'
+    const expectedOutput = input
+    expectInputToRender(input, expectedOutput)
+  })
+
+  it('Renders an object in the terminal', () => {
+    const input = { a: 123, b: 'xyz' }
+    const expectedOutput = JSON.stringify(input)
+    expectInputToRender(input, expectedOutput)
+  })
+
+  it('Renders a function in the terminal', () => {
+    const input = () => console.log('hi')
+    const expectedOutput = `${input}`
+    expectInputToRender(input, expectedOutput)
   })
 })
 

@@ -78,7 +78,7 @@ export default class Terminal extends Component {
   }
 
   /**
-   * @param {String} message
+   * @param {Object} message
    * @param {Object} options {
    *  rawInput: Raw input from the terminal (For history),
    *  isEcho: For distinguishing echo messages (Exemption from message styling)
@@ -166,7 +166,10 @@ export default class Terminal extends Component {
           const cmd = this.state.commands[command]
           const res = cmd.fn(...args)
 
-          this.pushToStdout(res)
+          if (typeof res !== 'undefined') {
+            this.pushToStdout(res)
+          }
+
           commandResult.result = res
           if (cmd.explicitExec) cmd.fn(...args)
         }

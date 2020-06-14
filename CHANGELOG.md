@@ -1,3 +1,7 @@
+# v4.1.0
+
+Added ability to print non-string values (objects, functions etc) to the terminal via `Terminal#pushToStdout`
+
 # v4.0.1
 
 Correct eslint-config-standard-react getting installed as a production dependency as opposed to a development one.

@@ -12,3 +12,6 @@ build
 
 # Codecov
 coverage
+
+# IDE files
+.idea

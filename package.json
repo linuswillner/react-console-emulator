@@ -55,7 +55,7 @@
     "cross-env": "^7.0.2",
     "css-loader": "^3.6.0",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-adapter-react-16": "^1.15.3",
     "error-overlay-webpack-plugin": "^0.4.1",
     "eslint": "^7.6.0",
     "eslint-config-standard": "^14.1.1",

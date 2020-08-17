@@ -24,13 +24,19 @@ const commands = {
 }
 ```
 
+### Sync vs async command functions
+
+Command functions (The `fn` property) can be sync or async. Asynchronous functions are awaited and their return values are displayed as those of a regular function would.
+
+This is particularly useful if you have to make relatively low-latency operations like network requests and display their outputs. However, if your tasks are predicted 
+
 ### Async output
 
-If you terminal deals with HTTP requests or cross-component functionality, you may need to wait for a result before pushing to the output without relying on the function return time.
+If your terminal commands need to perform tasks with significant delays (Wait for events, etc.) that cause promise resolution times to be prohibitively long, you may need to return a temporary value and then wait for a result before pushing to the output.
 
 **Note:** Doing output this way is a workaround, and ideally your output should be returned by the command function. This method will expose functions to you that you do not normally have access to due to React component encapsulation. Proceed with caution.
 
-To do this, you can use the [React refs API](https://reactjs.org/docs/refs-and-the-dom.html). Below is an example component that uses async pushing.
+To do this, you can use the [React refs API](https://reactjs.org/docs/refs-and-the-dom.html). Below is an example component that uses asynchronous output in this manner.
 
 ```jsx
 import React, { Component } from 'react'

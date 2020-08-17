@@ -101,8 +101,9 @@ export default class App extends Component {
           style={{ backgroundColor: null, background: 'url(\'https://storage.needpix.com/rsynced_images/abstract-wallpaper-1442844111BON.jpg\')' }} // Terminal background
           contentStyle={{ color: '#FF8E00' }} // Text colour
           promptLabelStyle={{ color: '#FFFFFF' }} // Prompt label colour
-          inputStyle={{ color: 'red' }} // Prompt text colour
+          inputTextStyle={{ color: 'red' }} // Prompt text colour
           promptLabel={<b>root@React:~$</b>}
+          styleEchoBack='inherit' // Inherit echo styling from prompt
         />
       },
       {

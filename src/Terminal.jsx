@@ -131,7 +131,7 @@ export default class Terminal extends Component {
 
   /* istanbul ignore next: Covered by interactivity tests */
   processCommand = () => {
-    this.setState({ processing: true }, () => {
+    this.setState({ processing: true }, async () => {
       // Initialise command result object
       const commandResult = { command: null, args: [], rawInput: null, result: null }
       const rawInput = this.terminalInput.current.value
@@ -164,11 +164,11 @@ export default class Terminal extends Component {
           )
         } else {
           const cmd = this.state.commands[command]
-          const res = cmd.fn(...args)
+          const res = await cmd.fn(...args)
 
           this.pushToStdout(res)
           commandResult.result = res
-          if (cmd.explicitExec) cmd.fn(...args)
+          if (cmd.explicitExec) await cmd.fn(...args)
         }
       }
 

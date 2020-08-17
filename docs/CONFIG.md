@@ -38,6 +38,7 @@ The terminal has several options you can use to change the behaviour of it. All 
 | disabled | Whether to enable terminal input or not. | Boolean | `false` |
 | disableOnProcess | Disable input to the terminal during command execution. | Boolean | `false` |
 | errorText | The text to display when a command does not exist. Use the `[command]` placeholder for input substitution. | String | `'Command \'[command]\' not found!'` |
+| hidePromptWhenDisabled | Hide entire prompt when input is manually disabled (Via the `disabled` prop) or when `disableOnProcess` is enabled and the terminal is processing. | Boolean | `false` |
 | ignoreCommandCase | Disable case-sensitive matching of command inputs. **Note:** Enabling this feature results in a restriction of command names to alphanumeric characters, dashes and underscores, for security reasons. | Boolean | `false` |
 | noAutoScroll | Disable automatic scrolling to the bottom of the terminal when a command is executed (*nix-like). | Boolean | `false` |
 | noDefaults | Do not register the default commands (`help` and `clear`). Useful if you want to override the functionality of either. | Boolean | `false` |

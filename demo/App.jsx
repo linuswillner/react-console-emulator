@@ -189,6 +189,27 @@ export default class App extends Component {
           ]}
           ignoreCommandCase
         />
+      },
+      {
+        title: 'Read-only terminal',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L196-L201',
+        component: <Terminal
+          style={globalStyles}
+          commands={commands}
+          welcomeMessage='This terminal is read-only, and does not take any input.'
+          readOnly
+        />
+      },
+      {
+        title: 'Terminal that disables input on process',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L196-L201',
+        component: <Terminal
+          style={globalStyles}
+          commands={commands}
+          welcomeMessage='This terminal hides the input when the terminal is disabled on command process. Try running the "delay" command and see what happens!'
+          hidePromptWhenDisabled
+          disableOnProcess
+        />
       }
     ]
 

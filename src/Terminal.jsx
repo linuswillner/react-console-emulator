@@ -17,6 +17,7 @@ import types from './defs/types/Terminal'
 // Utils
 import commandExists from './utils/commandExists'
 import constructEcho from './utils/constructEcho'
+import shouldPromptBeVisible from './utils/shouldPromptBeVisible'
 
 export default class Terminal extends Component {
   constructor (props) {
@@ -40,7 +41,8 @@ export default class Terminal extends Component {
   focusTerminal = () => {
     // Only focus the terminal if text isn't being copied
     const isTextSelected = window.getSelection().type === 'Range'
-    if (!isTextSelected) this.terminalInput.current.focus()
+    // Only focus if input is there (Goes away for read-only terminals)
+    if (!isTextSelected) this.terminalInput.current.focus() // eslint-disable-line no-unused-expressions
   }
 
   /* istanbul ignore next: Covered by interactivity tests */
@@ -242,7 +244,7 @@ export default class Terminal extends Component {
           <div
             name='react-console-emulator__inputArea'
             className={this.props.inputAreaClassName}
-            style={styles.inputArea}
+            style={shouldPromptBeVisible(this.state, this.props) ? styles.inputArea : { display: 'none' }}
           >
             {/* Prompt label */}
             <span
@@ -261,10 +263,7 @@ export default class Terminal extends Component {
               onKeyDown={this.handleInput}
               type='text'
               autoComplete='off'
-              disabled={
-                this.props.disabled ||
-                (this.props.disableOnProcess && /* istanbul ignore next: Covered by interactivity tests */ this.state.processing)
-              }
+              disabled={this.props.disabled || (this.props.disableOnProcess && /* istanbul ignore next: Covered by interactivity tests */ this.state.processing)}
             />
           </div>
         </div>

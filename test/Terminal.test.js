@@ -139,8 +139,8 @@ describe('Terminal functionality', () => {
   })
 
   it('Parses newlines (But not when disabled)', () => {
-    const wrapperEnabled = mount(<Terminal commands={commands} welcomeMessage={'split1\\nsplit2'}/>)
-    const wrapperDisabled = mount(<Terminal commands={commands} welcomeMessage={'split1\\nsplit2'} noNewlineParsing/>)
+    const wrapperEnabled = mount(<Terminal commands={commands} welcomeMessage={'split1\nsplit2'}/>)
+    const wrapperDisabled = mount(<Terminal commands={commands} welcomeMessage={'split1\nsplit2'} noNewlineParsing/>)
 
     const enabledContent = wrapperEnabled.find('[name="react-console-emulator__content"]')
     const disabledContent = wrapperDisabled.find('[name="react-console-emulator__content"]')
@@ -150,7 +150,7 @@ describe('Terminal functionality', () => {
     expect(enabledContent.childAt(1).text()).toBe('split2')
 
     // ...and doesn't with parsing disabled
-    expect(disabledContent.childAt(0).text()).toBe('split1\\nsplit2')
+    expect(disabledContent.childAt(0).text()).toBe('split1\nsplit2')
 
     wrapperEnabled.unmount()
     wrapperDisabled.unmount()

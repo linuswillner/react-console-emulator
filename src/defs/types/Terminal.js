@@ -24,8 +24,8 @@ const optionTypes = {
   styleEchoBack: PropTypes.oneOf([
     'labelOnly', // Only persist label style
     'textOnly', // Only persist text style
-    'inherit', // Persist entire prompt style
-    'message' // Inherit message style
+    'fullInherit', // Inherit entire prompt style
+    'messageInherit' // Inherit message style
     // (undefined signifies default behaviour)
     // Not offering individual options for message styling as messages only have one uniform style for the entire element per the spec
   ]),

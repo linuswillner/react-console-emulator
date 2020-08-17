@@ -45,7 +45,8 @@ The terminal has several options you can use to change the behaviour of it. All 
 | noHistory | Disable the storing and scrolling of history of the commands entered in the terminal. | Boolean | `false` |
 | noNewlineParsing | Disable the parsing line breaks (\n) in command outputs as separate message, leave them unchanged. | Boolean | `false` |
 | promptLabel | The prefix to use for the input field. Can be either string or element. | Node | `$` |
-| styleEchoBack | Inherit style for command echoes (Terminal outputs of any commands entered) from prompt (Fully or partially), or style them as regular messages. Omitting this prop enables default behaviour. | String | `false` |
+| readOnly | Hides the entire prompt, thus setting the terminal to read-only mode. | Boolean | `false` |
+| styleEchoBack | Inherit style for command echoes (Terminal outputs of any commands entered) from prompt (Fully or partially, i.e. label or text only), or style them as regular messages. Omitting this prop enables default behaviour. | String<'labelOnly'/'textOnly'/'fullInherit'/'messageInherit'\> | `undefined` |
 | welcomeMessage | The terminal welcome message. Set to `false` to disable, `true` to show the default, or supply a string (Or an array of them) to set a custom one. | Boolean/String/Array<String\> | `false` |
 
 ### Re-styling

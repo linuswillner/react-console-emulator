@@ -103,7 +103,7 @@ export default class App extends Component {
           promptLabelStyle={{ color: '#FFFFFF' }} // Prompt label colour
           inputTextStyle={{ color: 'red' }} // Prompt text colour
           promptLabel={<b>root@React:~$</b>}
-          styleEchoBack='inherit' // Inherit echo styling from prompt
+          styleEchoBack='fullInherit' // Inherit echo styling from prompt
         />
       },
       {

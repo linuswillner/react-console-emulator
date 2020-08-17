@@ -44,8 +44,8 @@ export default (promptLabel, rawInput, stylingProps) => {
   // This is because variable reassignment in switch statements gets really hairy really quick
   const styles = (() => {
     switch (stylingProps.styleEchoBack) {
-      case 'inherit': return sources.echo
-      case 'message': return sources.message
+      case 'fullInherit': return sources.echo
+      case 'messageInherit': return sources.message
       case 'labelOnly': return {
         label: sources.echo.label,
         text: {}

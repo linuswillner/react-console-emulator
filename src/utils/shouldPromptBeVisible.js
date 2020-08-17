@@ -7,6 +7,7 @@ export default (state, props) => {
   const isProcessing = state.processing
 
   // If prompt should be hidden when disabled...
+  /* istanbul ignore if: Covered by interactivity tests */
   if (shouldHideWhenDisabled) {
     if (isDisabled) return false // ...hide on explicit prop-controlled disable...
     else if (shouldDisableOnProcess && isProcessing) return false // ...or when disabling on process is enabled and terminal is processing.

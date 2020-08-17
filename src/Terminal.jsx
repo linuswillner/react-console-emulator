@@ -26,7 +26,6 @@ export default class Terminal extends Component {
       history: [],
       historyPosition: null,
       previousHistoryPosition: null,
-      // TODO: Add prop-controlled enable/disable on the input
       processing: false
     }
 

@@ -5,7 +5,8 @@ const styleTypes = {
   contentStyle: PropTypes.object,
   inputAreaStyle: PropTypes.object,
   promptLabelStyle: PropTypes.object,
-  inputStyle: PropTypes.object
+  inputStyle: PropTypes.object,
+  inputTextStyle: PropTypes.object
 }
 
 const classNameTypes = {
@@ -19,6 +20,7 @@ const classNameTypes = {
 const optionTypes = {
   autoFocus: PropTypes.bool,
   dangerMode: PropTypes.bool,
+  styleEchoBack: PropTypes.bool,
   disabled: PropTypes.bool,
   disableOnProcess: PropTypes.bool,
   ignoreCommandCase: PropTypes.bool,

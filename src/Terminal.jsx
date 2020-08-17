@@ -16,6 +16,7 @@ import types from './defs/types/Terminal'
 
 // Utils
 import commandExists from './utils/commandExists'
+import constructEcho from './utils/constructEcho'
 
 export default class Terminal extends Component {
   constructor (props) {
@@ -139,10 +140,7 @@ export default class Terminal extends Component {
 
       if (!this.props.noEchoBack) {
         // Mimic native terminal by echoing command back
-        // Also exempt it from message since it should not really be a message despite behaving like one
-        // Containing it in a span to allow JSX values in the prompt label
-        const echo = <span>{this.props.promptLabel || '$'} {rawInput}</span>
-        this.pushToStdout(echo, { isEcho: true })
+        this.pushToStdout(constructEcho(this.props.promptLabel || '$', rawInput, this.props), { isEcho: true })
       }
 
       if (rawInput) {
@@ -221,7 +219,7 @@ export default class Terminal extends Component {
       content: defaults(this.props.contentStyle, sourceStyles.content),
       inputArea: defaults(this.props.inputAreaStyle, sourceStyles.inputArea),
       promptLabel: defaults(this.props.promptLabelStyle, sourceStyles.promptLabel),
-      input: defaults(this.props.inputStyle, sourceStyles.input)
+      input: defaults({ ...this.props.inputStyle, ...this.props.inputTextStyle }, { ...sourceStyles.input, ...sourceStyles.inputText })
     }
 
     return (

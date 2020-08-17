@@ -13,6 +13,14 @@ export default {
     danger: {
       description: 'This command returns HTML. It will only work with terminals that have dangerous mode.',
       fn: () => 'I can<br/>use HTML in this<br/>and it will be parsed'
+    },
+    async: {
+      description: 'This command runs an asynchronous task',
+      fn: async () => {
+        const asyncTask = async () => 'Hello from a promise!'
+        const result = await asyncTask()
+        return result
+      }
     }
   },
   casingCommands: {

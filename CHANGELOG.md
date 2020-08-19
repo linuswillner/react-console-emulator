@@ -1,3 +1,33 @@
+# v5.0.0
+
+This version brings with it some decently sized improvements to react-console-emulator.
+
+### Breaking changes
+
+The recommended method for terminal input text styling has been moved. Terminal input text should now be styled using the `inputTextStyle` and `inputTextClassName` props. **Note:** If using the newly-introduced styling persistence options for command echoes, leaving text styling in `inputStyle` or `inputClassName` may cause unexpected styling bugs.
+
+The `styleEchoBack` prop no longer accepts boolean input. Instead, one should either omit it (For default behaviour) or define one of the string types detailed in the [options](docs/CONFIG.md#options).
+
+### Main changes
+
+Async command executor support is here! You can now use async functions as command handlers and their outputs will function identically to synchronous functions.
+
+Added the ability to hide the prompt area entirely when the terminal is disabled either manually through the `disabled` prop or on process if `disableOnProcess` is enabled ([#639](https://github.com/linuswillner/react-console-emulator/issues/639)).
+
+Added the ability to set the terminal to read-only mode with the `readOnly` prop, which disables input entirely and hides the prompt area ([#639](https://github.com/linuswillner/react-console-emulator/issues/639)).
+
+### Other changes
+
+Fixed a bug where newline parsing did not recognise newline literals properly ([#632](https://github.com/linuswillner/react-console-emulator/issues/632)).
+
+Full run-down of prop changes:
+```diff
++ inputTextStyle
++ inputTextClassName
++ hidePromptWhenDisabled
++ readOnly
+```
+
 # v4.0.1
 
 Correct eslint-config-standard-react getting installed as a production dependency as opposed to a development one.

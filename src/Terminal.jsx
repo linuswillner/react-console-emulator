@@ -42,7 +42,7 @@ export default class Terminal extends Component {
     // Only focus the terminal if text isn't being copied
     const isTextSelected = window.getSelection().type === 'Range'
     // Only focus if input is there (Goes away for read-only terminals)
-    if (!isTextSelected) this.terminalInput.current.focus() // eslint-disable-line no-unused-expressions
+    if (!isTextSelected) this.terminalInput.current.focus()
   }
 
   /* istanbul ignore next: Covered by interactivity tests */

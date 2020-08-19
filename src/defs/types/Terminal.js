@@ -29,8 +29,10 @@ const optionTypes = {
     // (undefined signifies default behaviour)
     // Not offering individual options for message styling as messages only have one uniform style for the entire element per the spec
   ]),
+  readOnly: PropTypes.bool,
   disabled: PropTypes.bool,
   disableOnProcess: PropTypes.bool,
+  hidePromptWhenDisabled: PropTypes.bool,
   ignoreCommandCase: PropTypes.bool,
   noDefaults: PropTypes.bool,
   noEchoBack: PropTypes.bool,

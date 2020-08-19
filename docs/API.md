@@ -17,6 +17,7 @@ const commands = {
       const lowerCaseArg1 = arg1.toLowerCase()
 
       // What you return in this function will be output to the terminal
+      // If you want to render non-string items, stringify them before outputting them here
       return `test ${lowerCaseArg1}`
     },
     explicitExec: true, // If you need to execute your function again after the output has been emitted, enable
@@ -28,7 +29,7 @@ const commands = {
 
 Command functions (The `fn` property) can be sync or async. Asynchronous functions are awaited and their return values are displayed as those of a regular function would.
 
-This is particularly useful if you have to make relatively low-latency operations like network requests and display their outputs. However, if your tasks are predicted 
+This is particularly useful if you have to make relatively low-latency operations like network requests and display their outputs. However, if your tasks are predicted to take longer than is feasible to wait for with a promise, see the [Async output](#async-output).
 
 ### Async output
 

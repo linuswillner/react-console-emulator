@@ -76,6 +76,11 @@ describe('Terminal HTML structure', () => {
     expect(wrapper.find('[name="react-console-emulator__promptLabel"]')).toHaveLength(1)
     expect(wrapper.find('[name="react-console-emulator__input"]')).toHaveLength(1)
   })
+
+  it('Hides the prompt in read-only mode', () => {
+    const wrapper = shallow(<Terminal commands={commands} readOnly/>)
+    expect(wrapper.find('[name="react-console-emulator__inputArea"]').prop('style')).toEqual({ display: 'none' })
+  })
 })
 
 describe('Terminal welcome messages', () => {

@@ -29,7 +29,11 @@ const commands = {
 
 Command functions (The `fn` property) can be sync or async. Asynchronous functions are awaited and their return values are displayed as those of a regular function would.
 
-This is particularly useful if you have to make relatively low-latency operations like network requests and display their outputs. However, if your tasks are predicted to take longer than is feasible to wait for with a promise, see the [Async output](#async-output).
+This is particularly useful if you have to make relatively low-latency operations like network requests and display their outputs. However, if your tasks are predicted to take longer than is feasible to wait for with a promise, see the [Async output](#async-output) section below.
+
+### Updating terminal output
+
+Akin to native terminals, the terminal output can at will be locked (Using the `locked` prop) to redirect all output to only replace the latest line, as opposed to pushing new lines. This can be utilised along with [Async output](#async-output) to, for example, create a continually incrementing progress bar.
 
 ### Async output
 

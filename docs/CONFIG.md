@@ -40,6 +40,7 @@ The terminal has several options you can use to change the behaviour of it. All 
 | errorText | The text to display when a command does not exist. Use the `[command]` placeholder for input substitution. | String | `'Command \'[command]\' not found!'` |
 | hidePromptWhenDisabled | Hide entire prompt when input is manually disabled (Via the `disabled` prop) or when `disableOnProcess` is enabled and the terminal is processing. | Boolean | `false` |
 | ignoreCommandCase | Disable case-sensitive matching of command inputs. **Note:** Enabling this feature results in a restriction of command names to alphanumeric characters, dashes and underscores, for security reasons. | Boolean | `false` |
+| locked | Lock output to the current line. When this prop is set to `true`, all output to the terminal will only replace the latest line. This could be useful if you want to make something akin to a progress bar and update the latest line. | Boolean | `false` |
 | noAutoScroll | Disable automatic scrolling to the bottom of the terminal when a command is executed (*nix-like). | Boolean | `false` |
 | noDefaults | Do not register the default commands (`help` and `clear`). Useful if you want to override the functionality of either. | Boolean | `false` |
 | noEchoBack | Disable command echoes (Terminal outputs of any commands entered). | Boolean | `false` |

@@ -88,6 +88,9 @@ export default class Terminal extends Component {
    */
   pushToStdout = (message, options) => {
     const { stdout } = this.state
+
+    if (this.props.locked) stdout.pop()
+
     stdout.push({ message, isEcho: options?.isEcho || false })
 
     /* istanbul ignore next: Covered by interactivity tests */

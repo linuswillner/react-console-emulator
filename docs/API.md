@@ -35,6 +35,8 @@ This is particularly useful if you have to make relatively low-latency operation
 
 Akin to native terminals, the terminal output can at will be locked (Using the `locked` prop) to redirect all output to only replace the latest line, as opposed to pushing new lines. This can be utilised along with [Async output](#async-output) to, for example, create a continually incrementing progress bar.
 
+**Note:** It might be worth setting the `locked` prop conditionally only when a command is run, if you do not want your welcome message to disappear, or get stripped down to only the last one if you're using a multi-message welcome, considering welcome messages behave exactly like ordinary user-triggered outputs.
+
 ### Async output
 
 If your terminal commands need to perform tasks with significant delays (Wait for events, etc.) that cause promise resolution times to be prohibitively long, you may need to return a temporary value and then wait for a result before pushing to the output.

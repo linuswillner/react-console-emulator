@@ -1,3 +1,36 @@
+# v5.0.0
+
+This version brings with it several new major features to react-console-emulator.
+
+### Breaking changes
+
+The recommended method for terminal input text styling has been moved. Terminal input text should now be styled using the `inputTextStyle` and `inputTextClassName` props. **Note:** If using the newly-introduced styling persistence options for command echoes, leaving text styling in `inputStyle` or `inputClassName` may cause unexpected styling bugs.
+
+The `styleEchoBack` prop no longer accepts boolean input. Instead, one should either omit it (For default behaviour) or define one of the string types detailed in the [options](docs/CONFIG.md#options).
+
+### Main changes
+
+Async command executor support is here! You can now use async functions as command handlers and their outputs will function identically to synchronous functions.
+
+Added the ability to hide the prompt area entirely when the terminal is disabled either manually through the `disabled` prop or on process if `disableOnProcess` is enabled. ([#639](https://github.com/linuswillner/react-console-emulator/issues/639))
+
+Added the ability to set the terminal to read-only mode with the `readOnly` prop, which disables input entirely and hides the prompt area. ([#639](https://github.com/linuswillner/react-console-emulator/issues/639))
+
+Added the ability to lock terminal output to updating the last line only. This could be useful for, among other things, creating progress bars. ([#638](https://github.com/linuswillner/react-console-emulator/issues/638))
+
+### Other changes
+
+Fixed a bug where newline parsing did not recognise newline literals properly. ([#632](https://github.com/linuswillner/react-console-emulator/issues/632))
+
+Full run-down of prop changes:
+```diff
++ inputTextStyle
++ inputTextClassName
++ hidePromptWhenDisabled
++ readOnly
++ locked
+```
+
 # v4.0.1
 
 Correct eslint-config-standard-react getting installed as a production dependency as opposed to a development one.
@@ -16,14 +49,14 @@ Renamed `noAutomaticStdout` prop to `noEchoBack` for added clarity.
 
 ### Main changes
 
-Terminal message styling is here! You can now re-style the messages output by the terminal (Including echoes, optionally with the `styleEchoBack` prop) using the `messageStyle` and `messageClassName` props ([#518](https://github.com/linuswillner/react-console-emulator/issues/518)).
+Terminal message styling is here! You can now re-style the messages output by the terminal (Including echoes, optionally with the `styleEchoBack` prop) using the `messageStyle` and `messageClassName` props. ([#518](https://github.com/linuswillner/react-console-emulator/issues/518))
 
-JSX prompt labels! Prompt labels now support elements instead of just plain old strings ([#210](https://github.com/linuswillner/react-console-emulator/issues/210)).
+JSX prompt labels! Prompt labels now support elements instead of just plain old strings. ([#210](https://github.com/linuswillner/react-console-emulator/issues/210))
 
-Newline parsing is now possible! The terminal can now parse newline characters in terminal messages - anything with a \n character in it will be rendered as a separate line in the response message. This does of course not apply to command back-echoes. This behaviour can also be disabled, if desired, using the `noNewlineParsing` prop ([#519](https://github.com/linuswillner/react-console-emulator/issues/519)).
+Newline parsing is now possible! The terminal can now parse newline characters in terminal messages - anything with a \n character in it will be rendered as a separate line in the response message. This does of course not apply to command back-echoes. This behaviour can also be disabled, if desired, using the `noNewlineParsing` prop. ([#519](https://github.com/linuswillner/react-console-emulator/issues/519))
 
 
-Case-insensitive command matching! You can now supply the `ignoreCommandCase` prop to allow matching commands even when their casing is not correct. Do note that for security reasons, enabling case-insensitive command matching restricts command names to letters, numbers and dashes/underscores ([#415](https://github.com/linuswillner/react-console-emulator/issues/415)).
+Case-insensitive command matching! You can now supply the `ignoreCommandCase` prop to allow matching commands even when their casing is not correct. Do note that for security reasons, enabling case-insensitive command matching restricts command names to letters, numbers and dashes/underscores. ([#415](https://github.com/linuswillner/react-console-emulator/issues/415))
 
 ### Other changes
 
@@ -47,19 +80,19 @@ A full run-down of the prop changes is as follows:
 
 # v3.0.4
 
-Fixed a bug preventing users from selecting text in the terminal output ([#414](https://github.com/linuswillner/react-console-emulator/issues/414)).
+Fixed a bug preventing users from selecting text in the terminal output. ([#414](https://github.com/linuswillner/react-console-emulator/issues/414))
 
 # v3.0.3
 
-Removed redundant `stringify-object` dependency to properly enable command re-validation based on raw objects alone. This was supposed to have been fixed in 3.0.2, but due to a mishap the old validation was left dangling. This has now been fixed ([#411](https://github.com/linuswillner/react-console-emulator/issues/411)).
+Removed redundant `stringify-object` dependency to properly enable command re-validation based on raw objects alone. This was supposed to have been fixed in 3.0.2, but due to a mishap the old validation was left dangling. This has now been fixed. ([#411](https://github.com/linuswillner/react-console-emulator/issues/411))
 
 # v3.0.2
 
-Fixed command re-validation reliability issues relating to source-identical commands ([#35](https://github.com/linuswillner/react-console-emulator/issues/35)).
+Fixed command re-validation reliability issues relating to source-identical commands. ([#35](https://github.com/linuswillner/react-console-emulator/issues/35))
 
 # v3.0.1
 
-Fixed input outline showing on Safari ([#258](https://github.com/linuswillner/react-console-emulator/pull/258)) ([Herve07h22](https://github.com/Herve07h22)).
+Fixed input outline showing on Safari. ([Herve07h22](https://github.com/Herve07h22)) ([#258](https://github.com/linuswillner/react-console-emulator/pull/258)) 
 
 # v3.0.0
 
@@ -119,19 +152,19 @@ Enabled module transpilation to widen the support amongst Node versions for dist
 
 # v1.7.2
 
-Re-added Babel into build flow in a different format to improve compatibility ([#39, comment](https://github.com/linuswillner/react-console-emulator/issues/39#issuecomment-440973765)).
+Re-added Babel into build flow in a different format to improve compatibility. ([#39, comment](https://github.com/linuswillner/react-console-emulator/issues/39#issuecomment-440973765))
 
 # v1.7.1
 
-Removed Babel from the build flow in order to allow the inclusion of the helper files ([#39](https://github.com/linuswillner/react-console-emulator/issues/39)).
+Removed Babel from the build flow in order to allow the inclusion of the helper files. ([#39](https://github.com/linuswillner/react-console-emulator/issues/39))
 
 # v1.7.0
 
 Internal refactoring for better maintainability.
 
-Added default-enabled automatic scrolling to the bottom of the terminal when a command is run ([#36](https://github.com/linuswillner/react-console-emulator/issues/36)).
+Added default-enabled automatic scrolling to the bottom of the terminal when a command is run. ([#36](https://github.com/linuswillner/react-console-emulator/issues/36))
 
-Added command callback support to run a function each time a command is executed ([#36](https://github.com/linuswillner/react-console-emulator/issues/36)).
+Added command callback support to run a function each time a command is executed. ([#36](https://github.com/linuswillner/react-console-emulator/issues/36))
 
 Added `noAutoScroll` and `commandCallback` props.
 

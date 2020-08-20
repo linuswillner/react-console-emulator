@@ -16,6 +16,8 @@ import types from './defs/types/Terminal'
 
 // Utils
 import commandExists from './utils/commandExists'
+import constructEcho from './utils/constructEcho'
+import shouldPromptBeVisible from './utils/shouldPromptBeVisible'
 
 export default class Terminal extends Component {
   constructor (props) {
@@ -26,7 +28,6 @@ export default class Terminal extends Component {
       history: [],
       historyPosition: null,
       previousHistoryPosition: null,
-      // TODO: Add prop-controlled enable/disable on the input
       processing: false
     }
 
@@ -40,6 +41,7 @@ export default class Terminal extends Component {
   focusTerminal = () => {
     // Only focus the terminal if text isn't being copied
     const isTextSelected = window.getSelection().type === 'Range'
+    // Only focus if input is there (Goes away for read-only terminals)
     if (!isTextSelected) this.terminalInput.current.focus()
   }
 
@@ -86,6 +88,9 @@ export default class Terminal extends Component {
    */
   pushToStdout = (message, options) => {
     const { stdout } = this.state
+
+    if (this.props.locked) stdout.pop()
+
     stdout.push({ message, isEcho: options?.isEcho || false })
 
     /* istanbul ignore next: Covered by interactivity tests */
@@ -131,7 +136,7 @@ export default class Terminal extends Component {
 
   /* istanbul ignore next: Covered by interactivity tests */
   processCommand = () => {
-    this.setState({ processing: true }, () => {
+    this.setState({ processing: true }, async () => {
       // Initialise command result object
       const commandResult = { command: null, args: [], rawInput: null, result: null }
       const rawInput = this.terminalInput.current.value
@@ -140,10 +145,7 @@ export default class Terminal extends Component {
 
       if (!this.props.noEchoBack) {
         // Mimic native terminal by echoing command back
-        // Also exempt it from message since it should not really be a message despite behaving like one
-        // Containing it in a span to allow JSX values in the prompt label
-        const echo = <span>{this.props.promptLabel || '$'} {rawInput}</span>
-        this.pushToStdout(echo, { isEcho: true })
+        this.pushToStdout(constructEcho(this.props.promptLabel || '$', rawInput, this.props), { isEcho: true })
       }
 
       if (rawInput) {
@@ -164,11 +166,11 @@ export default class Terminal extends Component {
           )
         } else {
           const cmd = this.state.commands[command]
-          const res = cmd.fn(...args)
+          const res = await cmd.fn(...args)
 
           this.pushToStdout(res)
           commandResult.result = res
-          if (cmd.explicitExec) cmd.fn(...args)
+          if (cmd.explicitExec) await cmd.fn(...args)
         }
       }
 
@@ -222,7 +224,7 @@ export default class Terminal extends Component {
       content: defaults(this.props.contentStyle, sourceStyles.content),
       inputArea: defaults(this.props.inputAreaStyle, sourceStyles.inputArea),
       promptLabel: defaults(this.props.promptLabelStyle, sourceStyles.promptLabel),
-      input: defaults(this.props.inputStyle, sourceStyles.input)
+      input: defaults({ ...this.props.inputStyle, ...this.props.inputTextStyle }, { ...sourceStyles.input, ...sourceStyles.inputText })
     }
 
     return (
@@ -245,7 +247,7 @@ export default class Terminal extends Component {
           <div
             name='react-console-emulator__inputArea'
             className={this.props.inputAreaClassName}
-            style={styles.inputArea}
+            style={shouldPromptBeVisible(this.state, this.props) ? styles.inputArea : { display: 'none' }}
           >
             {/* Prompt label */}
             <span
@@ -264,10 +266,7 @@ export default class Terminal extends Component {
               onKeyDown={this.handleInput}
               type='text'
               autoComplete='off'
-              disabled={
-                this.props.disabled ||
-                (this.props.disableOnProcess && /* istanbul ignore next: Covered by interactivity tests */ this.state.processing)
-              }
+              disabled={this.props.disabled || (this.props.disableOnProcess && /* istanbul ignore next: Covered by interactivity tests */ this.state.processing)}
             />
           </div>
         </div>

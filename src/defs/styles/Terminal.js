@@ -25,6 +25,11 @@ export default {
     paddingTop: '3px',
     color: '#EE9C34'
   },
+  inputText: {
+    fontSize: '15px',
+    color: '#F0BF81',
+    fontFamily: 'monospace'
+  },
   input: {
     border: '0',
     padding: '0 0 0 7px',
@@ -33,9 +38,6 @@ export default {
     width: '100%',
     height: '22px',
     background: 'transparent',
-    fontSize: '15px',
-    color: '#F0BF81',
-    fontFamily: 'monospace',
     outline: 'none' // Fix for outline showing up on some browsers
   }
 }

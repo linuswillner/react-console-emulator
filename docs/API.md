@@ -17,6 +17,7 @@ const commands = {
       const lowerCaseArg1 = arg1.toLowerCase()
 
       // What you return in this function will be output to the terminal
+      // If you want to render non-string items, stringify them before outputting them here
       return `test ${lowerCaseArg1}`
     },
     explicitExec: true, // If you need to execute your function again after the output has been emitted, enable
@@ -24,13 +25,25 @@ const commands = {
 }
 ```
 
+### Sync vs async command functions
+
+Command functions (The `fn` property) can be sync or async. Asynchronous functions are awaited and their return values are displayed as those of a regular function would.
+
+This is particularly useful if you have to make relatively low-latency operations like network requests and display their outputs. However, if your tasks are predicted to take longer than is feasible to wait for with a promise, see the [Async output](#async-output) section below.
+
+### Updating terminal output
+
+Akin to native terminals, the terminal output can at will be locked (Using the `locked` prop) to redirect all output to only replace the latest line, as opposed to pushing new lines. This can be utilised along with [Async output](#async-output) to, for example, create a continually incrementing progress bar.
+
+**Note:** It might be worth setting the `locked` prop conditionally only when a command is run, if you do not want your welcome message to disappear, or get stripped down to only the last one if you're using a multi-message welcome, considering welcome messages behave exactly like ordinary user-triggered outputs.
+
 ### Async output
 
-If you terminal deals with HTTP requests or cross-component functionality, you may need to wait for a result before pushing to the output without relying on the function return time.
+If your terminal commands need to perform tasks with significant delays (Wait for events, etc.) that cause promise resolution times to be prohibitively long, you may need to return a temporary value and then wait for a result before pushing to the output.
 
 **Note:** Doing output this way is a workaround, and ideally your output should be returned by the command function. This method will expose functions to you that you do not normally have access to due to React component encapsulation. Proceed with caution.
 
-To do this, you can use the [React refs API](https://reactjs.org/docs/refs-and-the-dom.html). Below is an example component that uses async pushing.
+To do this, you can use the [React refs API](https://reactjs.org/docs/refs-and-the-dom.html). Below is an example component that uses asynchronous output in this manner.
 
 ```jsx
 import React, { Component } from 'react'

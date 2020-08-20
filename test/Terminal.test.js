@@ -76,6 +76,11 @@ describe('Terminal HTML structure', () => {
     expect(wrapper.find('[name="react-console-emulator__promptLabel"]')).toHaveLength(1)
     expect(wrapper.find('[name="react-console-emulator__input"]')).toHaveLength(1)
   })
+
+  it('Hides the prompt in read-only mode', () => {
+    const wrapper = shallow(<Terminal commands={commands} readOnly/>)
+    expect(wrapper.find('[name="react-console-emulator__inputArea"]').prop('style')).toEqual({ display: 'none' })
+  })
 })
 
 describe('Terminal welcome messages', () => {
@@ -139,8 +144,8 @@ describe('Terminal functionality', () => {
   })
 
   it('Parses newlines (But not when disabled)', () => {
-    const wrapperEnabled = mount(<Terminal commands={commands} welcomeMessage={'split1\\nsplit2'}/>)
-    const wrapperDisabled = mount(<Terminal commands={commands} welcomeMessage={'split1\\nsplit2'} noNewlineParsing/>)
+    const wrapperEnabled = mount(<Terminal commands={commands} welcomeMessage={'split1\nsplit2'}/>)
+    const wrapperDisabled = mount(<Terminal commands={commands} welcomeMessage={'split1\nsplit2'} noNewlineParsing/>)
 
     const enabledContent = wrapperEnabled.find('[name="react-console-emulator__content"]')
     const disabledContent = wrapperDisabled.find('[name="react-console-emulator__content"]')
@@ -150,10 +155,19 @@ describe('Terminal functionality', () => {
     expect(enabledContent.childAt(1).text()).toBe('split2')
 
     // ...and doesn't with parsing disabled
-    expect(disabledContent.childAt(0).text()).toBe('split1\\nsplit2')
+    expect(disabledContent.childAt(0).text()).toBe('split1\nsplit2')
 
     wrapperEnabled.unmount()
     wrapperDisabled.unmount()
+  })
+
+  it('Only updates the last line when locked', () => {
+    const wrapper = mount(<Terminal commands={commands} welcomeMessage={['this is the first message', 'this is the second message']} locked/>)
+    const content = wrapper.find('[name="react-console-emulator__content"]')
+
+    expect(content.childAt(0).text()).toBe('this is the second message')
+
+    wrapper.unmount()
   })
 })
 

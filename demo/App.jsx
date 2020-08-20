@@ -14,7 +14,14 @@ import Terminal from '../src/Terminal' // In your app, import from 'react-consol
 export default class App extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      locked: false,
+      increment: 0,
+      isProgressing: false,
+      progress: 0
+    }
     this.terminal = React.createRef()
+    this.progressTerminal = React.createRef()
   }
 
   generateTerminalDemos = (terminals) => {
@@ -50,7 +57,7 @@ export default class App extends Component {
     const terminals = [
       {
         title: 'Default terminal (With autoFocus enabled)',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L55-L57',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L61-L65',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -59,7 +66,7 @@ export default class App extends Component {
       },
       {
         title: 'Default welcome message (With danger mode enabled)',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L64-L67',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L70-L75',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -69,7 +76,7 @@ export default class App extends Component {
       },
       {
         title: 'Custom welcome message as an array, overriding of default commands enabled, custom error message and command callback',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L74-L87',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L80-L95',
         component: <Terminal
           style={globalStyles}
           commands={{
@@ -89,7 +96,7 @@ export default class App extends Component {
       },
       {
         title: 'Custom styles on the terminal elements (Incl. restyling the background) and JSX as prompt label',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L94-L105',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#100-L114',
         component: <Terminal
           commands={commands}
           welcomeMessage={[
@@ -101,13 +108,14 @@ export default class App extends Component {
           style={{ backgroundColor: null, background: 'url(\'https://storage.needpix.com/rsynced_images/abstract-wallpaper-1442844111BON.jpg\')' }} // Terminal background
           contentStyle={{ color: '#FF8E00' }} // Text colour
           promptLabelStyle={{ color: '#FFFFFF' }} // Prompt label colour
-          inputStyle={{ color: 'red' }} // Prompt text colour
+          inputTextStyle={{ color: 'red' }} // Prompt text colour
           promptLabel={<b>root@React:~$</b>}
+          styleEchoBack='fullInherit' // Inherit echo styling from prompt
         />
       },
       {
         title: 'Manual pushing with no echo back (Due to manual pushing) and custom terminal message colours',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L112-L129',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L119-L138',
         component: <Terminal
           style={globalStyles}
           ref={this.terminal}
@@ -131,7 +139,7 @@ export default class App extends Component {
       },
       {
         title: 'History demo',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L136-L138',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L143-L147',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -140,7 +148,7 @@ export default class App extends Component {
       },
       {
         title: 'EOL parsing enabled',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L145-L151',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L152-L160',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -153,7 +161,7 @@ export default class App extends Component {
       },
       {
         title: 'EOL parsing disabled',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L158-L164',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L165-L173',
         component: <Terminal
           style={globalStyles}
           commands={commands}
@@ -166,7 +174,7 @@ export default class App extends Component {
       },
       {
         title: 'Case sensitive command validation',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L171-L176',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L178-L185',
         component: <Terminal
           style={globalStyles}
           commands={casingCommands}
@@ -178,7 +186,7 @@ export default class App extends Component {
       },
       {
         title: 'Case insensitive command validation',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L183-L189',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L190-L198',
         component: <Terminal
           style={globalStyles}
           commands={casingCommands}
@@ -187,6 +195,79 @@ export default class App extends Component {
             'Try running "help" and then running both "CaSeMatTeRs" and "casematters"!'
           ]}
           ignoreCommandCase
+        />
+      },
+      {
+        title: 'Read-only terminal',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L203-L208',
+        component: <Terminal
+          style={globalStyles}
+          commands={commands}
+          welcomeMessage='This terminal is read-only, and does not take any input.'
+          readOnly
+        />
+      },
+      {
+        title: 'Terminal that disables input on process',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L213-L219',
+        component: <Terminal
+          style={globalStyles}
+          commands={commands}
+          welcomeMessage='This terminal hides the input when the terminal is disabled on command process. Try running the "delay" command and see what happens!'
+          hidePromptWhenDisabled
+          disableOnProcess
+        />
+      },
+      {
+        title: 'Terminal with conditionally locked output',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L224-L239',
+        component: <Terminal
+          style={globalStyles}
+          commands={{
+            increment: {
+              description: 'Increments a number by one.',
+              fn: () => {
+                this.setState({ locked: true }) // This is just here so the welcome message or anything run before 'increment' doesn't go away
+                const newIncrement = this.state.increment + 1
+                this.setState({ increment: newIncrement })
+                return newIncrement
+              }
+            }
+          }}
+          welcomeMessage='This terminal updates the output of the "increment" command when run multiple times in succession.'
+          locked={this.state.locked}
+        />
+      },
+      {
+        title: 'Progress demo',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L244-L271',
+        component: <Terminal
+          style={globalStyles}
+          ref={this.progressTerminal}
+          commands={{
+            progress: {
+              description: 'Displays a progress counter.',
+              fn: () => {
+                this.setState({ isProgressing: true }, () => {
+                  const terminal = this.progressTerminal.current
+
+                  const interval = setInterval(() => {
+                    if (this.state.progress === 100) { // Stop at 100%
+                      clearInterval(interval)
+                      this.setState({ isProgressing: false, progress: 0 })
+                    } else {
+                      this.setState({ progress: this.state.progress + 1 }, () => terminal.pushToStdout(`Progress: ${this.state.progress}%`))
+                    }
+                  }, 15)
+                })
+
+                return ''
+              }
+            }
+          }}
+          welcomeMessage='This terminal displays a progress counter when you run the "progress" command.'
+          disabled={this.state.isProgressing}
+          locked={this.state.isProgressing}
         />
       }
     ]

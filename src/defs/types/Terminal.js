@@ -5,7 +5,8 @@ const styleTypes = {
   contentStyle: PropTypes.object,
   inputAreaStyle: PropTypes.object,
   promptLabelStyle: PropTypes.object,
-  inputStyle: PropTypes.object
+  inputStyle: PropTypes.object,
+  inputTextStyle: PropTypes.object
 }
 
 const classNameTypes = {
@@ -13,14 +14,26 @@ const classNameTypes = {
   contentClassName: PropTypes.string,
   inputAreaClassName: PropTypes.string,
   promptLabelClassName: PropTypes.string,
-  inputClassName: PropTypes.string
+  inputClassName: PropTypes.string,
+  inputTextClassName: PropTypes.string
 }
 
 const optionTypes = {
   autoFocus: PropTypes.bool,
   dangerMode: PropTypes.bool,
+  styleEchoBack: PropTypes.oneOf([
+    'labelOnly', // Only persist label style
+    'textOnly', // Only persist text style
+    'fullInherit', // Inherit entire prompt style
+    'messageInherit' // Inherit message style
+    // (undefined signifies default behaviour)
+    // Not offering individual options for message styling as messages only have one uniform style for the entire element per the spec
+  ]),
+  locked: PropTypes.bool,
+  readOnly: PropTypes.bool,
   disabled: PropTypes.bool,
   disableOnProcess: PropTypes.bool,
+  hidePromptWhenDisabled: PropTypes.bool,
   ignoreCommandCase: PropTypes.bool,
   noDefaults: PropTypes.bool,
   noEchoBack: PropTypes.bool,

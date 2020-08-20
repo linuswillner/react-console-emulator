@@ -10,7 +10,8 @@ module.exports = {
     // These are covered by interactivity tests or other tests
     'cleanArray.js',
     'scrollHistory.js',
-    'sendCursorToEnd.js'
+    'sendCursorToEnd.js',
+    'constructEcho.js'
   ],
   coverageDirectory: './coverage/'
 }

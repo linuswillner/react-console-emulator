@@ -160,6 +160,15 @@ describe('Terminal functionality', () => {
     wrapperEnabled.unmount()
     wrapperDisabled.unmount()
   })
+
+  it('Only updates the last line when locked', () => {
+    const wrapper = mount(<Terminal commands={commands} welcomeMessage={['this is the first message', 'this is the second message']} locked/>)
+    const content = wrapper.find('[name="react-console-emulator__content"]')
+
+    expect(content.childAt(0).text()).toBe('this is the second message')
+
+    wrapper.unmount()
+  })
 })
 
 describe('Terminal command validator', () => {

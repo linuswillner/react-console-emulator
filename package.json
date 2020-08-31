@@ -74,7 +74,7 @@
     "jsdom": "^16.4.0",
     "mini-css-extract-plugin": "^0.10.0",
     "node-sass": "^4.14.1",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
     "progress-bar-webpack-plugin": "^2.1.0",
     "puppeteer": "^2.1.1",
     "react": "^16.13.1",

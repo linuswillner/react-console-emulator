@@ -16,6 +16,20 @@
         "@babel/plugin-proposal-optional-chaining",
         [ "@babel/plugin-transform-runtime", { "regenerator": true } ]
       ]
+    },
+    "production": {
+      "presets": [
+        "@babel/react",
+        [ "@babel/env" ],
+        "minify"
+      ],
+      "plugins": [
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-optional-chaining",
+        [ "@babel/plugin-transform-runtime", { "regenerator": true } ]
+      ],
+      "comments": false
     }
   }
 }

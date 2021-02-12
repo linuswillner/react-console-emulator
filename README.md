@@ -21,7 +21,7 @@ A simple, powerful and highly customisable Unix terminal emulator for React.
 
 ## Usage
 
-> See more command examples in [demo/extra/config.js](demo/extra/config.js) and [demo/App.jsx](demo/App.jsx)
+> See more usage examples in [demo/extra/config.js](demo/extra/config.js) and [demo/App.jsx](demo/App.jsx)
 
 ```jsx
 import React, { Component } from 'react'

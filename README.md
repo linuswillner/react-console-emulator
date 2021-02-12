@@ -2,6 +2,8 @@
 
 # react-console-emulator
 
+![Version](https://img.shields.io/npm/v/react-console-emulator) ![License](https://img.shields.io/npm/l/react-console-emulator) ![NPM downloads](https://img.shields.io/npm/dw/react-console-emulator) ![NPM bundle size](https://img.shields.io/bundlephobia/min/react-console-emulator) ![CircleCI](https://img.shields.io/circleci/build/github/linuswillner/react-console-emulator/master) ![Codecov](https://img.shields.io/codecov/c/github/linuswillner/react-console-emulator) 
+
 A simple, powerful and highly customisable Unix terminal emulator for React.
 
 [Live demo](https://linuswillner.me/react-console-emulator/)  
@@ -19,6 +21,8 @@ A simple, powerful and highly customisable Unix terminal emulator for React.
 
 ## Usage
 
+> See more command examples in [demo/extra/config.js](demo/extra/config.js) and [demo/App.jsx](demo/App.jsx)
+
 ```jsx
 import React, { Component } from 'react'
 import Terminal from 'react-console-emulator'
@@ -27,9 +31,7 @@ const commands = {
   echo: {
     description: 'Echo a passed string.',
     usage: 'echo <string>',
-    fn: function () {
-      return `${Array.from(arguments).join(' ')}`
-    }
+    fn: (...args) => args.join(' ')
   }
 }
 
@@ -45,6 +47,10 @@ export default class MyTerminal extends Component {
   }
 }
 ```
+
+## Contributing
+
+For information on contributing, see [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md).
 
 ## License
 

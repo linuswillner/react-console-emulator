@@ -1,3 +1,7 @@
+# v5.0.1
+
+Removed accidentally included `react-hot-loader` code from final build. Further reduced package size through minification. ([#846](https://github.com/linuswillner/react-console-emulator/issues/846))
+
 # v5.0.0
 
 This version brings with it several new major features to react-console-emulator.

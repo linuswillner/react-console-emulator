@@ -43,7 +43,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
     "@babel/plugin-proposal-optional-chaining": "^7.12.17",
     "@babel/plugin-transform-runtime": "^7.12.17",
-    "@babel/preset-env": "^7.12.17",
+    "@babel/preset-env": "^7.13.0",
     "@babel/preset-react": "^7.12.13",
     "@babel/runtime": "^7.12.18",
     "@hot-loader/react-dom": "^16.14.0",

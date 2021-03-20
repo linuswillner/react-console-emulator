@@ -52,7 +52,7 @@ export default class App extends Component {
   }
 
   render () {
-    const { globalStyles, commands, casingCommands } = config
+    const { globalStyles, commands, casingCommands, autocomplete } = config
 
     const terminals = [
       {
@@ -268,6 +268,16 @@ export default class App extends Component {
           welcomeMessage='This terminal displays a progress counter when you run the "progress" command.'
           disabled={this.state.isProgressing}
           locked={this.state.isProgressing}
+        />
+      },
+      {
+        title: 'Autocomplete demo',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L276-L303',
+        component: <Terminal
+          style={globalStyles}
+          onTab={autocomplete}
+          commands={commands}
+          welcomeMessage='This terminal uses a simple autocomplete. Start to write and press "Tab".'
         />
       }
     ]

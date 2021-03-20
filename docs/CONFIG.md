@@ -46,6 +46,7 @@ The terminal has several options you can use to change the behaviour of it. All 
 | noEchoBack | Disable command echoes (Terminal outputs of any commands entered). | Boolean | `false` |
 | noHistory | Disable the storing and scrolling of history of the commands entered in the terminal. | Boolean | `false` |
 | noNewlineParsing | Disable the parsing line breaks (\n) in command outputs as separate message, leave them unchanged. | Boolean | `false` |
+| onTab | Function, that is executed, when the Tab-Key is pressed. Passes the input element as an argument. | Function | undefined |
 | promptLabel | The prefix to use for the input field. Can be either string or element. | Node | `$` |
 | readOnly | Hides the entire prompt, thus setting the terminal to read-only mode. | Boolean | `false` |
 | styleEchoBack | Inherit style for command echoes (Terminal outputs of any commands entered) from prompt (Fully or partially, i.e. label or text only), or style them as regular messages. Omitting this prop enables default behaviour. | String<'labelOnly'/'textOnly'/'fullInherit'/'messageInherit'\> | `undefined` |

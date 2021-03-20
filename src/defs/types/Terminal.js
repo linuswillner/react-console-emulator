@@ -62,11 +62,16 @@ const messageTypes = {
   messageClassName: PropTypes.string
 }
 
+const handlerTypes = {
+  onTab: PropTypes.func
+}
+
 export default {
   ...styleTypes,
   ...classNameTypes,
   ...optionTypes,
   ...labelTypes,
   ...commandTypes,
-  ...messageTypes
+  ...messageTypes,
+  ...handlerTypes
 }

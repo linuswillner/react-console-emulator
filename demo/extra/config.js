@@ -36,5 +36,14 @@ export default {
       description: 'In terminals with case-insensitive matching, this command can be executed regardless of whether the casing is correct.',
       fn: () => 'This command is called "CaSeMatTeRs", but in case-insensitive terminals it can also be called with "casematters"!'
     }
+  },
+  autocomplete: (input) => {
+    const commandsList = ['echo', 'danger', 'async', 'delay', 'help', 'clear']
+    const currentValue = input.value
+    const completionValue = commandsList.filter(key => key.startsWith(currentValue))
+
+    if (completionValue && completionValue.length === 1) {
+      input.value = completionValue[0]
+    }
   }
 }

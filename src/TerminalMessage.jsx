@@ -15,7 +15,7 @@ export default class TerminalMessage extends Component {
       message: defaults(style, sourceStyles)
     }
 
-    return this.props.dangerMode
+    return this.props.dangerMode && typeof content === 'string'
       ? <div className={className} style={styles.message} {...html(content)}/>
       : <div className={className} style={styles.message}>{content}</div>
   }

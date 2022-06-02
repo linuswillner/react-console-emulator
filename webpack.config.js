@@ -22,11 +22,7 @@ const CSSExtracterConfig = new ExtractCSSWebpackPlugin({
   chunkFilename: dev ? '[id].css' : '[id].[hash].css'
 })
 
-const JSOptimizerConfig = new OptimizeJSWebpackPlugin({
-  cache: true,
-  parallel: true,
-  sourceMap: true
-})
+const JSOptimizerConfig = new OptimizeJSWebpackPlugin({})
 
 const CSSOptimizerConfig = new OptimizeCSSWebpackPlugin({})
 
@@ -45,8 +41,6 @@ const devPlugins = [
   HTMLInjecterConfig,
   CSSExtracterConfig,
   new ErrorOverlayWebpackPlugin(),
-  new webpack.HotModuleReplacementPlugin(),
-  new webpack.NamedModulesPlugin()
 ]
 
 const prodPlugins = [
@@ -89,14 +83,6 @@ module.exports = {
     path.join(__dirname, '/demo/index.jsx')
   ],
 
-  // Dummies for native Node modules not present in browser scope
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    crypto: 'empty'
-  },
-
   // Loaders
   module: {
     rules: [
@@ -129,6 +115,17 @@ module.exports = {
     alias: {
       'react-dom': '@hot-loader/react-dom' // DOM patches for react-hot-loader
       // Internal shortcuts
+    },
+    fallback: {
+      fs: false,
+      tls: false,
+      net: false,
+      path: false,
+      zlib: false,
+      http: false,
+      https: false,
+      stream: false,
+      crypto: false
     }
   },
 

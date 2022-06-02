@@ -239,8 +239,18 @@ export default class App extends Component {
         />
       },
       {
+        title: 'Raw HTML output',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L244-L249',
+        component: <Terminal
+          style={globalStyles}
+          commands={commands}
+          welcomeMessage='This terminal should render raw HTML to stdout. Try running the `html` command to see what happens!'
+          dangerMode
+        />
+      },
+      {
         title: 'Progress demo',
-        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L244-L271',
+        link: 'https://github.com/linuswillner/react-console-emulator/blob/master/demo/App.jsx#L254-L281',
         component: <Terminal
           style={globalStyles}
           ref={this.progressTerminal}

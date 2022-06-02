@@ -29,6 +29,10 @@ export default {
           setTimeout(() => resolve('Finished!'), 1000)
         })
       }
+    },
+    html: {
+      description: 'Returns a raw HTML string.',
+      fn: async () => '<span style="color:#c386ff">Hello</span> <span style="color:#fa8072">World</span>'
     }
   },
   casingCommands: {

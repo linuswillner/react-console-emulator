@@ -169,6 +169,16 @@ describe('Terminal functionality', () => {
 
     wrapper.unmount()
   })
+
+  it('Calls a callback function on key tab', () => {
+    const mockFn = jest.fn()
+    const wrapper = mount(<Terminal onTab={mockFn} commands={commands} />)
+    const input = wrapper.find('[name="react-console-emulator__input"]')
+    input.simulate('keydown', { key: 'Tab' })
+    expect(mockFn).toBeCalledWith(input.instance())
+
+    wrapper.unmount()
+  })
 })
 
 describe('Terminal command validator', () => {

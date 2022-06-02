@@ -203,6 +203,7 @@ export default class Terminal extends Component {
       case 'Enter': this.processCommand(); break
       case 'ArrowUp': this.scrollHistory('up'); break
       case 'ArrowDown': this.scrollHistory('down'); break
+      case 'Tab': if (this.props.onTab) event.preventDefault(); this.props.onTab(this.terminalInput.current); break
     }
   }
 

@@ -15,6 +15,7 @@ import messageSourceStyles from '../defs/styles/TerminalMessage'
  *  inputTextStyle: object
  * }
  */
+// eslint-disable-next-line react/display-name
 export default (promptLabel, rawInput, stylingProps) => {
   const sources = {
     echo: {

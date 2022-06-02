@@ -15,5 +15,8 @@ module.exports = {
     'constructEcho.js'
     */
   ],
-  coverageDirectory: './coverage/'
+  coverageDirectory: './coverage/',
+  globals: {
+    URL: 'http://localhost:3000'
+  }
 }

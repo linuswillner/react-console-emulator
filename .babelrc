@@ -1,7 +1,6 @@
 {
   "presets": [ "@babel/react", [ "@babel/preset-env" ] ],
   "plugins": [
-    "react-hot-loader/babel",
     [ "@babel/plugin-transform-runtime", { "regenerator": true } ]
   ],
   "env": {

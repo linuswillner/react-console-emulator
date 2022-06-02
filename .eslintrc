@@ -14,6 +14,7 @@
     "sourceType": "module"
   },
   "extends": [
+    "plugin:react/recommended",
     "standard",
     "standard-react"
   ],

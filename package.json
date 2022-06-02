@@ -11,9 +11,9 @@
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "codecov": "codecov --disable=gcov",
-    "test": "npm run lint && npm run test-coverage && npm run codecov",
-    "test:local": "npm run lint && npm run test-coverage",
-    "test:watch": "npm run test-local -- -- --watch",
+    "test": "npm run lint && npm run test:coverage && npm run codecov",
+    "test:local": "npm run lint && npm run test:coverage",
+    "test:watch": "npm run test:local -- -- --watch",
     "test:coverage": "cross-env TEST=true jest --config jest.coverage.js",
     "test:nocoverage": "cross-env TEST=true jest --config jest.default.js",
     "prepublishOnly": "npm run compile"

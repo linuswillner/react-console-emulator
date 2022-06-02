@@ -5,7 +5,7 @@ export default (commands, commandName, matchCaseInsensitive) => {
       if (new RegExp(`^${commandName}$`, 'gi').test(command)) {
         return {
           exists: true,
-          command: command
+          command
           // Have to return the defined and existing command name that matched here, otherwise the executor won't know which one it is
         }
       }

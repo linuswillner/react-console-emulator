@@ -1,4 +1,4 @@
-export default {
+const config = {
   globalStyles: {
     maxHeight: '300px'
   },
@@ -42,3 +42,5 @@ export default {
     }
   }
 }
+
+export default config

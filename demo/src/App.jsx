@@ -2,14 +2,14 @@
 import React, { Component } from 'react'
 
 // Demo only
-import './extra/demo.scss'
+import './App.scss'
 import config from './extra/config'
 import Header from './extra/components/Header'
 import Row from './extra/components/Row'
 import Tile from './extra/components/Tile'
 import Footer from './extra/components/Footer'
 
-import Terminal from '../src/Terminal' // In your app, import from 'react-console-emulator'
+import Terminal from 'react-console-emulator'
 
 export default class App extends Component {
   constructor (props) {

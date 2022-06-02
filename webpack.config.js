@@ -89,7 +89,13 @@ module.exports = {
       { // JSX
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        use: {
+          loader: 'babel-loader',
+          options: {
+            // Here you should change 'env' to '@babel/preset-env'
+            presets: ['@babel/preset-env'],
+          }
+        }
       },
       { // SCSS
         test: /\.scss$/,

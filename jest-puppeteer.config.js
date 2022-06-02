@@ -1,7 +1,7 @@
 module.exports = {
   server: {
-    command: 'cross-env NODE_ENV=development webpack-dev-server',
-    port: 8000,
+    command: 'cd demo && npm start',
+    port: 3000,
     launchTimeout: 30000,
     debug: true,
     usedPortAction: 'ignore'

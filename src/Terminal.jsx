@@ -95,7 +95,7 @@ export default class Terminal extends Component {
 
     /* istanbul ignore next: Covered by interactivity tests */
     if (options?.rawInput) this.pushToHistory(options.rawInput)
-    this.setState({ stdout: stdout })
+    this.setState({ stdout })
   }
 
   /**
@@ -105,7 +105,7 @@ export default class Terminal extends Component {
   pushToHistory = rawInput => {
     const { history } = this.state
     history.push(rawInput)
-    this.setState({ history: history, historyPosition: null })
+    this.setState({ history, historyPosition: null })
   }
 
   getStdout = () => {
@@ -212,6 +212,8 @@ export default class Terminal extends Component {
   }
 
   componentDidMount () {
+    console.log('mount')
+
     this.validateCommands()
     if (this.props.welcomeMessage) this.showWelcomeMessage()
     /* istanbul ignore next: Covered by interactivity tests */

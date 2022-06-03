@@ -212,8 +212,6 @@ export default class Terminal extends Component {
   }
 
   componentDidMount () {
-    console.log('mount')
-
     this.validateCommands()
     if (this.props.welcomeMessage) this.showWelcomeMessage()
     /* istanbul ignore next: Covered by interactivity tests */

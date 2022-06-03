@@ -282,8 +282,6 @@ export default class App extends Component {
       }
     ]
 
-    console.log(terminals.length)
-
     return (
       <main>
         <Header/>

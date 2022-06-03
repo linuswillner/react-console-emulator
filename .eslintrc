@@ -5,6 +5,9 @@
     "jest": true,
     "browser": true
   },
+  "globals": {
+
+  },
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaFeatures": {

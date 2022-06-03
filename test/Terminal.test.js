@@ -1,12 +1,11 @@
-/* eslint-disable no-undef, no-unused-vars */
+/**
+ * @jest-environment jsdom
+ */
 
 import React from 'react'
-import { shallow, mount, render } from 'enzyme'
-import skipIf from 'skip-if'
+import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 
 import Terminal from '../src/Terminal'
-
-const skipIfCI = skipIf(process.env.CI)
 
 const commands = {
   echo: {
@@ -62,13 +61,16 @@ const invalidCommands = {
   noFn: {}
 }
 
-beforeAll(async () => {
-  await page.goto('http://localhost:8000')
+// This is horrible but it's apparently the official way of doing this https://stackoverflow.com/a/66329699
+const oldConsoleError = console.error
+
+afterEach(() => {
+  console.error = oldConsoleError
 })
 
 describe('Terminal HTML structure', () => {
   it('Has required elements', () => {
-    const wrapper = shallow(<Terminal commands={commands}/>)
+    const wrapper = render(<Terminal commands={commands}/>)
 
     expect(wrapper.find('[name="react-console-emulator"]')).toHaveLength(1)
     expect(wrapper.find('[name="react-console-emulator__content"]')).toHaveLength(1)
@@ -78,14 +80,14 @@ describe('Terminal HTML structure', () => {
   })
 
   it('Hides the prompt in read-only mode', () => {
-    const wrapper = shallow(<Terminal commands={commands} readOnly/>)
+    const wrapper = render(<Terminal commands={commands} readOnly/>)
     expect(wrapper.find('[name="react-console-emulator__inputArea"]').prop('style')).toEqual({ display: 'none' })
   })
 })
 
 describe('Terminal welcome messages', () => {
   it('Displays default welcome', () => {
-    const wrapper = mount(<Terminal commands={commands} welcomeMessage/>)
+    const wrapper = render(<Terminal commands={commands} welcomeMessage/>)
     const content = wrapper.find('[name="react-console-emulator__content"]')
 
     expect(content.childAt(0).text()).toBe('Welcome to the React terminal! Type \'help\' to get a list of commands.')
@@ -94,8 +96,8 @@ describe('Terminal welcome messages', () => {
   })
 
   it('Displays custom welcomes', () => {
-    const wrapperSingle = mount(<Terminal commands={commands} welcomeMessage='test'/>)
-    const wrapperMulti = mount(<Terminal commands={commands} welcomeMessage={['test', 'test2']}/>)
+    const wrapperSingle = render(<Terminal commands={commands} welcomeMessage='test'/>)
+    const wrapperMulti = render(<Terminal commands={commands} welcomeMessage={['test', 'test2']}/>)
 
     const singleContent = wrapperSingle.find('[name="react-console-emulator__content"]')
     const multiContent = wrapperMulti.find('[name="react-console-emulator__content"]')
@@ -112,7 +114,7 @@ describe('Terminal welcome messages', () => {
   })
 
   it('Renders HTML in welcome messages', () => {
-    const wrapper = mount(<Terminal commands={commands} welcomeMessage='<span color="red">test</span>' dangerMode/>)
+    const wrapper = render(<Terminal commands={commands} welcomeMessage='<span color="red">test</span>' dangerMode/>)
 
     const content = wrapper.find('[name="react-console-emulator__content"]')
 
@@ -124,7 +126,7 @@ describe('Terminal welcome messages', () => {
 
 describe('Terminal functionality', () => {
   it('Validates commands when they update', () => {
-    const wrapper = mount(<Terminal commands={commands}/>)
+    const wrapper = render(<Terminal commands={commands}/>)
 
     expect(wrapper.state().commands).toHaveProperty('echo')
     wrapper.setProps({ commands: changedCommands })
@@ -135,7 +137,7 @@ describe('Terminal functionality', () => {
   })
 
   it('Registers new default commands', () => {
-    const wrapper = mount(<Terminal commands={newDefaultCommands} noDefaults/>)
+    const wrapper = render(<Terminal commands={newDefaultCommands} noDefaults/>)
 
     expect(wrapper.state().commands).toHaveProperty('validation')
     expect(wrapper.state().commands).toHaveProperty('help')
@@ -144,8 +146,8 @@ describe('Terminal functionality', () => {
   })
 
   it('Parses newlines (But not when disabled)', () => {
-    const wrapperEnabled = mount(<Terminal commands={commands} welcomeMessage={'split1\nsplit2'}/>)
-    const wrapperDisabled = mount(<Terminal commands={commands} welcomeMessage={'split1\nsplit2'} noNewlineParsing/>)
+    const wrapperEnabled = render(<Terminal commands={commands} welcomeMessage={'split1\nsplit2'}/>)
+    const wrapperDisabled = render(<Terminal commands={commands} welcomeMessage={'split1\nsplit2'} noNewlineParsing/>)
 
     const enabledContent = wrapperEnabled.find('[name="react-console-emulator__content"]')
     const disabledContent = wrapperDisabled.find('[name="react-console-emulator__content"]')
@@ -162,7 +164,7 @@ describe('Terminal functionality', () => {
   })
 
   it('Only updates the last line when locked', () => {
-    const wrapper = mount(<Terminal commands={commands} welcomeMessage={['this is the first message', 'this is the second message']} locked/>)
+    const wrapper = render(<Terminal commands={commands} welcomeMessage={['this is the first message', 'this is the second message']} locked/>)
     const content = wrapper.find('[name="react-console-emulator__content"]')
 
     expect(content.childAt(0).text()).toBe('this is the second message')
@@ -172,22 +174,25 @@ describe('Terminal functionality', () => {
 })
 
 describe('Terminal command validator', () => {
+  // TODO: Override console.error
+
   it('Throws an error when evil names are submitted to the regex', () => {
-    expect(() => shallow(<Terminal commands={evilNameCommands} ignoreCommandCase/>))
+    expect(() => render(<Terminal commands={evilNameCommands} ignoreCommandCase/>))
       .toThrowError(/Command name '\S+' is invalid; command names can only contain latin characters \(A-Z\), numbers \(0-9\) and dashes\/underscores \(- or _\)/)
   })
 
   it('Throws an error when default commands are being overriden without the noDefaults property being set', () => {
-    expect(() => shallow(<Terminal commands={duplicateCommands}/>))
+    expect(() => render(<Terminal commands={duplicateCommands}/>))
       .toThrowError(/Attempting to override existing command '\S+'; please only supply one definition of a certain command, or set the noDefaults property to enable overriding of existing commands/)
   })
 
   it('Throws an error when commands with an invalid shape are submitted', () => {
-    expect(() => shallow(<Terminal commands={invalidCommands}/>))
+    expect(() => render(<Terminal commands={invalidCommands}/>))
       .toThrowError(/'fn' property of command '\S+' is invalid; expected 'function', got '\S+'/)
   })
 })
 
+/*
 describe('Terminal user interactivity', () => {
   // Helper functions for common testing functions
 
@@ -214,7 +219,7 @@ describe('Terminal user interactivity', () => {
     await page.keyboard.press('Enter', { delay: '10' })
   }
 
-  skipIfCI('Outputs blank on no input', async () => {
+  it('Outputs blank on no input', async () => {
     await enterCommand()
     const output = await getStdout()
 
@@ -222,7 +227,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  skipIfCI('Outputs error on bad command', async () => {
+  it('Outputs error on bad command', async () => {
     await enterCommand('doot')
     const output = await getStdout()
 
@@ -230,7 +235,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  skipIfCI('Outputs a command response correctly', async () => {
+  it('Outputs a command response correctly', async () => {
     await enterCommand('echo test')
     const output = await getStdout()
 
@@ -238,7 +243,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  skipIfCI('Outputs help', async () => {
+  it('Outputs help', async () => {
     await enterCommand('help')
     const output = await getStdout()
 
@@ -246,7 +251,7 @@ describe('Terminal user interactivity', () => {
     await clearStdout()
   })
 
-  skipIfCI('Shows history and reacts appropriately', async () => {
+  it('Shows history and reacts appropriately', async () => {
     await enterCommand('echo test')
     await page.keyboard.press('ArrowUp')
     expect(await getInputValue()).toBe('echo test')
@@ -254,3 +259,4 @@ describe('Terminal user interactivity', () => {
     expect(await getInputValue()).toBe('')
   })
 })
+*/

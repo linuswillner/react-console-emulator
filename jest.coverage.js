@@ -1,13 +1,11 @@
 // Jest config for additional coverage testing
 module.exports = {
-  preset: 'jest-puppeteer',
-  setupFilesAfterEnv: ['<rootDir>/test/setupTests.js'],
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*'],
   coveragePathIgnorePatterns: [
-    '/node_modules/'
+    '/node_modules/',
+    '/src/defs' // Defs cannot be tested
     /*
-    '/src/defs', // Defs cannot be tested
     // These are covered by interactivity tests or other tests
     'cleanArray.js',
     'scrollHistory.js',
@@ -15,8 +13,5 @@ module.exports = {
     'constructEcho.js'
     */
   ],
-  coverageDirectory: './coverage/',
-  globals: {
-    URL: 'http://localhost:3000'
-  }
+  coverageDirectory: './coverage/'
 }

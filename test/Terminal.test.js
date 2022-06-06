@@ -4,6 +4,7 @@
 
 import React from 'react'
 import { render, fireEvent, waitFor, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import Terminal from '../src/Terminal'
 
@@ -62,78 +63,78 @@ const invalidCommands = {
 }
 
 // This is horrible but it's apparently the official way of doing this https://stackoverflow.com/a/66329699
+const neuterConsoleError = () => { console.error = () => {} }
 const oldConsoleError = console.error
 
 afterEach(() => {
   console.error = oldConsoleError
 })
 
+const getElement = name => document.querySelector(name ? `[name="react-console-emulator__${name}"]` : '[name="react-console-emulator"]')
+
+const renderWithUser = component => ({
+  user: userEvent.setup(),
+  ...render(component)
+})
+
 describe('Terminal HTML structure', () => {
   it('Has required elements', () => {
-    const wrapper = render(<Terminal commands={commands}/>)
+    render(<Terminal commands={commands}/>)
 
-    expect(wrapper.find('[name="react-console-emulator"]')).toHaveLength(1)
-    expect(wrapper.find('[name="react-console-emulator__content"]')).toHaveLength(1)
-    expect(wrapper.find('[name="react-console-emulator__inputArea"]')).toHaveLength(1)
-    expect(wrapper.find('[name="react-console-emulator__promptLabel"]')).toHaveLength(1)
-    expect(wrapper.find('[name="react-console-emulator__input"]')).toHaveLength(1)
+    expect(getElement()).not.toBeNull()
+    expect(getElement('content')).not.toBeNull()
+    expect(getElement('inputArea')).not.toBeNull()
+    expect(getElement('promptLabel')).not.toBeNull()
+    expect(getElement('input')).not.toBeNull()
   })
 
   it('Hides the prompt in read-only mode', () => {
-    const wrapper = render(<Terminal commands={commands} readOnly/>)
-    expect(wrapper.find('[name="react-console-emulator__inputArea"]').prop('style')).toEqual({ display: 'none' })
+    render(<Terminal commands={commands} readOnly/>)
+    expect(getElement('inputArea').style.display).toBe('none')
   })
 })
 
 describe('Terminal welcome messages', () => {
   it('Displays default welcome', () => {
-    const wrapper = render(<Terminal commands={commands} welcomeMessage/>)
-    const content = wrapper.find('[name="react-console-emulator__content"]')
-
-    expect(content.childAt(0).text()).toBe('Welcome to the React terminal! Type \'help\' to get a list of commands.')
-
-    wrapper.unmount()
+    render(<Terminal commands={commands} welcomeMessage/>)
+    expect(getElement('content').children[0].textContent).toBe('Welcome to the React terminal! Type \'help\' to get a list of commands.')
   })
 
-  it('Displays custom welcomes', () => {
-    const wrapperSingle = render(<Terminal commands={commands} welcomeMessage='test'/>)
-    const wrapperMulti = render(<Terminal commands={commands} welcomeMessage={['test', 'test2']}/>)
+  it('Displays a custom welcome message', () => {
+    render(<Terminal commands={commands} welcomeMessage='test'/>)
+    expect(getElement('content').children[0].textContent).toBe('test')
+  })
 
-    const singleContent = wrapperSingle.find('[name="react-console-emulator__content"]')
-    const multiContent = wrapperMulti.find('[name="react-console-emulator__content"]')
-
-    // Renders single string correctly
-    expect(singleContent.childAt(0).text()).toBe('test')
-
-    // Renders array of strings correctly
-    expect(multiContent.childAt(0).text()).toBe('test')
-    expect(multiContent.childAt(1).text()).toBe('test2')
-
-    wrapperSingle.unmount()
-    wrapperMulti.unmount()
+  it('Displays multiple custom welcome messages', () => {
+    render(<Terminal commands={commands} welcomeMessage={['test', 'test2']}/>)
+    expect(getElement('content').children[0].textContent).toBe('test')
+    expect(getElement('content').children[1].textContent).toBe('test2')
   })
 
   it('Renders HTML in welcome messages', () => {
-    const wrapper = render(<Terminal commands={commands} welcomeMessage='<span color="red">test</span>' dangerMode/>)
-
-    const content = wrapper.find('[name="react-console-emulator__content"]')
-
-    expect(content.childAt(0).html()).toBe('<div style="line-height: 21px;"><span color="red">test</span></div>')
-
-    wrapper.unmount()
+    render(<Terminal commands={commands} welcomeMessage='<span color="red">test</span>' dangerMode/>)
+    expect(getElement('content').children[0].outerHTML).toBe('<div style="line-height: 21px;"><span color="red">test</span></div>')
   })
 })
 
 describe('Terminal functionality', () => {
   it('Validates commands when they update', () => {
-    const wrapper = render(<Terminal commands={commands}/>)
+    const { user } = renderWithUser(<Terminal commands={commands} autoFocus/>)
 
+    // TODO: Fix this
+    user.click(getElement())
+    user.keyboard('help')
+    console.log(getElement('input').value)
+    user.keyboard('[Enter]')
+
+    expect(getElement('content').children).toBe('test')
+
+    /*
     expect(wrapper.state().commands).toHaveProperty('echo')
     wrapper.setProps({ commands: changedCommands })
     expect(wrapper.state().commands).not.toHaveProperty('echo')
     expect(wrapper.state().commands).toHaveProperty('changedEcho')
-
-    wrapper.unmount()
+    */
   })
 
   it('Registers new default commands', () => {
@@ -177,16 +178,19 @@ describe('Terminal command validator', () => {
   // TODO: Override console.error
 
   it('Throws an error when evil names are submitted to the regex', () => {
+    neuterConsoleError()
     expect(() => render(<Terminal commands={evilNameCommands} ignoreCommandCase/>))
       .toThrowError(/Command name '\S+' is invalid; command names can only contain latin characters \(A-Z\), numbers \(0-9\) and dashes\/underscores \(- or _\)/)
   })
 
   it('Throws an error when default commands are being overriden without the noDefaults property being set', () => {
+    neuterConsoleError()
     expect(() => render(<Terminal commands={duplicateCommands}/>))
       .toThrowError(/Attempting to override existing command '\S+'; please only supply one definition of a certain command, or set the noDefaults property to enable overriding of existing commands/)
   })
 
   it('Throws an error when commands with an invalid shape are submitted', () => {
+    neuterConsoleError()
     expect(() => render(<Terminal commands={invalidCommands}/>))
       .toThrowError(/'fn' property of command '\S+' is invalid; expected 'function', got '\S+'/)
   })

@@ -50,6 +50,7 @@ The terminal has several options you can use to change the behaviour of it. All 
 | readOnly | Hides the entire prompt, thus setting the terminal to read-only mode. | Boolean | `false` |
 | styleEchoBack | Inherit style for command echoes (Terminal outputs of any commands entered) from prompt (Fully or partially, i.e. label or text only), or style them as regular messages. Omitting this prop enables default behaviour. | String<'labelOnly'/'textOnly'/'fullInherit'/'messageInherit'\> | `undefined` |
 | welcomeMessage | The terminal welcome message. Set to `false` to disable, `true` to show the default, or supply a string (Or an array of them) to set a custom one. | Boolean/String/Array<String\> | `false` |
+| maxOutput | The maximum amount of output lines in the terminal. Set to integer to cap output lines at that amount, set to false for there to be no cap. | Boolean/Number | `false` |
 
 ### Re-styling
 

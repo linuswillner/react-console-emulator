@@ -90,7 +90,7 @@ export default class Terminal extends Component {
     const { stdout } = this.state
 
     if (this.props.locked) stdout.pop()
-    if (stdout.length > this.props.maxOutput && typeof this.props.maxOutput === "number") stdout.shift()
+    if (stdout.length + 1 > this.props.maxOutput && this.props.maxOutput > 0) stdout.shift()
     
     stdout.push({ message, isEcho: options?.isEcho || false })
 

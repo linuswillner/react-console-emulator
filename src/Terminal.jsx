@@ -119,6 +119,7 @@ export default class Terminal extends Component {
         dangerMode={this.props.dangerMode}
         className={!line.isEcho ? this.props.messageClassName : /* istanbul ignore next: Covered by interactivity tests */ undefined}
         style={!line.isEcho ? this.props.messageStyle : /* istanbul ignore next: Covered by interactivity tests */ undefined}
+        preserveSpacing={this.props.preserveSpacing}
       />
     })
   }
